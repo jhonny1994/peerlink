@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "90767458411",
+    "firebase_url": "https://peerlink600-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "peerlink600",
+    "storage_bucket": "peerlink600.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90767458411:android:250970208e58cb603db12e",
+        "android_client_info": {
+          "package_name": "com.carbodex.peerlink"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk5-BdF-lDIiKv_x5E4o1geqe1kRUr8W0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

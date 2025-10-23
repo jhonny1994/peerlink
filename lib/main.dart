@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:peerlink/src/shared/localization/generated/l10n.dart';
+import 'package:peerlink/src/src.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'src/shared/shared.dart';
-import 'src/shared/localization/generated/l10n.dart';
+// import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Load environment variables
-  await dotenv.load(fileName: '.env');
+  await dotenv.load();
+
+  // Initialize Firebase
+  // TODO: Uncomment after running: flutterfire configure
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
 
   // Initialize SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();

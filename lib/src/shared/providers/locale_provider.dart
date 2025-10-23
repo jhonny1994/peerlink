@@ -1,6 +1,7 @@
 import 'dart:ui';
+
+import 'package:peerlink/src/src.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'shared_preferences_provider.dart';
 
 part 'locale_provider.g.dart';
 

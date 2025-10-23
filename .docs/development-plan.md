@@ -28,11 +28,10 @@
 
 - [x] Define constants in `lib/src/core/constants/` (file sizes, timeouts, STUN/TURN)
 - [x] Create error mapping utilities (technical → user-friendly messages)
-- [ ] Create core widgets (`lib/src/core/widgets/`) for reusable UI components
-- [ ] Set up Firebase project (Firestore + FCM)
-- [ ] Configure Firebase for all platforms (Android, iOS, Windows, macOS, Ubuntu)
-- [ ] Initialize Firebase in `main.dart`
-- [ ] Commit and tag as `v0.3.0-core`
+- [x] Set up Firebase project (Firestore + FCM)
+- [x] Configure Firebase for all platforms (Android, iOS, Windows, macOS, Ubuntu)
+- [x] Initialize Firebase in `main.dart`
+- [x] Commit and tag as `v0.3.0-core`
 
 ## Phase 3: Connection Feature
 
