@@ -1,3 +1,7 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'peer_connection.freezed.dart';
+
 /// WebRTC connection state
 enum ConnectionState {
   /// Not connected
@@ -20,63 +24,25 @@ enum ConnectionState {
 }
 
 /// Represents a WebRTC peer connection session
-class PeerConnection {
-  const PeerConnection({
-    required this.sessionId,
-    required this.state,
-    this.localDescription,
-    this.remoteDescription,
-    this.iceCandidates = const [],
-    this.error,
-  });
+@freezed
+abstract class PeerConnection with _$PeerConnection {
+  const factory PeerConnection({
+    /// Unique session identifier (6-digit code)
+    required String sessionId,
 
-  /// Unique session identifier (6-digit code)
-  final String sessionId;
+    /// Current connection state
+    required ConnectionState state,
 
-  /// Current connection state
-  final ConnectionState state;
-
-  /// Local SDP offer/answer
-  final String? localDescription;
-
-  /// Remote SDP offer/answer
-  final String? remoteDescription;
-
-  /// ICE candidates for NAT traversal
-  final List<Map<String, dynamic>> iceCandidates;
-
-  /// Error message if connection failed
-  final String? error;
-
-  PeerConnection copyWith({
-    String? sessionId,
-    ConnectionState? state,
+    /// Local SDP offer/answer
     String? localDescription,
+
+    /// Remote SDP offer/answer
     String? remoteDescription,
-    List<Map<String, dynamic>>? iceCandidates,
+
+    /// ICE candidates for NAT traversal
+    @Default([]) List<Map<String, dynamic>> iceCandidates,
+
+    /// Error message if connection failed
     String? error,
-  }) {
-    return PeerConnection(
-      sessionId: sessionId ?? this.sessionId,
-      state: state ?? this.state,
-      localDescription: localDescription ?? this.localDescription,
-      remoteDescription: remoteDescription ?? this.remoteDescription,
-      iceCandidates: iceCandidates ?? this.iceCandidates,
-      error: error ?? this.error,
-    );
-  }
-
-  @override
-  String toString() => 'PeerConnection(sessionId: $sessionId, state: $state)';
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PeerConnection &&
-          runtimeType == other.runtimeType &&
-          sessionId == other.sessionId &&
-          state == other.state;
-
-  @override
-  int get hashCode => sessionId.hashCode ^ state.hashCode;
+  }) = _PeerConnection;
 }

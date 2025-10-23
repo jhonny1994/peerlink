@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:peerlink/firebase_options.dart';
 import 'package:peerlink/src/shared/localization/generated/l10n.dart';
 import 'package:peerlink/src/src.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,10 +17,9 @@ void main() async {
   await dotenv.load();
 
   // Initialize Firebase
-  // TODO: Uncomment after running: flutterfire configure
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // Initialize SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();

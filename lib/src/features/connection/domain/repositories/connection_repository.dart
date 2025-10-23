@@ -1,5 +1,4 @@
-import '../entities/peer_connection.dart';
-import '../entities/signaling_session.dart';
+import 'package:peerlink/src/src.dart';
 
 /// Repository interface for WebRTC connection operations
 abstract class ConnectionRepository {
