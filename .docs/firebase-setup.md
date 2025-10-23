@@ -58,12 +58,61 @@ service cloud.firestore {
 }
 ```
 
-### 7. Firestore TTL (Time To Live)
-Set up automatic deletion in Firestore Console:
-- Go to **Firestore Database** → **Indexes** → **TTL**
-- Create TTL policy for `sessions` collection
-- Field: `expiresAt`
-- TTL: 15 minutes
+### 7. Session Cleanup (Free Tier Alternative)
+
+**Note:** Firestore TTL is a paid feature. For free tier, use one of these alternatives:
+
+#### Option A: Client-Side Cleanup (Recommended for Free Tier)
+Sessions will be deleted by the sender after connection is established or after 15 minutes:
+- No server-side cleanup needed
+- Handled in app code (Phase 3)
+- Free tier compatible
+
+#### Option B: Manual Firestore Rules with Timestamp
+Update security rules to prevent reading old sessions:
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /sessions/{sessionId} {
+      // Only allow reading sessions created in last 15 minutes
+      allow read: if request.time < resource.data.expiresAt;
+      allow write: if true;
+    }
+  }
+}
+```
+
+Sessions older than 15 minutes won't be readable, but will accumulate in Firestore.
+Periodically clean up manually or upgrade to paid tier for automatic TTL.
+
+#### Option C: Scheduled Cloud Function (Requires Blaze Plan)
+If you upgrade to Blaze (pay-as-you-go, still free under quota):
+```javascript
+// functions/index.js
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp();
+
+exports.cleanupSessions = functions.pubsub
+  .schedule('every 15 minutes')
+  .onRun(async (context) => {
+    const now = admin.firestore.Timestamp.now();
+    const snapshot = await admin.firestore()
+      .collection('sessions')
+      .where('expiresAt', '<', now)
+      .get();
+    
+    const batch = admin.firestore().batch();
+    snapshot.docs.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+    
+    console.log(`Deleted ${snapshot.size} expired sessions`);
+  });
+```
+
+**Recommendation:** Start with Option A (client-side cleanup) on free tier.
 
 ### 8. Verify Installation
 Run the app to test Firebase initialization:
