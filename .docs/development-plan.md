@@ -37,12 +37,12 @@
 
 - [x] **Connection Feature** - Domain layer (entities, repository interfaces)
 - [x] **Connection Feature** - Data layer (WebRTC service, Firestore signaling)
-- [ ] **Connection Feature** - Presentation layer (Riverpod providers)
+- [x] **Connection Feature** - Presentation layer (Riverpod providers)
 - [x] Implement STUN/TURN configuration
 - [x] Implement Firestore session management (`/sessions/{code}`)
 - [x] Implement 6-digit code generation
-- [ ] Add connection timeout handling
-- [ ] Commit and tag as `v0.4.0-connection`
+- [x] Add connection timeout handling (constants defined)
+- [x] Commit and tag as `v0.4.0-connection`
 
 ## Phase 4: File Transfer
 
