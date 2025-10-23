@@ -2,13 +2,13 @@
 
 **Version:** 1.0 | **Date:** October 22, 2025
 
-## Phase 0: Foundation & Setup
+## Phase 0: Foundation & Setup ✅
 
-- [ ] Initialize Git repository (`.gitignore`, initial commit)
-- [ ] Install dependencies (Riverpod, WebRTC, Firebase, crypto, QR packages)
-- [ ] Install `shared_preferences` package
-- [ ] Create project structure (`lib/src/features/`, `lib/src/core/`, `lib/src/shared/`)
-- [ ] Commit and tag as `v0.1.0-setup`
+- [x] Initialize Git repository (`.gitignore`, initial commit)
+- [x] Install dependencies (Riverpod, WebRTC, Firebase, crypto, QR packages)
+- [x] Install `shared_preferences` package
+- [x] Create project structure (`lib/src/features/`, `lib/src/core/`, `lib/src/shared/`)
+- [x] Commit and tag as `v0.1.0-setup`
 
 ## Phase 1: Shared Infrastructure
 
