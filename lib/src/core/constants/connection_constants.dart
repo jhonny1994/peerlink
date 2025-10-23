@@ -1,3 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 /// WebRTC connection configuration constants
 class ConnectionConstants {
   ConnectionConstants._();
@@ -11,13 +13,14 @@ class ConnectionConstants {
   /// Maximum time to wait before considering transfer stalled (seconds)
   static const int transferStallTimeoutSec = 20;
 
-  /// Metered TURN API credentials
+  /// Metered TURN API credentials (from environment variables)
   /// API Key for fetching dynamic TURN credentials
-  static const String meteredApiKey = 'a9b079453dc5f67777b21c67d286d0d433cd';
+  static String get meteredApiKey =>
+      dotenv.get('METERED_API_KEY', fallback: '');
 
   /// Metered TURN API endpoint for dynamic credentials
   /// Provides 20GB/month free, auto-routes to nearest server
-  static const String meteredTurnApiUrl =
+  static String get meteredTurnApiUrl =>
       'https://carbodex.metered.live/api/v1/turn/credentials?apiKey=$meteredApiKey';
 
   /// STUN servers for NAT traversal (Metered + Google)
@@ -29,12 +32,14 @@ class ConnectionConstants {
 
   /// Static TURN credentials (fallback if API fails)
   /// Username and credential for direct TURN server access
-  static const String meteredUsername = 'd0fd9d04bc1b25ee582a241d';
-  static const String meteredCredential = 'kGl6lfn3UZ76x808';
+  static String get meteredUsername =>
+      dotenv.get('METERED_USERNAME', fallback: '');
+  static String get meteredCredential =>
+      dotenv.get('METERED_CREDENTIAL', fallback: '');
 
   /// Static TURN servers (fallback if API fails)
-  /// Uses hardcoded credentials - always available
-  static const List<Map<String, dynamic>> staticTurnServers = [
+  /// Uses credentials from environment - always available
+  static List<Map<String, dynamic>> get staticTurnServers => [
     {
       'urls': 'turn:standard.relay.metered.ca:80',
       'username': meteredUsername,
