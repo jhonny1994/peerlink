@@ -50,7 +50,7 @@ class ConnectionCreator extends _$ConnectionCreator {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(connectionRepositoryProvider);
-      return await repository.createConnection();
+      return repository.createConnection();
     });
   }
 
@@ -78,7 +78,7 @@ class ConnectionJoiner extends _$ConnectionJoiner {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(connectionRepositoryProvider);
-      return await repository.joinConnection(sessionId);
+      return repository.joinConnection(sessionId);
     });
   }
 

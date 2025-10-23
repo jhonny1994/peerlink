@@ -38,9 +38,9 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
     await signalingService.createSession(session);
 
     // Listen for ICE candidates
-    webRtcService.onIceCandidate.listen((candidate) {
+    webRtcService.onIceCandidate.listen((candidate) async {
       final candidateMap = candidate.toMap() as Map<String, dynamic>;
-      signalingService.addCandidate(
+      await signalingService.addCandidate(
         sessionId,
         candidateMap,
         isOffer: true,
@@ -48,20 +48,21 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
     });
 
     // Watch for answer
-    signalingService.watchSession(sessionId).listen((session) {
+    signalingService.watchSession(sessionId).listen((session) async {
       if (session?.answer != null) {
-        webRtcService.setRemoteDescription(
-          RTCSessionDescription(session!.answer!, 'answer'),
+        await webRtcService.setRemoteDescription(
+          RTCSessionDescription(session!.answer, 'answer'),
         );
       }
 
       // Add receiver's ICE candidates
       for (final candidate in session?.answerCandidates ?? []) {
-        webRtcService.addIceCandidate(
+        final candidateMap = candidate as Map<String, dynamic>;
+        await webRtcService.addIceCandidate(
           RTCIceCandidate(
-            candidate['candidate'] as String?,
-            candidate['sdpMid'] as String?,
-            candidate['sdpMLineIndex'] as int?,
+            candidateMap['candidate'] as String?,
+            candidateMap['sdpMid'] as String?,
+            candidateMap['sdpMLineIndex'] as int?,
           ),
         );
       }
@@ -108,9 +109,9 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
     await signalingService.updateSessionAnswer(sessionId, answer.sdp!);
 
     // Listen for ICE candidates
-    webRtcService.onIceCandidate.listen((candidate) {
+    webRtcService.onIceCandidate.listen((candidate) async {
       final candidateMap = candidate.toMap() as Map<String, dynamic>;
-      signalingService.addCandidate(
+      await signalingService.addCandidate(
         sessionId,
         candidateMap,
         isOffer: false,
