@@ -35,7 +35,7 @@
 
 ## Phase 3: Connection Feature
 
-- [ ] **Connection Feature** - Domain layer (entities, repository interfaces)
+- [x] **Connection Feature** - Domain layer (entities, repository interfaces)
 - [ ] **Connection Feature** - Data layer (WebRTC service, Firestore signaling)
 - [ ] **Connection Feature** - Presentation layer (Riverpod providers)
 - [ ] Implement STUN/TURN configuration
