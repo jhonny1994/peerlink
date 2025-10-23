@@ -36,11 +36,11 @@
 ## Phase 3: Connection Feature
 
 - [x] **Connection Feature** - Domain layer (entities, repository interfaces)
-- [ ] **Connection Feature** - Data layer (WebRTC service, Firestore signaling)
+- [x] **Connection Feature** - Data layer (WebRTC service, Firestore signaling)
 - [ ] **Connection Feature** - Presentation layer (Riverpod providers)
-- [ ] Implement STUN/TURN configuration
-- [ ] Implement Firestore session management (`/sessions/{code}`)
-- [ ] Implement 6-digit code generation
+- [x] Implement STUN/TURN configuration
+- [x] Implement Firestore session management (`/sessions/{code}`)
+- [x] Implement 6-digit code generation
 - [ ] Add connection timeout handling
 - [ ] Commit and tag as `v0.4.0-connection`
 
