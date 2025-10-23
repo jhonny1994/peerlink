@@ -26,11 +26,13 @@ class ErrorMessages {
       case ErrorCode.transferStallTimeout:
         return 'Transfer stalled and was cancelled. Please try again.';
       case ErrorCode.sha256Mismatch:
-        return 'File verification failed. The file may be corrupt. Please try sending again.';
+        return 'File verification failed. The file may be corrupt. '
+            'Please try sending again.';
       case ErrorCode.fileTooLarge:
         return 'File is larger than the 100MB limit.';
       case ErrorCode.turnQuotaExceeded:
-        return 'Connection failed. The free service limit may have been reached. Please try again later.';
+        return 'Connection failed. The free service limit may have been '
+            'reached. Please try again later.';
       case ErrorCode.permissionDenied:
         return 'Permission denied. Please grant the required permissions.';
       case ErrorCode.fileNotFound:
