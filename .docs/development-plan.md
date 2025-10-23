@@ -1,0 +1,145 @@
+# PeerLink Development Plan
+
+**Version:** 1.0 | **Date:** October 22, 2025
+
+## Phase 0: Foundation & Setup
+
+- [ ] Initialize Git repository (`.gitignore`, initial commit)
+- [ ] Install dependencies (Riverpod, WebRTC, Firebase, crypto, QR packages)
+- [ ] Install `shared_preferences` package
+- [ ] Create project structure (`lib/src/features/`, `lib/src/core/`, `lib/src/shared/`)
+- [ ] Commit and tag as `v0.1.0-setup`
+
+## Phase 1: Shared Infrastructure
+
+- [ ] Create global `SharedPreferencesProvider` in `lib/src/shared/` (throws `UnimplementedError`)
+- [ ] Override provider in `main.dart` with actual `SharedPreferences` instance
+- [ ] Set up Riverpod `ProviderScope` in `main.dart`
+- [ ] Configure internationalization (ARB files, `localizely.flutter-intl`)
+- [ ] Create locale provider (reads from shared prefs, defaults to system language)
+- [ ] Implement dynamic Material You theming (teal seed color `#008080`)
+- [ ] Create theme mode provider (light/dark/system from shared prefs)
+- [ ] Wire theme and locale providers to `MaterialApp`
+- [ ] Set up Riverpod code generation (`build_runner watch`)
+- [ ] Test theme switching and locale changes
+- [ ] Commit and tag as `v0.2.0-shared`
+
+## Phase 2: Constants & Core Utilities
+
+- [ ] Define constants in `lib/src/core/constants/` (file sizes, timeouts, STUN/TURN)
+- [ ] Create error mapping utilities (technical → user-friendly messages)
+- [ ] Create core widgets (`lib/src/core/widgets/`) for reusable UI components
+- [ ] Set up Firebase project (Firestore + FCM)
+- [ ] Configure Firebase for all platforms (Android, iOS, Windows, macOS, Ubuntu)
+- [ ] Initialize Firebase in `main.dart`
+- [ ] Commit and tag as `v0.3.0-core`
+
+## Phase 3: Connection Feature
+
+- [ ] **Connection Feature** - Domain layer (entities, repository interfaces)
+- [ ] **Connection Feature** - Data layer (WebRTC service, Firestore signaling)
+- [ ] **Connection Feature** - Presentation layer (Riverpod providers)
+- [ ] Implement STUN/TURN configuration
+- [ ] Implement Firestore session management (`/sessions/{code}`)
+- [ ] Implement 6-digit code generation
+- [ ] Add connection timeout handling
+- [ ] Commit and tag as `v0.4.0-connection`
+
+## Phase 4: File Transfer
+
+- [ ] **Transfer Feature** - Domain layer (file transfer entity, use cases)
+- [ ] **Transfer Feature** - Data layer (chunking, SHA-256 streaming)
+- [ ] **Transfer Feature** - Presentation layer (transfer state providers)
+- [ ] Implement 64KB chunking with buffer management
+- [ ] Implement streaming SHA-256 hash calculation
+- [ ] Implement transfer flow control (pause on buffer overflow)
+- [ ] Add file size validation (100MB limit)
+- [ ] Implement transfer progress tracking (%, MB/s)
+- [ ] Commit and tag as `v0.5.0-transfer`
+
+## Phase 5: Sender UI
+
+- [ ] Home screen with "Send" button
+- [ ] File picker integration (platform-specific)
+- [ ] Desktop drag-and-drop support
+- [ ] Display 6-digit code + QR code
+- [ ] "Copy Code" functionality
+- [ ] Transfer progress screen (percentage + speed)
+- [ ] Success/failure notifications
+- [ ] Error handling UI (snackbars/dialogs)
+- [ ] Commit and tag as `v0.6.0-sender`
+
+## Phase 6: Receiver UI
+
+- [ ] Home screen with "Receive" button
+- [ ] Manual code entry + QR scanner
+- [ ] Camera permission handling
+- [ ] Accept/Decline file prompt
+- [ ] File/Storage permission handling
+- [ ] Transfer progress screen (percentage + speed)
+- [ ] Success/failure notifications
+- [ ] Commit and tag as `v0.7.0-receiver`
+
+## Phase 7: Settings UI
+
+- [ ] **Settings Feature** - Settings screen UI
+- [ ] Theme switcher UI (light/dark/system) using existing provider
+- [ ] Language selector UI (if adding in-app selector)
+- [ ] Persist settings to shared preferences
+- [ ] Commit and tag as `v0.8.0-settings`
+
+## Phase 8: Platform Polish
+
+- [ ] Android-specific: Permissions, notifications, adaptive icon
+- [ ] iOS-specific: Permissions, notifications, app icon
+- [ ] Windows-specific: File dialogs, window management
+- [ ] macOS-specific: File dialogs, permissions
+- [ ] Ubuntu-specific: File dialogs, permissions
+- [ ] Commit and tag as `v0.9.0-polish`
+
+## Phase 9: Firebase Integration
+
+- [ ] Firestore security rules
+- [ ] Firestore TTL cleanup (15 min session expiry)
+- [ ] FCM silent notifications implementation
+- [ ] FCM token management
+- [ ] Test Firebase integration on all platforms
+- [ ] Commit and tag as `v0.10.0-firebase`
+
+## Phase 10: Release Preparation
+
+- [ ] App icon finalization (P+L monogram)
+- [ ] App store assets (screenshots, descriptions)
+- [ ] Release signing configuration (Android/iOS)
+- [ ] Privacy policy + terms of service
+- [ ] Update README with user documentation
+- [ ] Create release notes
+- [ ] Commit and tag as `v1.0.0`
+
+## Phase 11: Deployment
+
+- [ ] Build release APK/AAB (Android)
+- [ ] Build release IPA (iOS)
+- [ ] Build release executables (Windows, macOS, Ubuntu)
+- [ ] Submit to Google Play Store
+- [ ] Submit to Apple App Store
+- [ ] Publish desktop releases (GitHub Releases)
+- [ ] Monitor initial user feedback
+- [ ] Tag as `v1.0.0-release`
+
+## Git Workflow
+
+- **Single branch:** Work directly on `main` branch
+- **Commit convention:** `type(scope): message` (e.g., `feat(shared): add theme provider`)
+- **Tags:** Semantic versioning at phase completion (`v0.x.0` for phases, `v1.0.0` for release)
+- **Commits:** Atomic commits for each completed task
+
+## Notes
+
+- **Shared-first approach:** Phase 1 sets up all shared infrastructure (providers, theme, i18n)
+- **Global provider pattern:** `SharedPreferencesProvider` throws `UnimplementedError`, overridden in `main.dart`
+- Each phase builds on previous phases (chronological order)
+- Feature-by-feature approach after shared setup (connection → transfer → UI → polish)
+- Version control at every phase completion
+- DRY principle: Shared infrastructure reused across all features
+- Test manually as you build features
