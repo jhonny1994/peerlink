@@ -18,24 +18,54 @@ class ConnectionConstants {
     {'urls': 'stun:stun2.l.google.com:19302'},
   ];
 
-  /// TURN server for relay (free tier - openrelay.metered.ca)
-  static const List<Map<String, dynamic>> turnServers = [
+  /// Metered TURN API endpoint for dynamic credentials
+  /// Provides 20GB/month free, auto-routes to nearest server
+  /// Sign up at: https://dashboard.metered.ca/signup?tool=turnserver
+  static const String meteredTurnApiUrl =
+      'https://peerlink.metered.live/api/v1/turn/credentials';
+
+  /// Static fallback TURN server (if API fails or for development)
+  /// Uses static auth - always available but less optimal routing
+  static const List<Map<String, dynamic>> staticTurnServers = [
     {
       'urls': 'turn:openrelay.metered.ca:80',
       'username': 'openrelayproject',
       'credential': 'openrelayproject',
     },
+    {
+      'urls': 'turn:openrelay.metered.ca:443',
+      'username': 'openrelayproject',
+      'credential': 'openrelayproject',
+    },
   ];
 
-  /// Combined ICE servers (STUN + TURN)
-  static List<Map<String, dynamic>> get iceServers => [
+  /// Static auth TURN server (alternative - uses shared secret)
+  /// For services that require static auth (like Nextcloud Talk)
+  static const List<Map<String, dynamic>> staticAuthTurnServers = [
+    {
+      'urls': 'turn:staticauth.openrelay.metered.ca:80',
+      'username': 'openrelayproject',
+      'credential': 'openrelayprojectsecret',
+    },
+    {
+      'urls': 'turn:staticauth.openrelay.metered.ca:443',
+      'username': 'openrelayproject',
+      'credential': 'openrelayprojectsecret',
+    },
+  ];
+
+  /// Fallback ICE servers (STUN + static TURN)
+  /// Used when dynamic TURN API is unavailable
+  static List<Map<String, dynamic>> get fallbackIceServers => [
         ...stunServers,
-        ...turnServers,
+        ...staticTurnServers,
       ];
 
   /// WebRTC configuration for RTCPeerConnection
+  /// Note: In production, fetch dynamic TURN credentials from meteredTurnApiUrl
+  /// and merge with stunServers for optimal routing
   static Map<String, dynamic> get rtcConfiguration => {
-        'iceServers': iceServers,
+        'iceServers': fallbackIceServers,
         'iceTransportPolicy': 'all',
         'iceCandidatePoolSize': 0,
       };
