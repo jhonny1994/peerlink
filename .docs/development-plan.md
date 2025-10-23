@@ -10,19 +10,19 @@
 - [x] Create project structure (`lib/src/features/`, `lib/src/core/`, `lib/src/shared/`)
 - [x] Commit and tag as `v0.1.0-setup`
 
-## Phase 1: Shared Infrastructure
+## Phase 1: Shared Infrastructure ✅
 
-- [ ] Create global `SharedPreferencesProvider` in `lib/src/shared/` (throws `UnimplementedError`)
-- [ ] Override provider in `main.dart` with actual `SharedPreferences` instance
-- [ ] Set up Riverpod `ProviderScope` in `main.dart`
-- [ ] Configure internationalization (ARB files, `localizely.flutter-intl`)
-- [ ] Create locale provider (reads from shared prefs, defaults to system language)
-- [ ] Implement dynamic Material You theming (teal seed color `#008080`)
-- [ ] Create theme mode provider (light/dark/system from shared prefs)
-- [ ] Wire theme and locale providers to `MaterialApp`
-- [ ] Set up Riverpod code generation (`build_runner watch`)
-- [ ] Test theme switching and locale changes
-- [ ] Commit and tag as `v0.2.0-shared`
+- [x] Create global `SharedPreferencesProvider` in `lib/src/shared/` (throws `UnimplementedError`)
+- [x] Override provider in `main.dart` with actual `SharedPreferences` instance
+- [x] Set up Riverpod `ProviderScope` in `main.dart`
+- [x] Configure internationalization (ARB files, `localizely.flutter-intl`)
+- [x] Create locale provider (reads from shared prefs, defaults to system language)
+- [x] Implement dynamic Material You theming (teal seed color `#008080`)
+- [x] Create theme mode provider (light/dark/system from shared prefs)
+- [x] Wire theme and locale providers to `MaterialApp`
+- [x] Set up Riverpod code generation (`build_runner watch`)
+- [x] Test theme switching and locale changes
+- [x] Commit and tag as `v0.2.0-shared`
 
 ## Phase 2: Constants & Core Utilities
 
