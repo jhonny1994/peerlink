@@ -1,7 +1,9 @@
 name: peerlink
-description: "A new Flutter project."
-publish_to: 'none'
-version: 0.1.0
+description: "Privacy-focused peer-to-peer file transfer app with WebRTC and Firebase signaling."
+publish_to: "none"
+version: 0.1.0+1
+homepage: https://github.com/jhonny1994/peerlink
+repository: https://github.com/jhonny1994/peerlink
 
 environment:
   sdk: ^3.9.2
