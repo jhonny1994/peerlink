@@ -26,8 +26,8 @@
 
 ## Phase 2: Constants & Core Utilities
 
-- [ ] Define constants in `lib/src/core/constants/` (file sizes, timeouts, STUN/TURN)
-- [ ] Create error mapping utilities (technical → user-friendly messages)
+- [x] Define constants in `lib/src/core/constants/` (file sizes, timeouts, STUN/TURN)
+- [x] Create error mapping utilities (technical → user-friendly messages)
 - [ ] Create core widgets (`lib/src/core/widgets/`) for reusable UI components
 - [ ] Set up Firebase project (Firestore + FCM)
 - [ ] Configure Firebase for all platforms (Android, iOS, Windows, macOS, Ubuntu)
