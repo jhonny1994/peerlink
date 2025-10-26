@@ -2,9 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
-import 'package:peerlink/src/core/core.dart';
-import 'package:peerlink/src/features/transfer/data/data.dart';
-import 'package:peerlink/src/features/transfer/domain/domain.dart';
 import 'package:peerlink/src/src.dart';
 
 /// Implementation of TransferRepository

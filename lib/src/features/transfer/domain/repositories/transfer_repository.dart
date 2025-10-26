@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'package:peerlink/src/features/transfer/domain/domain.dart';
+import 'package:peerlink/src/src.dart';
 
 /// Repository for file transfer operations
 abstract class TransferRepository {

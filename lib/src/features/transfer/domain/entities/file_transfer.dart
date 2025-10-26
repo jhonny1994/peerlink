@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:peerlink/src/features/transfer/domain/entities/file_metadata.dart';
-import 'package:peerlink/src/features/transfer/domain/entities/transfer_progress.dart';
+import 'package:peerlink/src/src.dart';
 
 part 'file_transfer.freezed.dart';
 

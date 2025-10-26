@@ -1,5 +1,4 @@
-import 'package:peerlink/src/features/transfer/data/data.dart';
-import 'package:peerlink/src/features/transfer/domain/domain.dart';
+import 'package:peerlink/src/src.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'transfer_providers.g.dart';

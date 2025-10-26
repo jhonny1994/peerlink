@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:peerlink/src/core/core.dart';
+import 'package:peerlink/src/src.dart';
 
 /// Service for managing WebRTC data channels
 class DataChannelService {

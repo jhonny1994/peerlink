@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:peerlink/src/core/core.dart';
+import 'package:peerlink/src/src.dart';
 
 /// Service for chunking files for transfer
 class ChunkingService {

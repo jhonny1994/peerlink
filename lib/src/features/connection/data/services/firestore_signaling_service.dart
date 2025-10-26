@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peerlink/src/features/connection/domain/entities/signaling_session.dart';
-import 'package:peerlink/src/features/connection/domain/repositories/connection_repository.dart';
+import 'package:peerlink/src/src.dart';
 
 /// Firestore implementation of SignalingRepository
 class FirestoreSignalingService implements SignalingRepository {

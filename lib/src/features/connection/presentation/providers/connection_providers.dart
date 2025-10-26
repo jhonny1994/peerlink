@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peerlink/src/features/connection/connection.dart';
+import 'package:peerlink/src/src.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'connection_providers.g.dart';
