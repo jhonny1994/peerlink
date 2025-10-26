@@ -335,12 +335,12 @@ class TransferRepositoryImpl implements TransferRepository {
   }
 
   Future<void> _sendMetadata(String sessionId, FileMetadata metadata) async {
-    // TODO: Send metadata through data channel as JSON
+    // TODO(dev): Send metadata through data channel as JSON
     // For now, we'll assume metadata is sent separately
   }
 
   Future<FileMetadata> _receiveMetadata(String sessionId) async {
-    // TODO: Receive metadata through data channel
+    // TODO(dev): Receive metadata through data channel
     // For now, return a placeholder
     throw UnimplementedError('Metadata exchange not yet implemented');
   }

@@ -13,7 +13,7 @@ class ConnectionTimeoutService {
   ) async {
     _cancelTimer(sessionId);
     _timers[sessionId] = Timer(
-      Duration(seconds: ConnectionConstants.iceGatherTimeoutSec),
+      const Duration(seconds: ConnectionConstants.iceGatherTimeoutSec),
       () {
         onTimeout();
         _cleanup(sessionId);
@@ -28,7 +28,7 @@ class ConnectionTimeoutService {
   ) async {
     _cancelTimer(sessionId);
     _timers[sessionId] = Timer(
-      Duration(seconds: ConnectionConstants.connectionTimeoutSec),
+      const Duration(seconds: ConnectionConstants.connectionTimeoutSec),
       () {
         onTimeout();
         _cleanup(sessionId);

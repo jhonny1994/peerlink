@@ -41,9 +41,7 @@ class WebRtcService {
     };
 
     // Listen to incoming data channels (receiver side)
-    _peerConnection!.onDataChannel = (channel) {
-      _dataChannelController.add(channel);
-    };
+    _peerConnection!.onDataChannel = _dataChannelController.add;
 
     return _peerConnection!;
   }
