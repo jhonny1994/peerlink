@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:peerlink/src/core/routing/app_routes.dart';
 
 /// Home screen with large Send and Receive buttons.
 ///
@@ -64,8 +65,10 @@ class HomeScreen extends ConsumerWidget {
 
                   // Send button
                   FilledButton.icon(
-                    onPressed: () {
-                      // TODO(dev): Navigate to sender flow
+                    onPressed: () async {
+                      await Navigator.of(
+                        context,
+                      ).pushNamed(AppRoutes.senderFilePicker);
                     },
                     icon: const Icon(Icons.send_rounded, size: 28),
                     label: const Text(
@@ -86,8 +89,10 @@ class HomeScreen extends ConsumerWidget {
 
                   // Receive button
                   FilledButton.tonalIcon(
-                    onPressed: () {
-                      // TODO(dev): Navigate to receiver flow
+                    onPressed: () async {
+                      await Navigator.of(
+                        context,
+                      ).pushNamed(AppRoutes.receiverCodeEntry);
                     },
                     icon: const Icon(Icons.download_rounded, size: 28),
                     label: const Text(

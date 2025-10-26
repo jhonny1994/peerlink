@@ -58,8 +58,8 @@
 
 ## Phase 5: Sender UI
 
-- [ ] Home screen with "Send" button
-- [ ] File picker integration (platform-specific)
+- [x] Home screen with "Send" button
+- [x] File picker integration (platform-specific)
 - [ ] Desktop drag-and-drop support
 - [ ] Display 6-digit code + QR code
 - [ ] "Copy Code" functionality

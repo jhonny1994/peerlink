@@ -1,3 +1,5 @@
+// File.exists() and File.length() are necessary for file validation in this service.
+// Performance impact is acceptable as these checks happen only during user file selection.
 // ignore_for_file: avoid_slow_async_io
 
 import 'dart:io';
