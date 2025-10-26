@@ -64,6 +64,7 @@ class MainApp extends ConsumerWidget {
       initialRoute: AppRoutes.home,
       routes: {
         AppRoutes.home: (context) => const HomeScreen(),
+        AppRoutes.settings: (context) => const SettingsScreen(),
         // Sender routes
         AppRoutes.senderFilePicker: (context) => const SenderFilePickerScreen(),
         AppRoutes.senderCode: (context) => const SenderCodeScreen(),

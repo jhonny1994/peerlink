@@ -21,8 +21,8 @@ class HomeScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings_outlined),
-            onPressed: () {
-              // TODO(dev): Navigate to settings screen
+            onPressed: () async {
+              await Navigator.of(context).pushNamed(AppRoutes.settings);
             },
             tooltip: 'Settings',
           ),
