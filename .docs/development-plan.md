@@ -59,8 +59,12 @@
 ## Phase 5: Sender UI
 
 - [x] Home screen with "Send" button
-- [x] File picker integration (platform-specific)
+- [x] File picker service with 100MB validation
+- [x] Permission service for runtime permissions
+- [x] Navigation/routing setup (AppRoutes + AppNavigator)
+- [x] Placeholder screens for sender flow
 - [ ] Desktop drag-and-drop support
+- [ ] Implement sender file picker screen (use FilePickerService)
 - [ ] Display 6-digit code + QR code
 - [ ] "Copy Code" functionality
 - [ ] Transfer progress screen (percentage + speed)
@@ -70,21 +74,25 @@
 
 ## Phase 6: Receiver UI
 
-- [ ] Home screen with "Receive" button
-- [ ] Manual code entry + QR scanner
-- [ ] Camera permission handling
+- [x] Home screen with "Receive" button
+- [x] Placeholder screens for receiver flow
+- [ ] Implement receiver code entry screen (6-digit input)
+- [ ] QR scanner integration (use mobile_scanner + PermissionService)
+- [ ] Camera permission handling (use PermissionService)
 - [ ] Accept/Decline file prompt
-- [ ] File/Storage permission handling
+- [ ] File/Storage permission handling (use PermissionService)
 - [ ] Transfer progress screen (percentage + speed)
 - [ ] Success/failure notifications
 - [ ] Commit and tag as `v0.7.0-receiver`
 
 ## Phase 7: Settings UI
 
-- [ ] **Settings Feature** - Settings screen UI
-- [ ] Theme switcher UI (light/dark/system) using existing provider
-- [ ] Language selector UI (if adding in-app selector)
-- [ ] Persist settings to shared preferences
+- [x] **Settings Feature** - Settings screen placeholder
+- [x] Settings route and navigation wiring
+- [ ] Implement theme switcher UI (light/dark/system) using themeModeProvider
+- [ ] Language selector UI (if adding in-app selector) using localeProvider
+- [ ] Settings persistence (already handled by providers)
+- [ ] About section (app version, licenses)
 - [ ] Commit and tag as `v0.8.0-settings`
 
 ## Phase 8: Platform Polish

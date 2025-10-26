@@ -1,6 +1,8 @@
 # PeerLink - Copilot Instructions
 
-PeerLink is a privacy-focused P2P file transfer app (Flutter) using WebRTC for direct device connections, Firebase Firestore (free tier) for signaling, and FCM for notifications. Currently in bootstrap phase with only "Hello World" in `lib/main.dart`.
+PeerLink is a privacy-focused P2P file transfer app (Flutter) using WebRTC for direct device connections, Firebase Firestore (free tier) for signaling, and FCM for notifications. 
+
+**Current Status (Phase 5)**: Backend complete (connection + transfer features), shared services ready (file picker, permissions), routing infrastructure complete, now implementing sender/receiver UI screens.
 
 ## Project Vision & Goals
 
@@ -14,11 +16,15 @@ Follow development phases in `.docs/development-plan.md`. Check off tasks as com
 
 ## Architecture & Structure
 
-**Feature-first DDD**: Organize as `lib/src/features/{transfer,connection,settings}/` with `domain/`, `data/`, `presentation/` subdirs. Each feature has a **barrel file** (e.g., `transfer.dart`) exporting public APIs only. Import via `import 'package:peerlink/src/features/transfer/transfer.dart';`. 
+**Feature-first DDD**: Organize as `lib/src/features/{transfer,connection,settings,sender,receiver,home}/` with `domain/`, `data/`, `presentation/` subdirs. Each feature has a **barrel file** (e.g., `transfer.dart`) exporting public APIs only. Import via `import 'package:peerlink/src/features/transfer/transfer.dart';`. 
 
-**Shared code**: `lib/src/shared/` (providers like `SharedPreferencesProvider`), `lib/src/core/` (constants, utils, widgets).
+**Shared code**: 
+- `lib/src/shared/` - Providers (`SharedPreferencesProvider`, `themeModeProvider`, `localeProvider`), services (`FilePickerService`, `PermissionService`)
+- `lib/src/core/` - Constants, routing (`AppRoutes`, `AppNavigator`), utilities
 
-**Tech stack**: Riverpod (state + DI), `flutter_webrtc`, Firebase (Firestore + FCM), `crypto` (SHA-256), `qr_flutter`, `mobile_scanner`, `shared_preferences`, ARB files (i18n via `localizely.flutter-intl`).
+**Routing**: Use `AppNavigator` helper methods for navigation (e.g., `AppNavigator.toSenderCode(context)`) or direct `Navigator.pushNamed()` with `AppRoutes` constants. All screens already wired in `main.dart`.
+
+**Tech stack**: Riverpod (state + DI), `flutter_webrtc`, Firebase (Firestore + FCM), `crypto` (SHA-256), `qr_flutter`, `mobile_scanner`, `shared_preferences`, `file_picker`, `permission_handler`, ARB files (i18n via `localizely.flutter-intl`).
 
 **Platforms**: Android, iOS, Windows, macOS, Ubuntu. Desktop supports drag-and-drop + native file dialogs. Mobile requires Camera (QR) and File/Storage permissions (requested on first use).
 
@@ -57,20 +63,46 @@ Display errors via non-intrusive snackbars/dialogs—keep text calm and guidance
 ## Initial Setup (Phase 0-2 from dev plan)
 
 ```bash
-# Phase 0: Foundation
-flutter pub add riverpod flutter_riverpod riverpod_annotation flutter_webrtc firebase_core cloud_firestore firebase_messaging crypto qr_flutter mobile_scanner shared_preferences
+# Phase 0: Foundation (COMPLETE ✅)
+flutter pub add riverpod flutter_riverpod riverpod_annotation flutter_webrtc firebase_core cloud_firestore firebase_messaging crypto qr_flutter mobile_scanner shared_preferences file_picker permission_handler
 flutter pub add --dev riverpod_generator build_runner riverpod_lint
 
-# Phase 1: Shared infrastructure (do this first!)
-# 1. Create lib/src/shared/providers/shared_preferences_provider.dart
-#    - Define provider that throws UnimplementedError
-# 2. Override in main.dart with actual SharedPreferences instance
-# 3. Set up theme mode provider (reads from shared prefs)
-# 4. Set up locale provider (reads from shared prefs, defaults to system)
-# 5. Wire providers to MaterialApp
-# 6. Start code generation
-dart run build_runner watch --delete-conflicting-outputs
+# Phase 1: Shared infrastructure (COMPLETE ✅)
+# All providers created and wired: SharedPreferencesProvider, themeModeProvider, localeProvider
+# Code generation running: dart run build_runner watch --delete-conflicting-outputs
+
+# Phase 2: Constants & Core (COMPLETE ✅)
+# Constants defined in lib/src/core/constants/
+# Routing setup in lib/src/core/routing/ (AppRoutes + AppNavigator)
+
+# Phase 3: Connection Feature (COMPLETE ✅)
+# WebRTC, Firestore signaling, 6-digit codes, timeouts all implemented
+
+# Phase 4: Transfer Feature (COMPLETE ✅)
+# Chunking, SHA-256, buffer management, progress tracking all implemented
+
+# Phase 5: Sender UI (IN PROGRESS 🔄)
+# HomeScreen ✅, FilePickerService ✅, PermissionService ✅, Routing ✅
+# TODO: Implement actual sender screens (file picker, code display, progress)
 ```
+
+## Shared Services (lib/src/shared/services/)
+
+**FilePickerService**: Wraps `file_picker` package with:
+- 100MB size validation (throws `FileTooLargeException` if exceeded)
+- Returns `File?` (null if user cancels)
+- Use: `final file = await ref.read(filePickerServiceProvider).pickFile();`
+
+**PermissionService**: Handles runtime permissions with:
+- `requestCameraPermission()` - For QR scanning
+- `requestStoragePermission()` - For file saving (Android-specific)
+- Returns `PermissionResult` enum (granted/denied/permanentlyDenied/notRequired)
+- Use: `final result = await ref.read(permissionServiceProvider).requestCameraPermission();`
+
+**Navigation**: Use `AppNavigator` static methods:
+- `AppNavigator.toSenderCode(context)` - Type-safe navigation
+- `AppNavigator.popUntilHome(context)` - Return to home
+- All routes defined in `AppRoutes` class
 
 ## Platform Quirks
 
