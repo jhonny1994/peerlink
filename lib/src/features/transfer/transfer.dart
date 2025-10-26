@@ -1,4 +1,3 @@
 export 'data/data.dart';
 export 'domain/domain.dart';
-export 'presentation/presentation.dart'
-    hide DataChannelServiceProvider, dataChannelServiceProvider;
+export 'presentation/presentation.dart';
