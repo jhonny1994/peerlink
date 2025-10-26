@@ -7,10 +7,12 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   ConnectionRepositoryImpl({
     required this.signalingService,
     required this.webRtcService,
+    required this.dataChannelService,
   });
 
   final FirestoreSignalingService signalingService;
   final WebRtcService webRtcService;
+  final DataChannelService dataChannelService;
 
   final _connectionController = StreamController<PeerConnection>.broadcast();
 
@@ -20,7 +22,14 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
     final sessionId = CodeGenerator.generate();
 
     // Create peer connection
-    await webRtcService.initializePeerConnection();
+    final peerConnection = await webRtcService.initializePeerConnection();
+
+    // Create data channel (sender creates it)
+    await dataChannelService.createDataChannel(
+      peerConnection,
+      sessionId,
+      'file-transfer',
+    );
 
     // Create offer
     final offer = await webRtcService.createOffer();
@@ -85,6 +94,11 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
 
     // Create peer connection
     await webRtcService.initializePeerConnection();
+
+    // Listen for incoming data channel (receiver gets it from sender)
+    webRtcService.onDataChannel.listen((dataChannel) {
+      dataChannelService.registerDataChannel(sessionId, dataChannel);
+    });
 
     // Set remote description (offer)
     await webRtcService.setRemoteDescription(

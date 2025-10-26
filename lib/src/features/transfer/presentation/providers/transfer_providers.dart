@@ -15,17 +15,12 @@ HashService hashService(Ref ref) {
   return HashService();
 }
 
-/// Provider for DataChannelService
-@riverpod
-DataChannelService dataChannelService(Ref ref) {
-  return DataChannelService();
-}
-
 /// Provider for TransferRepository
 @riverpod
 TransferRepository transferRepository(Ref ref) {
   final chunkingService = ref.watch(chunkingServiceProvider);
   final hashService = ref.watch(hashServiceProvider);
+  // Use the shared data channel service from connection providers
   final dataChannelService = ref.watch(dataChannelServiceProvider);
 
   return TransferRepositoryImpl(

@@ -11,6 +11,7 @@ class WebRtcService {
   final _stateController = StreamController<domain.ConnectionState>.broadcast();
   final _iceCandidatesController =
       StreamController<RTCIceCandidate>.broadcast();
+  final _dataChannelController = StreamController<RTCDataChannel>.broadcast();
 
   /// Stream of connection state changes
   Stream<domain.ConnectionState> get onConnectionStateChange =>
@@ -18,6 +19,9 @@ class WebRtcService {
 
   /// Stream of ICE candidates
   Stream<RTCIceCandidate> get onIceCandidate => _iceCandidatesController.stream;
+
+  /// Stream of incoming data channels (for receiver)
+  Stream<RTCDataChannel> get onDataChannel => _dataChannelController.stream;
 
   /// Create a new peer connection
   Future<RTCPeerConnection> initializePeerConnection() async {
@@ -34,6 +38,11 @@ class WebRtcService {
       if (candidate.candidate != null) {
         _iceCandidatesController.add(candidate);
       }
+    };
+
+    // Listen to incoming data channels (receiver side)
+    _peerConnection!.onDataChannel = (channel) {
+      _dataChannelController.add(channel);
     };
 
     return _peerConnection!;
@@ -85,6 +94,7 @@ class WebRtcService {
     _peerConnection = null;
     await _stateController.close();
     await _iceCandidatesController.close();
+    await _dataChannelController.close();
   }
 
   /// Map RTCPeerConnectionState to domain ConnectionState

@@ -25,15 +25,23 @@ WebRtcService webRtcService(Ref ref) {
   return WebRtcService();
 }
 
+/// Provider for DataChannelService
+@riverpod
+DataChannelService dataChannelService(Ref ref) {
+  return DataChannelService();
+}
+
 /// Provider for ConnectionRepository
 @riverpod
 ConnectionRepository connectionRepository(Ref ref) {
   final signalingService = ref.watch(firestoreSignalingServiceProvider);
   final webRtcService = ref.watch(webRtcServiceProvider);
+  final dataChannelService = ref.watch(dataChannelServiceProvider);
 
   return ConnectionRepositoryImpl(
     signalingService: signalingService,
     webRtcService: webRtcService,
+    dataChannelService: dataChannelService,
   );
 }
 

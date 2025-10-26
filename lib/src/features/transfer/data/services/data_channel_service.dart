@@ -21,6 +21,16 @@ class DataChannelService {
         ..maxRetransmits = 3,
     );
 
+    _setupDataChannel(sessionId, dataChannel);
+  }
+
+  /// Register an existing data channel (for receiver)
+  void registerDataChannel(String sessionId, RTCDataChannel dataChannel) {
+    _setupDataChannel(sessionId, dataChannel);
+  }
+
+  /// Setup data channel listeners
+  void _setupDataChannel(String sessionId, RTCDataChannel dataChannel) {
     _channels[sessionId] = dataChannel;
     _dataControllers[sessionId] = StreamController<Uint8List>.broadcast();
 
