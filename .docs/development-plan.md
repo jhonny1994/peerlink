@@ -46,15 +46,15 @@
 
 ## Phase 4: File Transfer
 
-- [ ] **Transfer Feature** - Domain layer (file transfer entity, use cases)
-- [ ] **Transfer Feature** - Data layer (chunking, SHA-256 streaming)
-- [ ] **Transfer Feature** - Presentation layer (transfer state providers)
-- [ ] Implement 64KB chunking with buffer management
-- [ ] Implement streaming SHA-256 hash calculation
-- [ ] Implement transfer flow control (pause on buffer overflow)
-- [ ] Add file size validation (100MB limit)
-- [ ] Implement transfer progress tracking (%, MB/s)
-- [ ] Commit and tag as `v0.5.0-transfer`
+- [x] **Transfer Feature** - Domain layer (file transfer entity, use cases)
+- [x] **Transfer Feature** - Data layer (chunking, SHA-256 streaming)
+- [x] **Transfer Feature** - Presentation layer (transfer state providers)
+- [x] Implement 64KB chunking with buffer management
+- [x] Implement streaming SHA-256 hash calculation
+- [x] Implement transfer flow control (pause on buffer overflow)
+- [x] Add file size validation (100MB limit)
+- [x] Implement transfer progress tracking (%, MB/s)
+- [x] Commit and tag as `v0.5.0-transfer`
 
 ## Phase 5: Sender UI
 
