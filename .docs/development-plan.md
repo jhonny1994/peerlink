@@ -56,7 +56,7 @@
 - [x] Implement transfer progress tracking (%, MB/s)
 - [x] Commit and tag as `v0.5.0-transfer`
 
-## Phase 5: Sender UI
+## Phase 5: Sender UI ✅
 
 - [x] Home screen with "Send" button
 - [x] File picker service with 100MB validation
@@ -70,7 +70,7 @@
 - [x] Success/failure notifications
 - [x] Error handling UI (snackbars/dialogs)
 - [ ] Desktop drag-and-drop support
-- [ ] Commit and tag as `v0.6.0-sender`
+- [x] Commit and tag as `v0.6.0-sender`
 
 ## Phase 6: Receiver UI
 
