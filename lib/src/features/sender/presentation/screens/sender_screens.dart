@@ -618,7 +618,10 @@ class _SenderProgressScreenState extends ConsumerState<SenderProgressScreen> {
                     loading: () =>
                         const Center(child: CircularProgressIndicator()),
                     error: (_, _) => const Center(
-                      child: Icon(Icons.error_outline, size: 48),
+                      child: Icon(
+                        Icons.error_outline,
+                        size: AppIconSize.xxl,
+                      ),
                     ),
                   )
                 else
@@ -645,24 +648,39 @@ class SenderCompleteScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(l10n.transferComplete),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.check_circle,
-              size: AppIconSize.huge,
-              color: colorScheme.primary,
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: AppSpacing.screenPadding,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.check_circle_rounded,
+                  size: AppIconSize.huge,
+                  color: colorScheme.primary,
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                Text(
+                  l10n.fileSentSuccessfully,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppSpacing.xxxl),
+                FilledButton.icon(
+                  onPressed: () =>
+                      Navigator.of(context).popUntil((route) => route.isFirst),
+                  icon: const Icon(Icons.home_rounded),
+                  label: Text(l10n.done),
+                  style: FilledButton.styleFrom(
+                    padding: AppSpacing.buttonPaddingVertical,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: AppSpacing.lg),
-            Text(l10n.fileSentSuccessfully),
-            const SizedBox(height: AppSpacing.xxl),
-            FilledButton(
-              onPressed: () =>
-                  Navigator.of(context).popUntil((route) => route.isFirst),
-              child: Text(l10n.done),
-            ),
-          ],
+          ),
         ),
       ),
     );

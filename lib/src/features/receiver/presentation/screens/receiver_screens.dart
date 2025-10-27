@@ -441,14 +441,13 @@ class _ReceiverAcceptScreenState extends ConsumerState<ReceiverAcceptScreen> {
                       // Instructions
                       Text(
                         l10n.acceptFilePrompt,
-                        style: theme.textTheme.titleLarge,
+                        style: theme.textTheme.titleMedium,
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: AppSpacing.xxl),
 
                       // File info card
                       Card(
-                        elevation: AppElevation.md,
                         child: Padding(
                           padding: AppSpacing.cardPaddingLarge,
                           child: Column(
@@ -472,8 +471,8 @@ class _ReceiverAcceptScreenState extends ConsumerState<ReceiverAcceptScreen> {
                                           fileName,
                                           style: theme.textTheme.titleLarge
                                               ?.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                                fontWeight: FontWeight.w600,
+                                              ),
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -485,9 +484,9 @@ class _ReceiverAcceptScreenState extends ConsumerState<ReceiverAcceptScreen> {
                                           ),
                                           style: theme.textTheme.bodyLarge
                                               ?.copyWith(
-                                            color:
-                                                colorScheme.onSurfaceVariant,
-                                          ),
+                                                color: colorScheme
+                                                    .onSurfaceVariant,
+                                              ),
                                         ),
                                       ],
                                     ),
@@ -518,8 +517,9 @@ class _ReceiverAcceptScreenState extends ConsumerState<ReceiverAcceptScreen> {
                                           l10n.errorFileTooLarge,
                                           style: theme.textTheme.bodySmall
                                               ?.copyWith(
-                                            color: colorScheme.onErrorContainer,
-                                          ),
+                                                color: colorScheme
+                                                    .onErrorContainer,
+                                              ),
                                         ),
                                       ),
                                     ],
@@ -542,10 +542,10 @@ class _ReceiverAcceptScreenState extends ConsumerState<ReceiverAcceptScreen> {
                                   Expanded(
                                     child: Text(
                                       l10n.homeInfoText,
-                                      style:
-                                          theme.textTheme.bodySmall?.copyWith(
-                                        color: colorScheme.onSurfaceVariant,
-                                      ),
+                                      style: theme.textTheme.bodySmall
+                                          ?.copyWith(
+                                            color: colorScheme.onSurfaceVariant,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -760,24 +760,39 @@ class ReceiverCompleteScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(l10n.transferComplete),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.check_circle,
-              size: AppIconSize.huge,
-              color: colorScheme.primary,
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: AppSpacing.screenPadding,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.check_circle_rounded,
+                  size: AppIconSize.huge,
+                  color: colorScheme.primary,
+                ),
+                const SizedBox(height: AppSpacing.xl),
+                Text(
+                  l10n.fileReceivedSuccessfully,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppSpacing.xxxl),
+                FilledButton.icon(
+                  onPressed: () =>
+                      Navigator.of(context).popUntil((route) => route.isFirst),
+                  icon: const Icon(Icons.home_rounded),
+                  label: Text(l10n.done),
+                  style: FilledButton.styleFrom(
+                    padding: AppSpacing.buttonPaddingVertical,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: AppSpacing.lg),
-            Text(l10n.fileReceivedSuccessfully),
-            const SizedBox(height: AppSpacing.xxl),
-            FilledButton(
-              onPressed: () =>
-                  Navigator.of(context).popUntil((route) => route.isFirst),
-              child: Text(l10n.done),
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -14,6 +14,83 @@ PeerLink is a privacy-focused P2P file transfer app (Flutter) using WebRTC for d
 
 Follow development phases in `.docs/development-plan.md`. Check off tasks as completed. Single `main` branch workflow with semantic versioning tags at phase completion.
 
+## 🎯 Code Quality Standards (MANDATORY)
+
+### File Size & Modularity
+- **NEVER exceed 300 lines per file** - Split into smaller, focused modules
+- **One screen per file** - Break multi-screen files into separate files
+- **Extract reusable components** - Create widgets in `lib/src/shared/widgets/`
+- **Use barrel files** - Export public APIs via feature barrel files
+
+### DRY Principle (Don't Repeat Yourself)
+- **Use shared widgets** from `lib/src/shared/widgets/`:
+  * `InfoCard` - Info messages with icon
+  * `FileInfoCard` - File display with name/size
+  * `InstructionText` - Page headers
+  * `LoadingButtonIcon` - Button loading indicators
+  * `SuccessScreen` - Success/completion template
+  * `TransferProgressWidget` - Transfer progress display
+- **No duplicate UI patterns** - If pattern appears 2+ times, extract to widget
+- **Reuse existing components** before creating new ones
+
+### Internationalization (i18n) - 100% Required
+- **ZERO hardcoded strings** - All user-facing text must use `l10n`
+- **Use ARB files** - Add strings to `intl_en.arb` first
+- **Format with placeholders** - Use `{parameter}` syntax in ARB
+- **Error messages** - Map through `ErrorMapper.mapError()` → localized
+- **Test localization** - Check for missing l10n keys before commit
+
+### UI Constants - Always Use
+- **Spacing**: `AppSpacing.{xs,sm,md,lg,xl,xxl,xxxl,huge}` - NEVER magic numbers
+- **Border Radius**: `AppRadius.borderRadius{Sm,Md,Lg,Xl}`
+- **Icon Sizes**: `AppIconSize.{xs,sm,md,lg,xl,xxl,huge,logo}`
+- **Dimensions**: `AppDimensions.*` for specific widget sizes
+- **Elevations**: `AppElevation.{none,sm,md,lg,xl}`
+- **Typography**: Use `theme.textTheme.*` - never hardcode font sizes
+
+### Consistent UI Patterns
+- **Instruction headers**: Use `InstructionText(l10n.somePrompt)`
+- **Info cards**: Use `InfoCard(text: l10n.someInfo)`
+- **File displays**: Use `FileInfoCard(fileName: ..., fileSize: ...)`
+- **Loading buttons**: Use `LoadingButtonIcon()` instead of inline SizedBox
+- **Button padding**: Use `AppSpacing.buttonPaddingVertical` or `buttonPaddingLarge`
+- **Screen padding**: Always wrap body in `SafeArea` + `Padding(padding: AppSpacing.screenPadding)`
+- **Card styling**: Use default Card elevation (no explicit elevation parameter)
+
+### Widget Naming Conventions
+- **Screens**: `{Feature}{Action}Screen` (e.g., `SenderCodeScreen`)
+- **Widgets**: `{Purpose}Widget` (e.g., `TransferProgressWidget`)
+- **Cards**: `{Content}Card` (e.g., `FileInfoCard`)
+- **Dialogs**: `{Purpose}Dialog` (e.g., `ConfirmTransferDialog`)
+
+### Code Organization
+```
+lib/src/features/{feature}/
+  presentation/
+    screens/
+      {feature}_{screen}_screen.dart  # One screen per file!
+    widgets/
+      {feature_specific}_widget.dart  # Feature-specific widgets
+    providers/
+      {feature}_providers.dart        # Riverpod providers
+```
+
+### Import Order (Enforced)
+1. Dart core libraries (`dart:*`)
+2. Flutter libraries (`package:flutter/*`)
+3. Third-party packages (`package:*`)
+4. Local imports (`package:peerlink/*`)
+5. Relative imports (`./*`) - avoid when possible
+
+### Before Every Commit - Checklist
+- [ ] No file exceeds 300 lines
+- [ ] No hardcoded strings (100% i18n)
+- [ ] No magic numbers (all use constants)
+- [ ] No duplicate UI patterns (extracted to widgets)
+- [ ] `flutter analyze` passes (zero issues)
+- [ ] All new strings added to ARB file
+- [ ] Barrel files updated if new public APIs added
+
 ## Architecture & Structure
 
 **Feature-first DDD**: Organize as `lib/src/features/{transfer,connection,settings,sender,receiver,home}/` with `domain/`, `data/`, `presentation/` subdirs. Each feature has a **barrel file** (e.g., `transfer.dart`) exporting public APIs only. Import via `import 'package:peerlink/src/features/transfer/transfer.dart';`. 
