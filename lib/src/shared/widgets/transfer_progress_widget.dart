@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peerlink/src/shared/localization/generated/l10n.dart';
 
 /// Reusable transfer progress widget for sender and receiver flows.
 ///
@@ -41,6 +42,7 @@ class TransferProgressWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final l10n = S.of(context);
 
     // Format percentage
     final percentageText = '${(progressPercentage * 100).toStringAsFixed(0)}%';
@@ -67,7 +69,7 @@ class TransferProgressWidget extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  isSending ? 'Sending file...' : 'Receiving file...',
+                  isSending ? l10n.sendingFile : l10n.receivingFile,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -141,7 +143,7 @@ class TransferProgressWidget extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: onCancel,
                   icon: const Icon(Icons.close_rounded),
-                  label: const Text('Cancel Transfer'),
+                  label: Text(l10n.cancelTransfer),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: colorScheme.error,
                     side: BorderSide(color: colorScheme.error),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peerlink/src/src.dart';
 
 /// UI utilities for displaying errors, snackbars, and dialogs.
 ///
@@ -17,6 +18,8 @@ class UiHelpers {
   }) {
     if (!context.mounted) return;
 
+    final l10n = S.of(context);
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -24,7 +27,7 @@ class UiHelpers {
         behavior: SnackBarBehavior.floating,
         duration: duration,
         action: SnackBarAction(
-          label: 'Dismiss',
+          label: l10n.dismiss,
           textColor: Theme.of(context).colorScheme.onError,
           onPressed: () {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -65,9 +68,11 @@ class UiHelpers {
     BuildContext context, {
     required String title,
     required String message,
-    String buttonText = 'OK',
+    String? buttonText,
   }) async {
     if (!context.mounted) return;
+
+    final l10n = S.of(context);
 
     return showDialog<void>(
       context: context,
@@ -82,7 +87,7 @@ class UiHelpers {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text(buttonText),
+            child: Text(buttonText ?? l10n.ok),
           ),
         ],
       ),
@@ -96,11 +101,13 @@ class UiHelpers {
     BuildContext context, {
     required String title,
     required String message,
-    String confirmText = 'Confirm',
-    String cancelText = 'Cancel',
+    String? confirmText,
+    String? cancelText,
     bool isDangerousAction = false,
   }) async {
     if (!context.mounted) return false;
+
+    final l10n = S.of(context);
 
     final result = await showDialog<bool>(
       context: context,
@@ -113,7 +120,7 @@ class UiHelpers {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text(cancelText),
+              child: Text(cancelText ?? l10n.cancel),
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
@@ -123,7 +130,7 @@ class UiHelpers {
                       foregroundColor: colorScheme.onError,
                     )
                   : null,
-              child: Text(confirmText),
+              child: Text(confirmText ?? l10n.confirm),
             ),
           ],
         );
@@ -138,9 +145,11 @@ class UiHelpers {
   /// Call Navigator.pop() to dismiss.
   static Future<void> showLoadingDialog(
     BuildContext context, {
-    String message = 'Please wait...',
+    String? message,
   }) async {
     if (!context.mounted) return;
+
+    final l10n = S.of(context);
 
     await showDialog<void>(
       context: context,
@@ -152,11 +161,29 @@ class UiHelpers {
             children: [
               const CircularProgressIndicator(),
               const SizedBox(width: 24),
-              Expanded(child: Text(message)),
+              Expanded(child: Text(message ?? l10n.pleaseWait)),
             ],
           ),
         ),
       ),
     );
+  }
+
+  /// Formats a file size in bytes to a human-readable string.
+  ///
+  /// Examples:
+  /// - 512 → "512 B"
+  /// - 1536 → "1.5 KB"
+  /// - 5242880 → "5.0 MB"
+  static String formatFileSize(BuildContext context, int bytes) {
+    final l10n = S.of(context);
+
+    if (bytes < 1024) {
+      return '$bytes ${l10n.unitBytes}';
+    } else if (bytes < 1024 * 1024) {
+      return '${(bytes / 1024).toStringAsFixed(1)} ${l10n.unitKilobytes}';
+    } else {
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} ${l10n.unitMegabytes}';
+    }
   }
 }

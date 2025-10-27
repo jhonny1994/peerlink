@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peerlink/src/src.dart';
 
 /// Placeholder screen for settings.
 ///
@@ -8,12 +9,14 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(l10n.settingsTitle),
       ),
-      body: const Center(
-        child: Text('Settings - Coming in Phase 7'),
+      body: Center(
+        child: Text(l10n.settingsComingSoon),
       ),
     );
   }

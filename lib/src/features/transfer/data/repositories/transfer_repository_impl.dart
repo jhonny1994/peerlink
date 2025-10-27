@@ -253,7 +253,8 @@ class TransferRepositoryImpl implements TransferRepository {
       if (!hashService.verifyHash(calculatedHash, metadata.hash)) {
         // Delete corrupted file
         await File(outputPath).delete();
-        throw Exception(ErrorMessages.getMessage(ErrorCode.sha256Mismatch));
+        // ErrorMapper will map this to errorFileVerificationFailed
+        throw Exception('SHA256 hash mismatch - file verification failed');
       }
 
       // Transfer complete

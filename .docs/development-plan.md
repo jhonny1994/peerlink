@@ -63,13 +63,13 @@
 - [x] Permission service for runtime permissions
 - [x] Navigation/routing setup (AppRoutes + AppNavigator)
 - [x] Placeholder screens for sender flow
+- [x] Implement sender file picker screen (use FilePickerService)
+- [x] Display 6-digit code + QR code
+- [x] "Copy Code" functionality
+- [x] Transfer progress screen (percentage + speed)
+- [x] Success/failure notifications
+- [x] Error handling UI (snackbars/dialogs)
 - [ ] Desktop drag-and-drop support
-- [ ] Implement sender file picker screen (use FilePickerService)
-- [ ] Display 6-digit code + QR code
-- [ ] "Copy Code" functionality
-- [ ] Transfer progress screen (percentage + speed)
-- [ ] Success/failure notifications
-- [ ] Error handling UI (snackbars/dialogs)
 - [ ] Commit and tag as `v0.6.0-sender`
 
 ## Phase 6: Receiver UI

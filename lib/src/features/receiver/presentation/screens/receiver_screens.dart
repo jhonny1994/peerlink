@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peerlink/src/src.dart';
 
 /// Placeholder screen for receiver code entry.
 class ReceiverCodeEntryScreen extends StatelessWidget {
@@ -6,12 +7,14 @@ class ReceiverCodeEntryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Enter Code'),
+        title: Text(l10n.enterCode),
       ),
-      body: const Center(
-        child: Text('Receiver Code Entry - Coming Soon'),
+      body: Center(
+        child: Text(l10n.receiverCodeEntryPlaceholder),
       ),
     );
   }
@@ -23,12 +26,14 @@ class ReceiverAcceptScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Accept File'),
+        title: Text(l10n.acceptFile),
       ),
-      body: const Center(
-        child: Text('Receiver Accept/Decline - Coming Soon'),
+      body: Center(
+        child: Text(l10n.receiverAcceptPlaceholder),
       ),
     );
   }
@@ -40,12 +45,14 @@ class ReceiverProgressScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Receiving File'),
+        title: Text(l10n.receivingFileTitle),
       ),
-      body: const Center(
-        child: Text('Receiver Progress - Coming Soon'),
+      body: Center(
+        child: Text(l10n.receiverProgressPlaceholder),
       ),
     );
   }
@@ -57,22 +64,29 @@ class ReceiverCompleteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Transfer Complete'),
+        title: Text(l10n.transferComplete),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.check_circle, size: 80, color: Colors.green),
+            Icon(
+              Icons.check_circle,
+              size: 80,
+              color: colorScheme.primary,
+            ),
             const SizedBox(height: 16),
-            const Text('File received successfully!'),
+            Text(l10n.fileReceivedSuccessfully),
             const SizedBox(height: 32),
             FilledButton(
               onPressed: () =>
                   Navigator.of(context).popUntil((route) => route.isFirst),
-              child: const Text('Done'),
+              child: Text(l10n.done),
             ),
           ],
         ),

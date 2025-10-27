@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:peerlink/src/core/routing/app_routes.dart';
+import 'package:peerlink/src/src.dart';
 
 /// Home screen with large Send and Receive buttons.
 ///
@@ -13,10 +13,11 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final l10n = S.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PeerLink'),
+        title: Text(l10n.homeTitle),
         centerTitle: true,
         actions: [
           IconButton(
@@ -24,7 +25,7 @@ class HomeScreen extends ConsumerWidget {
             onPressed: () async {
               await Navigator.of(context).pushNamed(AppRoutes.settings);
             },
-            tooltip: 'Settings',
+            tooltip: l10n.settings,
           ),
         ],
       ),
@@ -46,7 +47,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'PeerLink',
+                    l10n.appTitle,
                     style: theme.textTheme.headlineLarge?.copyWith(
                       color: colorScheme.primary,
                       fontWeight: FontWeight.bold,
@@ -55,7 +56,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Secure P2P file transfer',
+                    l10n.appTagline,
                     style: theme.textTheme.bodyLarge?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                     ),
@@ -71,9 +72,9 @@ class HomeScreen extends ConsumerWidget {
                       ).pushNamed(AppRoutes.senderFilePicker);
                     },
                     icon: const Icon(Icons.send_rounded, size: 28),
-                    label: const Text(
-                      'Send File',
-                      style: TextStyle(fontSize: 18),
+                    label: Text(
+                      l10n.sendFile,
+                      style: const TextStyle(fontSize: 18),
                     ),
                     style: FilledButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -95,9 +96,9 @@ class HomeScreen extends ConsumerWidget {
                       ).pushNamed(AppRoutes.receiverCodeEntry);
                     },
                     icon: const Icon(Icons.download_rounded, size: 28),
-                    label: const Text(
-                      'Receive File',
-                      style: TextStyle(fontSize: 18),
+                    label: Text(
+                      l10n.receiveFile,
+                      style: const TextStyle(fontSize: 18),
                     ),
                     style: FilledButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -113,8 +114,7 @@ class HomeScreen extends ConsumerWidget {
 
                   // Info text
                   Text(
-                    'Transfers are encrypted and peer-to-peer.\n'
-                    'No cloud storage. Max 100MB per file.',
+                    l10n.homeInfoText,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                     ),

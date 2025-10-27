@@ -40,7 +40,8 @@ class MainApp extends ConsumerWidget {
     final locale = ref.watch(localeProvider);
 
     return MaterialApp(
-      title: 'PeerLink',
+      // OS-level app identifier - uses constant from ARB
+      onGenerateTitle: (context) => S.of(context).appTitle,
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
       locale: locale,
