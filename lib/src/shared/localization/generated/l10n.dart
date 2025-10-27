@@ -249,6 +249,36 @@ class S {
     );
   }
 
+  /// `Drag and drop file here`
+  String get dragDropFile {
+    return Intl.message(
+      'Drag and drop file here',
+      name: 'dragDropFile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Drop file to select`
+  String get dropFileHere {
+    return Intl.message(
+      'Drop file to select',
+      name: 'dropFileHere',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `or click the button below to browse`
+  String get orClickToSelect {
+    return Intl.message(
+      'or click the button below to browse',
+      name: 'orClickToSelect',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `===== Receiver Flow =====`
   String get _comment_receiver {
     return Intl.message(

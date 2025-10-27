@@ -76,6 +76,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "copyCode": MessageLookupByLibrary.simpleMessage("Copy Code"),
     "dismiss": MessageLookupByLibrary.simpleMessage("Dismiss"),
     "done": MessageLookupByLibrary.simpleMessage("Done"),
+    "dragDropFile": MessageLookupByLibrary.simpleMessage(
+      "Drag and drop file here",
+    ),
+    "dropFileHere": MessageLookupByLibrary.simpleMessage("Drop file to select"),
     "enterCode": MessageLookupByLibrary.simpleMessage("Enter Code"),
     "enterCodePrompt": MessageLookupByLibrary.simpleMessage(
       "Enter the 6-digit code from sender",
@@ -158,6 +162,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "or": MessageLookupByLibrary.simpleMessage("OR"),
+    "orClickToSelect": MessageLookupByLibrary.simpleMessage(
+      "or click the button below to browse",
+    ),
     "pleaseWait": MessageLookupByLibrary.simpleMessage("Please wait..."),
     "receiveFile": MessageLookupByLibrary.simpleMessage("Receive File"),
     "receiverAcceptPlaceholder": MessageLookupByLibrary.simpleMessage(
