@@ -74,6 +74,7 @@ class MainApp extends ConsumerWidget {
         // Receiver routes
         AppRoutes.receiverCodeEntry: (context) =>
             const ReceiverCodeEntryScreen(),
+        AppRoutes.qrScanner: (context) => const QrScannerScreen(),
         AppRoutes.receiverAccept: (context) => const ReceiverAcceptScreen(),
         AppRoutes.receiverProgress: (context) => const ReceiverProgressScreen(),
         AppRoutes.receiverComplete: (context) => const ReceiverCompleteScreen(),

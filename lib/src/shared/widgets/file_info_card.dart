@@ -46,14 +46,15 @@ class FileInfoCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     fileName,
-                    style: (highlighted
-                            ? theme.textTheme.titleMedium?.copyWith(
-                                color: colorScheme.onPrimaryContainer,
-                              )
-                            : theme.textTheme.titleSmall)
-                        ?.copyWith(
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    style:
+                        (highlighted
+                                ? theme.textTheme.titleMedium?.copyWith(
+                                    color: colorScheme.onPrimaryContainer,
+                                  )
+                                : theme.textTheme.titleSmall)
+                            ?.copyWith(
+                              overflow: TextOverflow.ellipsis,
+                            ),
                     maxLines: 2,
                   ),
                 ),
@@ -62,15 +63,17 @@ class FileInfoCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             Text(
               UiHelpers.formatFileSize(context, fileSize),
-              style: (highlighted
-                      ? theme.textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.onPrimaryContainer
-                              .withValues(alpha: 0.8),
-                        )
-                      : theme.textTheme.bodySmall)
-                  ?.copyWith(
-                overflow: TextOverflow.ellipsis,
-              ),
+              style:
+                  (highlighted
+                          ? theme.textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onPrimaryContainer.withValues(
+                                alpha: 0.8,
+                              ),
+                            )
+                          : theme.textTheme.bodySmall)
+                      ?.copyWith(
+                        overflow: TextOverflow.ellipsis,
+                      ),
             ),
           ],
         ),

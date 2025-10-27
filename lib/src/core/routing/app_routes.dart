@@ -17,6 +17,7 @@ class AppRoutes {
 
   // Receiver flow
   static const String receiverCodeEntry = '/receiver/code-entry';
+  static const String qrScanner = '/receiver/qr-scanner';
   static const String receiverAccept = '/receiver/accept';
   static const String receiverProgress = '/receiver/progress';
   static const String receiverComplete = '/receiver/complete';
