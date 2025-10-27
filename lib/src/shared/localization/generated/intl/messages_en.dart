@@ -81,6 +81,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "errorCameraPermission": MessageLookupByLibrary.simpleMessage(
       "Camera permission is required to scan QR codes. Please grant permission in settings.",
     ),
+    "errorCameraPermissionDenied": MessageLookupByLibrary.simpleMessage(
+      "Camera permission is required to scan QR codes",
+    ),
+    "errorCameraPermissionPermanentlyDenied": MessageLookupByLibrary.simpleMessage(
+      "Camera permission permanently denied. Please enable it in device settings.",
+    ),
+    "errorCodeInvalid": MessageLookupByLibrary.simpleMessage(
+      "Code must be exactly 6 digits",
+    ),
+    "errorCodeRequired": MessageLookupByLibrary.simpleMessage(
+      "Please enter the 6-digit code",
+    ),
     "errorConnectionTimeout": MessageLookupByLibrary.simpleMessage(
       "Connection timed out. Please check your network and try again.",
     ),
@@ -142,6 +154,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "language": MessageLookupByLibrary.simpleMessage("Language"),
     "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
+    "or": MessageLookupByLibrary.simpleMessage("OR"),
     "pleaseWait": MessageLookupByLibrary.simpleMessage("Please wait..."),
     "receiveFile": MessageLookupByLibrary.simpleMessage("Receive File"),
     "receiverAcceptPlaceholder": MessageLookupByLibrary.simpleMessage(
@@ -159,6 +172,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),
     "scanQrCode": MessageLookupByLibrary.simpleMessage("Scan QR Code"),
+    "scanQrCodePrompt": MessageLookupByLibrary.simpleMessage(
+      "Point camera at the QR code shown by sender",
+    ),
     "selectFile": MessageLookupByLibrary.simpleMessage("Select File"),
     "sendFile": MessageLookupByLibrary.simpleMessage("Send File"),
     "senderCodePlaceholder": MessageLookupByLibrary.simpleMessage(

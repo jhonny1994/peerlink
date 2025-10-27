@@ -304,6 +304,21 @@ class S {
     return Intl.message('Scan QR Code', name: 'scanQrCode', desc: '', args: []);
   }
 
+  /// `Point camera at the QR code shown by sender`
+  String get scanQrCodePrompt {
+    return Intl.message(
+      'Point camera at the QR code shown by sender',
+      name: 'scanQrCodePrompt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OR`
+  String get or {
+    return Intl.message('OR', name: 'or', desc: '', args: []);
+  }
+
   /// `Accept this file?`
   String get acceptFilePrompt {
     return Intl.message(
@@ -409,6 +424,46 @@ class S {
     return Intl.message(
       'File is larger than the 100MB limit.',
       name: 'errorFileTooLarge',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter the 6-digit code`
+  String get errorCodeRequired {
+    return Intl.message(
+      'Please enter the 6-digit code',
+      name: 'errorCodeRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Code must be exactly 6 digits`
+  String get errorCodeInvalid {
+    return Intl.message(
+      'Code must be exactly 6 digits',
+      name: 'errorCodeInvalid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Camera permission is required to scan QR codes`
+  String get errorCameraPermissionDenied {
+    return Intl.message(
+      'Camera permission is required to scan QR codes',
+      name: 'errorCameraPermissionDenied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Camera permission permanently denied. Please enable it in device settings.`
+  String get errorCameraPermissionPermanentlyDenied {
+    return Intl.message(
+      'Camera permission permanently denied. Please enable it in device settings.',
+      name: 'errorCameraPermissionPermanentlyDenied',
       desc: '',
       args: [],
     );
