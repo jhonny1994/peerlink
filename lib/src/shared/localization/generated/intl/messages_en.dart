@@ -60,10 +60,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "acceptFilePrompt": MessageLookupByLibrary.simpleMessage(
       "Accept this file?",
     ),
+    "appName": MessageLookupByLibrary.simpleMessage("PeerLink"),
     "appTagline": MessageLookupByLibrary.simpleMessage(
       "Secure P2P file transfer",
     ),
     "appTitle": MessageLookupByLibrary.simpleMessage("PeerLink"),
+    "appearance": MessageLookupByLibrary.simpleMessage("Appearance"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "cancelTransfer": MessageLookupByLibrary.simpleMessage("Cancel Transfer"),
     "codeCopied": MessageLookupByLibrary.simpleMessage(
@@ -152,6 +154,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "homeTitle": MessageLookupByLibrary.simpleMessage("PeerLink"),
     "language": MessageLookupByLibrary.simpleMessage("Language"),
+    "licenses": MessageLookupByLibrary.simpleMessage("Open Source Licenses"),
     "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "or": MessageLookupByLibrary.simpleMessage("OR"),
@@ -192,12 +195,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "settingsComingSoon": MessageLookupByLibrary.simpleMessage(
       "Settings - Coming in Phase 7",
     ),
+    "settingsInfo": MessageLookupByLibrary.simpleMessage(
+      "Customize your PeerLink experience with theme and display preferences.",
+    ),
     "settingsTitle": MessageLookupByLibrary.simpleMessage("Settings"),
     "shareCode": MessageLookupByLibrary.simpleMessage("Share Code"),
     "shareThisCode": MessageLookupByLibrary.simpleMessage(
       "Share this code with the receiver",
     ),
     "theme": MessageLookupByLibrary.simpleMessage("Theme"),
+    "themeDark": MessageLookupByLibrary.simpleMessage("Dark Theme"),
+    "themeDarkDesc": MessageLookupByLibrary.simpleMessage("Use dark theme"),
+    "themeLight": MessageLookupByLibrary.simpleMessage("Light Theme"),
+    "themeLightDesc": MessageLookupByLibrary.simpleMessage("Use light theme"),
+    "themeSystem": MessageLookupByLibrary.simpleMessage("System Default"),
+    "themeSystemDesc": MessageLookupByLibrary.simpleMessage(
+      "Follow system theme",
+    ),
     "transferComplete": MessageLookupByLibrary.simpleMessage(
       "Transfer Complete",
     ),

@@ -354,6 +354,91 @@ class S {
     );
   }
 
+  /// `Customize your PeerLink experience with theme and display preferences.`
+  String get settingsInfo {
+    return Intl.message(
+      'Customize your PeerLink experience with theme and display preferences.',
+      name: 'settingsInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Appearance`
+  String get appearance {
+    return Intl.message('Appearance', name: 'appearance', desc: '', args: []);
+  }
+
+  /// `Light Theme`
+  String get themeLight {
+    return Intl.message('Light Theme', name: 'themeLight', desc: '', args: []);
+  }
+
+  /// `Use light theme`
+  String get themeLightDesc {
+    return Intl.message(
+      'Use light theme',
+      name: 'themeLightDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark Theme`
+  String get themeDark {
+    return Intl.message('Dark Theme', name: 'themeDark', desc: '', args: []);
+  }
+
+  /// `Use dark theme`
+  String get themeDarkDesc {
+    return Intl.message(
+      'Use dark theme',
+      name: 'themeDarkDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `System Default`
+  String get themeSystem {
+    return Intl.message(
+      'System Default',
+      name: 'themeSystem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Follow system theme`
+  String get themeSystemDesc {
+    return Intl.message(
+      'Follow system theme',
+      name: 'themeSystemDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `About`
+  String get about {
+    return Intl.message('About', name: 'about', desc: '', args: []);
+  }
+
+  /// `PeerLink`
+  String get appName {
+    return Intl.message('PeerLink', name: 'appName', desc: '', args: []);
+  }
+
+  /// `Open Source Licenses`
+  String get licenses {
+    return Intl.message(
+      'Open Source Licenses',
+      name: 'licenses',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Theme`
   String get theme {
     return Intl.message('Theme', name: 'theme', desc: '', args: []);
@@ -362,11 +447,6 @@ class S {
   /// `Language`
   String get language {
     return Intl.message('Language', name: 'language', desc: '', args: []);
-  }
-
-  /// `About`
-  String get about {
-    return Intl.message('About', name: 'about', desc: '', args: []);
   }
 
   /// `===== Common Actions =====`
