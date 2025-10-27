@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peerlink/src/core/constants/ui_constants.dart';
 import 'package:peerlink/src/shared/localization/generated/l10n.dart';
 
 /// Reusable transfer progress widget for sender and receiver flows.
@@ -51,10 +52,10 @@ class TransferProgressWidget extends StatelessWidget {
     final speedText = '${transferSpeedMbps.toStringAsFixed(1)} MB/s';
 
     return Card(
-      elevation: 0,
+      elevation: AppElevation.none,
       color: colorScheme.surfaceContainerHighest,
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: AppSpacing.cardPaddingLarge,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,10 +65,10 @@ class TransferProgressWidget extends StatelessWidget {
               children: [
                 Icon(
                   isSending ? Icons.upload_rounded : Icons.download_rounded,
-                  size: 32,
+                  size: AppIconSize.xl,
                   color: colorScheme.primary,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.md),
                 Text(
                   isSending ? l10n.sendingFile : l10n.receivingFile,
                   style: theme.textTheme.titleLarge?.copyWith(
@@ -76,7 +77,7 @@ class TransferProgressWidget extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.xl),
 
             // File name
             Text(
@@ -87,21 +88,21 @@ class TransferProgressWidget extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
 
             // Progress indicator
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: AppRadius.borderRadiusSm,
               child: LinearProgressIndicator(
                 value: progressPercentage,
-                minHeight: 8,
+                minHeight: AppDimensions.progressBarHeight,
                 backgroundColor: colorScheme.surfaceContainerHigh,
                 valueColor: AlwaysStoppedAnimation<Color>(
                   colorScheme.primary,
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
 
             // Stats row: Percentage + Speed
             Row(
@@ -120,10 +121,10 @@ class TransferProgressWidget extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.speed_rounded,
-                      size: 16,
+                      size: AppIconSize.xs,
                       color: colorScheme.onSurfaceVariant,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppSpacing.xs),
                     Text(
                       speedText,
                       style: theme.textTheme.bodyMedium?.copyWith(
@@ -137,7 +138,7 @@ class TransferProgressWidget extends StatelessWidget {
 
             // Cancel button (if callback provided)
             if (onCancel != null) ...[
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSpacing.xl),
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(

@@ -32,9 +32,11 @@ class HomeScreen extends ConsumerWidget {
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: AppSpacing.screenPadding,
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500),
+              constraints: const BoxConstraints(
+                maxWidth: AppDimensions.contentMaxWidth,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -42,10 +44,10 @@ class HomeScreen extends ConsumerWidget {
                   // App logo placeholder
                   Icon(
                     Icons.swap_horiz_rounded,
-                    size: 120,
+                    size: AppIconSize.logo,
                     color: colorScheme.primary,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.lg),
                   Text(
                     l10n.appTitle,
                     style: theme.textTheme.headlineLarge?.copyWith(
@@ -54,7 +56,7 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   Text(
                     l10n.appTagline,
                     style: theme.textTheme.bodyLarge?.copyWith(
@@ -62,7 +64,7 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 64),
+                  const SizedBox(height: AppSpacing.huge),
 
                   // Send button
                   FilledButton.icon(
@@ -71,22 +73,22 @@ class HomeScreen extends ConsumerWidget {
                         context,
                       ).pushNamed(AppRoutes.senderFilePicker);
                     },
-                    icon: const Icon(Icons.send_rounded, size: 28),
+                    icon: const Icon(
+                      Icons.send_rounded,
+                      size: AppIconSize.lg,
+                    ),
                     label: Text(
                       l10n.sendFile,
-                      style: const TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: AppFontSize.lg),
                     ),
                     style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 32,
-                        vertical: 20,
-                      ),
+                      padding: AppSpacing.buttonPaddingLarge,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: AppRadius.borderRadiusLg,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.lg),
 
                   // Receive button
                   FilledButton.tonalIcon(
@@ -95,22 +97,22 @@ class HomeScreen extends ConsumerWidget {
                         context,
                       ).pushNamed(AppRoutes.receiverCodeEntry);
                     },
-                    icon: const Icon(Icons.download_rounded, size: 28),
+                    icon: const Icon(
+                      Icons.download_rounded,
+                      size: AppIconSize.lg,
+                    ),
                     label: Text(
                       l10n.receiveFile,
-                      style: const TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: AppFontSize.lg),
                     ),
                     style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 32,
-                        vertical: 20,
-                      ),
+                      padding: AppSpacing.buttonPaddingLarge,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: AppRadius.borderRadiusLg,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: AppSpacing.xxxl),
 
                   // Info text
                   Text(

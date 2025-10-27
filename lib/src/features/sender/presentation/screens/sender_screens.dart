@@ -98,21 +98,21 @@ class _SenderFilePickerScreenState
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: AppSpacing.screenPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // Info card
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: AppSpacing.cardPadding,
                   child: Row(
                     children: [
                       Icon(
                         Icons.info_outline,
                         color: colorScheme.primary,
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppSpacing.md),
                       Expanded(
                         child: Text(
                           l10n.homeInfoText,
@@ -123,14 +123,14 @@ class _SenderFilePickerScreenState
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppSpacing.xxl),
 
               // Selected file display
               if (_selectedFile != null) ...[
                 Card(
                   color: colorScheme.primaryContainer,
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: AppSpacing.cardPadding,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -140,7 +140,7 @@ class _SenderFilePickerScreenState
                               Icons.insert_drive_file_rounded,
                               color: colorScheme.onPrimaryContainer,
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: AppSpacing.md),
                             Expanded(
                               child: Text(
                                 _selectedFile!.uri.pathSegments.last,
@@ -153,7 +153,7 @@ class _SenderFilePickerScreenState
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppSpacing.sm),
                         FutureBuilder<int>(
                           future: _selectedFile!.length(),
                           builder: (context, snapshot) {
@@ -176,7 +176,7 @@ class _SenderFilePickerScreenState
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.xl),
               ],
 
               const Spacer(),
@@ -186,19 +186,22 @@ class _SenderFilePickerScreenState
                 onPressed: _isLoading ? null : _pickFile,
                 icon: _isLoading
                     ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                        width: AppDimensions.loadingIndicatorSmall,
+                        height: AppDimensions.loadingIndicatorSmall,
+                        child: CircularProgressIndicator(
+                          strokeWidth:
+                              AppDimensions.loadingIndicatorStrokeWidth,
+                        ),
                       )
                     : const Icon(Icons.folder_open_rounded),
                 label: Text(
                   _selectedFile == null ? l10n.selectFile : l10n.selectFile,
                 ),
                 style: FilledButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: AppSpacing.buttonPaddingVertical,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
 
               // Continue button (only shown when file selected)
               if (_selectedFile != null)
@@ -207,7 +210,7 @@ class _SenderFilePickerScreenState
                   icon: const Icon(Icons.arrow_forward_rounded),
                   label: Text(l10n.confirm),
                   style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: AppSpacing.buttonPaddingVertical,
                   ),
                 ),
             ],
@@ -334,7 +337,7 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
           ? const Center(child: CircularProgressIndicator())
           : SafeArea(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
+                padding: AppSpacing.screenPadding,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -344,14 +347,14 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
                       style: theme.textTheme.titleMedium,
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppSpacing.xxl),
 
                     // 6-digit code display
                     Container(
-                      padding: const EdgeInsets.all(24),
+                      padding: AppSpacing.cardPaddingLarge,
                       decoration: BoxDecoration(
                         color: colorScheme.primaryContainer,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: AppRadius.borderRadiusLg,
                       ),
                       child: Column(
                         children: [
@@ -360,10 +363,10 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
                             style: theme.textTheme.displayLarge?.copyWith(
                               color: colorScheme.onPrimaryContainer,
                               fontWeight: FontWeight.bold,
-                              letterSpacing: 8,
+                              letterSpacing: AppDimensions.codeLetterSpacing,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppSpacing.lg),
                           FilledButton.tonalIcon(
                             onPressed: _copyCodeToClipboard,
                             icon: const Icon(Icons.copy_rounded),
@@ -372,41 +375,42 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppSpacing.xxl),
 
                     // QR Code
                     if (_sessionId != null) ...[
                       Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: AppSpacing.cardPadding,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: AppRadius.borderRadiusLg,
                         ),
                         child: QrImageView(
                           data: _sessionId!,
-                          size: 200,
+                          size: AppDimensions.qrCodeSize,
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: AppSpacing.xxl),
                     ],
 
                     // Waiting status
                     Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: AppSpacing.cardPadding,
                         child: Row(
                           children: [
                             SizedBox(
-                              width: 20,
-                              height: 20,
+                              width: AppDimensions.loadingIndicatorSmall,
+                              height: AppDimensions.loadingIndicatorSmall,
                               child: CircularProgressIndicator(
-                                strokeWidth: 2,
+                                strokeWidth:
+                                    AppDimensions.loadingIndicatorStrokeWidth,
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                   colorScheme.primary,
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            const SizedBox(width: AppSpacing.lg),
                             Expanded(
                               child: Text(
                                 l10n.waitingForReceiver,
@@ -418,13 +422,13 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.lg),
 
                     // File info
                     if (_file != null)
                       Card(
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: AppSpacing.cardPadding,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -434,7 +438,7 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
                                     Icons.insert_drive_file_rounded,
                                     color: colorScheme.primary,
                                   ),
-                                  const SizedBox(width: 12),
+                                  const SizedBox(width: AppSpacing.md),
                                   Expanded(
                                     child: Text(
                                       _file!.uri.pathSegments.last,
@@ -445,7 +449,7 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: AppSpacing.sm),
                               FutureBuilder<int>(
                                 future: _file!.length(),
                                 builder: (context, snapshot) {
@@ -593,7 +597,7 @@ class _SenderProgressScreenState extends ConsumerState<SenderProgressScreen> {
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: AppSpacing.screenPadding,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -647,12 +651,12 @@ class SenderCompleteScreen extends StatelessWidget {
           children: [
             Icon(
               Icons.check_circle,
-              size: 80,
+              size: AppIconSize.huge,
               color: colorScheme.primary,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Text(l10n.fileSentSuccessfully),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xxl),
             FilledButton(
               onPressed: () =>
                   Navigator.of(context).popUntil((route) => route.isFirst),

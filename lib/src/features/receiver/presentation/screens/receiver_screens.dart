@@ -77,12 +77,12 @@ class ReceiverCompleteScreen extends StatelessWidget {
           children: [
             Icon(
               Icons.check_circle,
-              size: 80,
+              size: AppIconSize.huge,
               color: colorScheme.primary,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.lg),
             Text(l10n.fileReceivedSuccessfully),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xxl),
             FilledButton(
               onPressed: () =>
                   Navigator.of(context).popUntil((route) => route.isFirst),
