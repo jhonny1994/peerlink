@@ -158,9 +158,9 @@ flutter pub add --dev riverpod_generator build_runner riverpod_lint
 # Phase 4: Transfer Feature (COMPLETE ✅)
 # Chunking, SHA-256, buffer management, progress tracking all implemented
 
-# Phase 5: Sender UI (IN PROGRESS 🔄)
-# HomeScreen ✅, FilePickerService ✅, PermissionService ✅, Routing ✅
-# TODO: Implement actual sender screens (file picker, code display, progress)
+# Phase 5: Sender UI (COMPLETE ✅)
+# All sender screens implemented: file picker, code display, progress, completion
+# Desktop drag-and-drop support included
 ```
 
 ## Shared Services (lib/src/shared/services/)

@@ -23,7 +23,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        // Application ID for PeerLink
         applicationId = "com.carbodex.peerlink"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
@@ -35,8 +35,8 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // Note: Signing with debug keys for development.
+            // For production release, configure proper signing in release build.
             signingConfig = signingConfigs.getByName("debug")
         }
     }
