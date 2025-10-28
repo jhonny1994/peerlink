@@ -52,7 +52,7 @@ class UiHelpers {
         content: Row(
           children: [
             Icon(Icons.check_circle_rounded, color: colorScheme.onPrimary),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppSpacing.md),
             Expanded(child: Text(message)),
           ],
         ),
@@ -80,7 +80,7 @@ class UiHelpers {
         icon: Icon(
           Icons.error_outline_rounded,
           color: Theme.of(context).colorScheme.error,
-          size: 48,
+          size: AppIconSize.xxl,
         ),
         title: Text(title),
         content: Text(message),
@@ -160,7 +160,7 @@ class UiHelpers {
           content: Row(
             children: [
               const CircularProgressIndicator(),
-              const SizedBox(width: 24),
+              const SizedBox(width: AppSpacing.xl),
               Expanded(child: Text(message ?? l10n.pleaseWait)),
             ],
           ),
