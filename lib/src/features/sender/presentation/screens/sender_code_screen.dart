@@ -116,11 +116,28 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
       }
     });
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.shareCode),
-      ),
-      body: _isInitializing
+    return Shortcuts(
+      shortcuts: AppKeyboardShortcuts.shortcuts,
+      child: Actions(
+        actions: {
+          CopyCodeIntent: CallbackAction<CopyCodeIntent>(
+            onInvoke: (_) {
+              _copyCodeToClipboard();
+              return null;
+            },
+          ),
+          CancelIntent: CallbackAction<CancelIntent>(
+            onInvoke: (_) {
+              Navigator.of(context).pop();
+              return null;
+            },
+          ),
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(l10n.shareCode),
+          ),
+          body: _isInitializing
           ? const Center(child: CircularProgressIndicator())
           : SafeArea(
               child: SingleChildScrollView(
@@ -215,6 +232,8 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
                 ),
               ),
             ),
+        ),
+      ),
     );
   }
 }

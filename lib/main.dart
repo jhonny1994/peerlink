@@ -21,6 +21,9 @@ void main() async {
   // Initialize SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
 
+  // Initialize keyboard shortcuts for mobile
+  await AppKeyboardShortcuts.initializeMobileShortcuts();
+
   runApp(
     ProviderScope(
       overrides: [

@@ -260,24 +260,43 @@ class _SenderFilePickerScreenState
       ),
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.selectFile),
+    return Shortcuts(
+      shortcuts: AppKeyboardShortcuts.shortcuts,
+      child: Actions(
+        actions: {
+          SelectFileIntent: CallbackAction<SelectFileIntent>(
+            onInvoke: (_) async {
+              if (!_isLoading) await _pickFile();
+              return null;
+            },
+          ),
+          CancelIntent: CallbackAction<CancelIntent>(
+            onInvoke: (_) {
+              Navigator.of(context).pop();
+              return null;
+            },
+          ),
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(l10n.selectFile),
+          ),
+          body: _isDesktop
+              ? DropTarget(
+                  onDragEntered: (_) => setState(() => _isDragging = true),
+                  onDragExited: (_) => setState(() => _isDragging = false),
+                  onDragDone: (details) async {
+                    setState(() => _isDragging = false);
+                    if (details.files.isNotEmpty) {
+                      final file = File(details.files.first.path);
+                      await _handleDroppedFile(file);
+                    }
+                  },
+                  child: body,
+                )
+              : body,
+        ),
       ),
-      body: _isDesktop
-          ? DropTarget(
-              onDragEntered: (_) => setState(() => _isDragging = true),
-              onDragExited: (_) => setState(() => _isDragging = false),
-              onDragDone: (details) async {
-                setState(() => _isDragging = false);
-                if (details.files.isNotEmpty) {
-                  final file = File(details.files.first.path);
-                  await _handleDroppedFile(file);
-                }
-              },
-              child: body,
-            )
-          : body,
     );
   }
 }
