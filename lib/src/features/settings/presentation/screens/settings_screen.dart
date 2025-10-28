@@ -12,6 +12,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = S.of(context);
     final themeMode = ref.watch(themeModeProvider);
+    final locale = ref.watch(localeProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -63,6 +64,66 @@ class SettingsScreen extends ConsumerWidget {
                     onTap: () => ref
                         .read(themeModeProvider.notifier)
                         .setThemeMode(ThemeMode.system),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xxl),
+
+            // Language Section
+            _SectionHeader(l10n.language),
+            Card(
+              child: Column(
+                children: [
+                  _LanguageTile(
+                    title: l10n.languageSystem,
+                    subtitle: l10n.languageSystemDesc,
+                    icon: Icons.language_rounded,
+                    isSelected: locale == null,
+                    onTap: () =>
+                        ref.read(localeProvider.notifier).setLocale(null),
+                  ),
+                  const Divider(
+                    height: 1,
+                    indent: AppSpacing.md,
+                    endIndent: AppSpacing.md,
+                  ),
+                  _LanguageTile(
+                    title: l10n.languageEnglish,
+                    subtitle: 'English',
+                    icon: Icons.language_rounded,
+                    isSelected: locale?.languageCode == 'en',
+                    onTap: () => ref
+                        .read(localeProvider.notifier)
+                        .setLocale(const Locale('en')),
+                  ),
+                  const Divider(
+                    height: 1,
+                    indent: AppSpacing.md,
+                    endIndent: AppSpacing.md,
+                  ),
+                  _LanguageTile(
+                    title: l10n.languageFrench,
+                    subtitle: 'Français',
+                    icon: Icons.language_rounded,
+                    isSelected: locale?.languageCode == 'fr',
+                    onTap: () => ref
+                        .read(localeProvider.notifier)
+                        .setLocale(const Locale('fr')),
+                  ),
+                  const Divider(
+                    height: 1,
+                    indent: AppSpacing.md,
+                    endIndent: AppSpacing.md,
+                  ),
+                  _LanguageTile(
+                    title: l10n.languageArabic,
+                    subtitle: 'العربية',
+                    icon: Icons.language_rounded,
+                    isSelected: locale?.languageCode == 'ar',
+                    onTap: () => ref
+                        .read(localeProvider.notifier)
+                        .setLocale(const Locale('ar')),
                   ),
                 ],
               ),
@@ -140,6 +201,50 @@ class _SectionHeader extends StatelessWidget {
 /// Theme selection tile widget.
 class _ThemeTile extends StatelessWidget {
   const _ThemeTile({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: isSelected ? colorScheme.primary : null,
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+          color: isSelected ? colorScheme.primary : null,
+        ),
+      ),
+      subtitle: Text(subtitle),
+      trailing: isSelected
+          ? Icon(
+              Icons.check_circle_rounded,
+              color: colorScheme.primary,
+            )
+          : null,
+      onTap: onTap,
+    );
+  }
+}
+
+/// Language selection tile widget.
+class _LanguageTile extends StatelessWidget {
+  const _LanguageTile({
     required this.title,
     required this.subtitle,
     required this.icon,

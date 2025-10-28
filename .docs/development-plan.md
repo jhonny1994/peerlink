@@ -90,7 +90,7 @@
 - [x] **Settings Feature** - Settings screen placeholder
 - [x] Settings route and navigation wiring
 - [x] Implement theme switcher UI (light/dark/system) using themeModeProvider
-- [ ] Language selector UI (optional - if adding in-app selector) using localeProvider
+- [x] Language selector UI (optional - if adding in-app selector) using localeProvider
 - [x] Settings persistence (already handled by providers)
 - [x] About section (app version, licenses)
 - [x] Commit and tag as `v0.8.0-settings`

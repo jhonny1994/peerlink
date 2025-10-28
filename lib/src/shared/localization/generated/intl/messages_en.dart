@@ -34,6 +34,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "_comment_home": MessageLookupByLibrary.simpleMessage(
       "===== Home Screen =====",
     ),
+    "_comment_language": MessageLookupByLibrary.simpleMessage(
+      "===== Language Settings =====",
+    ),
     "_comment_loading": MessageLookupByLibrary.simpleMessage(
       "===== Loading States =====",
     ),
@@ -158,6 +161,13 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "homeTitle": MessageLookupByLibrary.simpleMessage("PeerLink"),
     "language": MessageLookupByLibrary.simpleMessage("Language"),
+    "languageArabic": MessageLookupByLibrary.simpleMessage("العربية"),
+    "languageEnglish": MessageLookupByLibrary.simpleMessage("English"),
+    "languageFrench": MessageLookupByLibrary.simpleMessage("Français"),
+    "languageSystem": MessageLookupByLibrary.simpleMessage("System Default"),
+    "languageSystemDesc": MessageLookupByLibrary.simpleMessage(
+      "Follow device language",
+    ),
     "licenses": MessageLookupByLibrary.simpleMessage("Open Source Licenses"),
     "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),

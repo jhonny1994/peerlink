@@ -863,6 +863,51 @@ class S {
   String get loading {
     return Intl.message('Loading...', name: 'loading', desc: '', args: []);
   }
+
+  /// `===== Language Settings =====`
+  String get _comment_language {
+    return Intl.message(
+      '===== Language Settings =====',
+      name: '_comment_language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `English`
+  String get languageEnglish {
+    return Intl.message('English', name: 'languageEnglish', desc: '', args: []);
+  }
+
+  /// `Français`
+  String get languageFrench {
+    return Intl.message('Français', name: 'languageFrench', desc: '', args: []);
+  }
+
+  /// `العربية`
+  String get languageArabic {
+    return Intl.message('العربية', name: 'languageArabic', desc: '', args: []);
+  }
+
+  /// `System Default`
+  String get languageSystem {
+    return Intl.message(
+      'System Default',
+      name: 'languageSystem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Follow device language`
+  String get languageSystemDesc {
+    return Intl.message(
+      'Follow device language',
+      name: 'languageSystemDesc',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

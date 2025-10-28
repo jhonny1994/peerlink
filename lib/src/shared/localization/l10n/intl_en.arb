@@ -95,5 +95,11 @@
     "receiverProgressPlaceholder": "Receiver Progress - Coming Soon",
     "_comment_loading": "===== Loading States =====",
     "pleaseWait": "Please wait...",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "_comment_language": "===== Language Settings =====",
+    "languageEnglish": "English",
+    "languageFrench": "Français",
+    "languageArabic": "العربية",
+    "languageSystem": "System Default",
+    "languageSystemDesc": "Follow device language"
 }
