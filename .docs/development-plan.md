@@ -69,39 +69,40 @@
 - [x] Transfer progress screen (percentage + speed)
 - [x] Success/failure notifications
 - [x] Error handling UI (snackbars/dialogs)
-- [ ] Desktop drag-and-drop support
+- [x] Desktop drag-and-drop support
 - [x] Commit and tag as `v0.6.0-sender`
 
-## Phase 6: Receiver UI
+## Phase 6: Receiver UI ✅
 
 - [x] Home screen with "Receive" button
 - [x] Placeholder screens for receiver flow
-- [ ] Implement receiver code entry screen (6-digit input)
-- [ ] QR scanner integration (use mobile_scanner + PermissionService)
-- [ ] Camera permission handling (use PermissionService)
-- [ ] Accept/Decline file prompt
-- [ ] File/Storage permission handling (use PermissionService)
-- [ ] Transfer progress screen (percentage + speed)
-- [ ] Success/failure notifications
-- [ ] Commit and tag as `v0.7.0-receiver`
+- [x] Implement receiver code entry screen (6-digit input)
+- [x] QR scanner integration (use mobile_scanner + PermissionService)
+- [x] Camera permission handling (use PermissionService)
+- [x] Accept/Decline file prompt
+- [x] File/Storage permission handling (use PermissionService)
+- [x] Transfer progress screen (percentage + speed)
+- [x] Success/failure notifications
+- [x] Commit and tag as `v0.7.0-receiver`
 
-## Phase 7: Settings UI
+## Phase 7: Settings UI ✅
 
 - [x] **Settings Feature** - Settings screen placeholder
 - [x] Settings route and navigation wiring
-- [ ] Implement theme switcher UI (light/dark/system) using themeModeProvider
-- [ ] Language selector UI (if adding in-app selector) using localeProvider
-- [ ] Settings persistence (already handled by providers)
-- [ ] About section (app version, licenses)
-- [ ] Commit and tag as `v0.8.0-settings`
+- [x] Implement theme switcher UI (light/dark/system) using themeModeProvider
+- [ ] Language selector UI (optional - if adding in-app selector) using localeProvider
+- [x] Settings persistence (already handled by providers)
+- [x] About section (app version, licenses)
+- [x] Commit and tag as `v0.8.0-settings`
 
 ## Phase 8: Platform Polish
 
-- [ ] Android-specific: Permissions, notifications, adaptive icon
-- [ ] iOS-specific: Permissions, notifications, app icon
-- [ ] Windows-specific: File dialogs, window management
-- [ ] macOS-specific: File dialogs, permissions
-- [ ] Ubuntu-specific: File dialogs, permissions
+- [x] Desktop drag-and-drop support (Windows, macOS, Ubuntu)
+- [ ] Keyboard shortcuts for desktop (Ctrl/Cmd+O, Ctrl/Cmd+C, ESC)
+- [ ] Haptic feedback for mobile interactions
+- [ ] Android-specific: Notifications, adaptive icon
+- [ ] iOS-specific: Notifications, app icon
+- [ ] Platform-specific file save dialogs
 - [ ] Commit and tag as `v0.9.0-polish`
 
 ## Phase 9: Firebase Integration
