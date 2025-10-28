@@ -13,6 +13,7 @@ class SettingsScreen extends ConsumerWidget {
     final l10n = S.of(context);
     final themeMode = ref.watch(themeModeProvider);
     final locale = ref.watch(localeProvider);
+    final supportedLocales = S.delegate.supportedLocales;
 
     return Scaffold(
       appBar: AppBar(
@@ -75,6 +76,7 @@ class SettingsScreen extends ConsumerWidget {
             Card(
               child: Column(
                 children: [
+                  // System Default
                   _LanguageTile(
                     title: l10n.languageSystem,
                     subtitle: l10n.languageSystemDesc,
@@ -83,48 +85,48 @@ class SettingsScreen extends ConsumerWidget {
                     onTap: () =>
                         ref.read(localeProvider.notifier).setLocale(null),
                   ),
-                  const Divider(
-                    height: 1,
-                    indent: AppSpacing.md,
-                    endIndent: AppSpacing.md,
-                  ),
-                  _LanguageTile(
-                    title: l10n.languageEnglish,
-                    subtitle: 'English',
-                    icon: Icons.language_rounded,
-                    isSelected: locale?.languageCode == 'en',
-                    onTap: () => ref
-                        .read(localeProvider.notifier)
-                        .setLocale(const Locale('en')),
-                  ),
-                  const Divider(
-                    height: 1,
-                    indent: AppSpacing.md,
-                    endIndent: AppSpacing.md,
-                  ),
-                  _LanguageTile(
-                    title: l10n.languageFrench,
-                    subtitle: 'Français',
-                    icon: Icons.language_rounded,
-                    isSelected: locale?.languageCode == 'fr',
-                    onTap: () => ref
-                        .read(localeProvider.notifier)
-                        .setLocale(const Locale('fr')),
-                  ),
-                  const Divider(
-                    height: 1,
-                    indent: AppSpacing.md,
-                    endIndent: AppSpacing.md,
-                  ),
-                  _LanguageTile(
-                    title: l10n.languageArabic,
-                    subtitle: 'العربية',
-                    icon: Icons.language_rounded,
-                    isSelected: locale?.languageCode == 'ar',
-                    onTap: () => ref
-                        .read(localeProvider.notifier)
-                        .setLocale(const Locale('ar')),
-                  ),
+                  // Dynamic language tiles
+                  ...supportedLocales.expand((supportedLocale) {
+                    final languageCode = supportedLocale.languageCode;
+                    final String title;
+                    final String nativeName;
+
+                    // Get localized language name and native name
+                    switch (languageCode) {
+                      case 'en':
+                        title = l10n.languageEnglish;
+                        nativeName = 'English';
+                        break;
+                      case 'fr':
+                        title = l10n.languageFrench;
+                        nativeName = 'Français';
+                        break;
+                      case 'ar':
+                        title = l10n.languageArabic;
+                        nativeName = 'العربية';
+                        break;
+                      default:
+                        title = languageCode.toUpperCase();
+                        nativeName = languageCode;
+                    }
+
+                    return [
+                      const Divider(
+                        height: 1,
+                        indent: AppSpacing.md,
+                        endIndent: AppSpacing.md,
+                      ),
+                      _LanguageTile(
+                        title: title,
+                        subtitle: nativeName,
+                        icon: Icons.language_rounded,
+                        isSelected: locale?.languageCode == languageCode,
+                        onTap: () => ref
+                            .read(localeProvider.notifier)
+                            .setLocale(Locale(languageCode)),
+                      ),
+                    ];
+                  }),
                 ],
               ),
             ),

@@ -374,16 +374,6 @@ class S {
     return Intl.message('Settings', name: 'settingsTitle', desc: '', args: []);
   }
 
-  /// `Settings - Coming in Phase 7`
-  String get settingsComingSoon {
-    return Intl.message(
-      'Settings - Coming in Phase 7',
-      name: 'settingsComingSoon',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Customize your PeerLink experience with theme and display preferences.`
   String get settingsInfo {
     return Intl.message(
@@ -762,81 +752,6 @@ class S {
   /// `MB`
   String get unitMegabytes {
     return Intl.message('MB', name: 'unitMegabytes', desc: '', args: []);
-  }
-
-  /// `===== Placeholder Screens =====`
-  String get _comment_placeholders {
-    return Intl.message(
-      '===== Placeholder Screens =====',
-      name: '_comment_placeholders',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Coming Soon`
-  String get comingSoon {
-    return Intl.message('Coming Soon', name: 'comingSoon', desc: '', args: []);
-  }
-
-  /// `Sender File Picker - Coming Soon`
-  String get senderFilePickerPlaceholder {
-    return Intl.message(
-      'Sender File Picker - Coming Soon',
-      name: 'senderFilePickerPlaceholder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sender Code Display - Coming Soon`
-  String get senderCodePlaceholder {
-    return Intl.message(
-      'Sender Code Display - Coming Soon',
-      name: 'senderCodePlaceholder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sender Progress - Coming Soon`
-  String get senderProgressPlaceholder {
-    return Intl.message(
-      'Sender Progress - Coming Soon',
-      name: 'senderProgressPlaceholder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Receiver Code Entry - Coming Soon`
-  String get receiverCodeEntryPlaceholder {
-    return Intl.message(
-      'Receiver Code Entry - Coming Soon',
-      name: 'receiverCodeEntryPlaceholder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Receiver Accept/Decline - Coming Soon`
-  String get receiverAcceptPlaceholder {
-    return Intl.message(
-      'Receiver Accept/Decline - Coming Soon',
-      name: 'receiverAcceptPlaceholder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Receiver Progress - Coming Soon`
-  String get receiverProgressPlaceholder {
-    return Intl.message(
-      'Receiver Progress - Coming Soon',
-      name: 'receiverProgressPlaceholder',
-      desc: '',
-      args: [],
-    );
   }
 
   /// `===== Loading States =====`

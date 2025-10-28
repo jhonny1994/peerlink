@@ -40,9 +40,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "_comment_loading": MessageLookupByLibrary.simpleMessage(
       "===== Loading States =====",
     ),
-    "_comment_placeholders": MessageLookupByLibrary.simpleMessage(
-      "===== Placeholder Screens =====",
-    ),
     "_comment_receiver": MessageLookupByLibrary.simpleMessage(
       "===== Receiver Flow =====",
     ),
@@ -74,7 +71,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "codeCopied": MessageLookupByLibrary.simpleMessage(
       "Code copied to clipboard",
     ),
-    "comingSoon": MessageLookupByLibrary.simpleMessage("Coming Soon"),
     "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
     "copyCode": MessageLookupByLibrary.simpleMessage("Copy Code"),
     "dismiss": MessageLookupByLibrary.simpleMessage("Dismiss"),
@@ -177,15 +173,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "pleaseWait": MessageLookupByLibrary.simpleMessage("Please wait..."),
     "receiveFile": MessageLookupByLibrary.simpleMessage("Receive File"),
-    "receiverAcceptPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "Receiver Accept/Decline - Coming Soon",
-    ),
-    "receiverCodeEntryPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "Receiver Code Entry - Coming Soon",
-    ),
-    "receiverProgressPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "Receiver Progress - Coming Soon",
-    ),
     "receivingFile": MessageLookupByLibrary.simpleMessage("Receiving file..."),
     "receivingFileTitle": MessageLookupByLibrary.simpleMessage(
       "Receiving File",
@@ -197,21 +184,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "selectFile": MessageLookupByLibrary.simpleMessage("Select File"),
     "sendFile": MessageLookupByLibrary.simpleMessage("Send File"),
-    "senderCodePlaceholder": MessageLookupByLibrary.simpleMessage(
-      "Sender Code Display - Coming Soon",
-    ),
-    "senderFilePickerPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "Sender File Picker - Coming Soon",
-    ),
-    "senderProgressPlaceholder": MessageLookupByLibrary.simpleMessage(
-      "Sender Progress - Coming Soon",
-    ),
     "sendingFile": MessageLookupByLibrary.simpleMessage("Sending file..."),
     "sendingFileTitle": MessageLookupByLibrary.simpleMessage("Sending File"),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
-    "settingsComingSoon": MessageLookupByLibrary.simpleMessage(
-      "Settings - Coming in Phase 7",
-    ),
     "settingsInfo": MessageLookupByLibrary.simpleMessage(
       "Customize your PeerLink experience with theme and display preferences.",
     ),
