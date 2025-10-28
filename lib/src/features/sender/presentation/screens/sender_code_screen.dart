@@ -121,8 +121,8 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
       child: Actions(
         actions: {
           CopyCodeIntent: CallbackAction<CopyCodeIntent>(
-            onInvoke: (_) {
-              _copyCodeToClipboard();
+            onInvoke: (_) async {
+              await _copyCodeToClipboard();
               return null;
             },
           ),
@@ -138,100 +138,101 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
             title: Text(l10n.shareCode),
           ),
           body: _isInitializing
-          ? const Center(child: CircularProgressIndicator())
-          : SafeArea(
-              child: SingleChildScrollView(
-                padding: AppSpacing.screenPadding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Instructions
-                    InstructionText(l10n.shareThisCode),
-                    const SizedBox(height: AppSpacing.xxl),
+              ? const Center(child: CircularProgressIndicator())
+              : SafeArea(
+                  child: SingleChildScrollView(
+                    padding: AppSpacing.screenPadding,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Instructions
+                        InstructionText(l10n.shareThisCode),
+                        const SizedBox(height: AppSpacing.xxl),
 
-                    // 6-digit code display
-                    Container(
-                      padding: AppSpacing.cardPaddingLarge,
-                      decoration: BoxDecoration(
-                        color: colorScheme.primaryContainer,
-                        borderRadius: AppRadius.borderRadiusLg,
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            _sessionId ?? '',
-                            style: theme.textTheme.displayLarge?.copyWith(
-                              color: colorScheme.onPrimaryContainer,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: AppDimensions.codeLetterSpacing,
-                            ),
+                        // 6-digit code display
+                        Container(
+                          padding: AppSpacing.cardPaddingLarge,
+                          decoration: BoxDecoration(
+                            color: colorScheme.primaryContainer,
+                            borderRadius: AppRadius.borderRadiusLg,
                           ),
-                          const SizedBox(height: AppSpacing.lg),
-                          FilledButton.tonalIcon(
-                            onPressed: _copyCodeToClipboard,
-                            icon: const Icon(Icons.copy_rounded),
-                            label: Text(l10n.copyCode),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.xxl),
-
-                    // QR Code
-                    if (_sessionId != null) ...[
-                      Container(
-                        padding: AppSpacing.cardPadding,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: AppRadius.borderRadiusLg,
-                        ),
-                        child: QrImageView(
-                          data: _sessionId!,
-                          size: AppDimensions.qrCodeSize,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.xxl),
-                    ],
-
-                    // Waiting status
-                    Card(
-                      child: Padding(
-                        padding: AppSpacing.cardPadding,
-                        child: Row(
-                          children: [
-                            const LoadingButtonIcon(),
-                            const SizedBox(width: AppSpacing.lg),
-                            Expanded(
-                              child: Text(
-                                l10n.waitingForReceiver,
-                                style: theme.textTheme.bodyMedium,
+                          child: Column(
+                            children: [
+                              Text(
+                                _sessionId ?? '',
+                                style: theme.textTheme.displayLarge?.copyWith(
+                                  color: colorScheme.onPrimaryContainer,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing:
+                                      AppDimensions.codeLetterSpacing,
+                                ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: AppSpacing.lg),
+                              FilledButton.tonalIcon(
+                                onPressed: _copyCodeToClipboard,
+                                icon: const Icon(Icons.copy_rounded),
+                                label: Text(l10n.copyCode),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: AppSpacing.xxl),
+
+                        // QR Code
+                        if (_sessionId != null) ...[
+                          Container(
+                            padding: AppSpacing.cardPadding,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: AppRadius.borderRadiusLg,
+                            ),
+                            child: QrImageView(
+                              data: _sessionId!,
+                              size: AppDimensions.qrCodeSize,
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.xxl),
+                        ],
+
+                        // Waiting status
+                        Card(
+                          child: Padding(
+                            padding: AppSpacing.cardPadding,
+                            child: Row(
+                              children: [
+                                const LoadingButtonIcon(),
+                                const SizedBox(width: AppSpacing.lg),
+                                Expanded(
+                                  child: Text(
+                                    l10n.waitingForReceiver,
+                                    style: theme.textTheme.bodyMedium,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: AppSpacing.lg),
+
+                        // File info
+                        if (_file != null)
+                          FutureBuilder<int>(
+                            future: _file!.length(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return FileInfoCard(
+                                  fileName: _file!.uri.pathSegments.last,
+                                  fileSize: snapshot.data!,
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                      ],
                     ),
-
-                    const SizedBox(height: AppSpacing.lg),
-
-                    // File info
-                    if (_file != null)
-                      FutureBuilder<int>(
-                        future: _file!.length(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return FileInfoCard(
-                              fileName: _file!.uri.pathSegments.last,
-                              fileSize: snapshot.data!,
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
         ),
       ),
     );
