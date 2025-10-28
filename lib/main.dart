@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerlink/firebase_options.dart';
 import 'package:peerlink/src/src.dart';
@@ -50,6 +51,7 @@ class MainApp extends ConsumerWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
+        LocaleNamesLocalizationsDelegate(),
       ],
       supportedLocales: S.delegate.supportedLocales,
       theme: ThemeData(

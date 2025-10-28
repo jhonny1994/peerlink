@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerlink/src/src.dart';
 
@@ -85,30 +86,15 @@ class SettingsScreen extends ConsumerWidget {
                     onTap: () =>
                         ref.read(localeProvider.notifier).setLocale(null),
                   ),
-                  // Dynamic language tiles
+                  // Dynamic language tiles - automatically from ARB files
                   ...supportedLocales.expand((supportedLocale) {
                     final languageCode = supportedLocale.languageCode;
-                    final String title;
-                    final String nativeName;
-
-                    // Get localized language name and native name
-                    switch (languageCode) {
-                      case 'en':
-                        title = l10n.languageEnglish;
-                        nativeName = 'English';
-                        break;
-                      case 'fr':
-                        title = l10n.languageFrench;
-                        nativeName = 'Français';
-                        break;
-                      case 'ar':
-                        title = l10n.languageArabic;
-                        nativeName = 'العربية';
-                        break;
-                      default:
-                        title = languageCode.toUpperCase();
-                        nativeName = languageCode;
-                    }
+                    // Get native language name using flutter_localized_locales package
+                    final nativeName =
+                        LocaleNames.of(context)?.nameOf(languageCode) ??
+                        LocaleNamesLocalizationsDelegate
+                            .nativeLocaleNames[languageCode] ??
+                        languageCode.toUpperCase();
 
                     return [
                       const Divider(
@@ -117,8 +103,8 @@ class SettingsScreen extends ConsumerWidget {
                         endIndent: AppSpacing.md,
                       ),
                       _LanguageTile(
-                        title: title,
-                        subtitle: nativeName,
+                        title: nativeName,
+                        subtitle: languageCode.toUpperCase(),
                         icon: Icons.language_rounded,
                         isSelected: locale?.languageCode == languageCode,
                         onTap: () => ref
