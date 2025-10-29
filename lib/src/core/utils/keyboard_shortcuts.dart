@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_shortcuts/flutter_shortcuts.dart';
 
 /// Keyboard shortcut intents for the app.
 class SelectFileIntent extends Intent {
@@ -46,31 +45,4 @@ class AppKeyboardShortcuts {
     // ESC: Cancel/Go back
     LogicalKeySet(LogicalKeyboardKey.escape): const CancelIntent(),
   };
-
-  /// Initialize keyboard shortcuts service for mobile.
-  static Future<void> initializeMobileShortcuts() async {
-    if (!isDesktop) {
-      final flutterShortcuts = FlutterShortcuts();
-
-      // Register app shortcuts for Android/iOS
-      await flutterShortcuts.initialize();
-
-      await flutterShortcuts.setShortcutItems(
-        shortcutItems: <ShortcutItem>[
-          const ShortcutItem(
-            id: 'send_file',
-            action: 'Send File',
-            shortLabel: 'Send',
-            icon: 'ic_launcher',
-          ),
-          const ShortcutItem(
-            id: 'receive_file',
-            action: 'Receive File',
-            shortLabel: 'Receive',
-            icon: 'ic_launcher',
-          ),
-        ],
-      );
-    }
-  }
 }

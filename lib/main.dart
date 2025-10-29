@@ -14,15 +14,10 @@ void main() async {
   await dotenv.load();
 
   // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Initialize SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
-
-  // Initialize keyboard shortcuts for mobile
-  await AppKeyboardShortcuts.initializeMobileShortcuts();
 
   runApp(
     ProviderScope(
