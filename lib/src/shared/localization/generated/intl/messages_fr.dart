@@ -84,6 +84,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Déposez le fichier pour sélectionner",
     ),
     "enterCode": MessageLookupByLibrary.simpleMessage("Entrer le code"),
+    "enterCodeManually": MessageLookupByLibrary.simpleMessage(
+      "Entrer le code manuellement",
+    ),
     "enterCodePrompt": MessageLookupByLibrary.simpleMessage(
       "Entrez le code à 6 chiffres de l\'expéditeur",
     ),
@@ -207,6 +210,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "shareThisCode": MessageLookupByLibrary.simpleMessage(
       "Partagez ce code avec le destinataire",
     ),
+    "switchToManualEntry": MessageLookupByLibrary.simpleMessage(
+      "Entrer le code",
+    ),
+    "switchToQrScan": MessageLookupByLibrary.simpleMessage("Scanner le QR"),
     "theme": MessageLookupByLibrary.simpleMessage("Thème"),
     "themeDark": MessageLookupByLibrary.simpleMessage("Thème sombre"),
     "themeDarkDesc": MessageLookupByLibrary.simpleMessage(

@@ -44,6 +44,9 @@ abstract class SignalingRepository {
   /// Delete session from Firestore
   Future<void> deleteSession(String sessionId);
 
+  /// Mark receiver as ready to receive file
+  Future<void> setReceiverReady(String sessionId);
+
   /// Watch for session changes
   Stream<SignalingSession?> watchSession(String sessionId);
 }

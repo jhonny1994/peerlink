@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:peerlink/src/core/routing/app_routes.dart';
+import 'package:peerlink/src/src.dart';
 
 /// Navigation helper utilities for common navigation patterns.
 ///

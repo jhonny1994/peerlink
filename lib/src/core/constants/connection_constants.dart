@@ -75,6 +75,8 @@ class ConnectionConstants {
   static Map<String, dynamic> get rtcConfiguration => {
     'iceServers': fallbackIceServers,
     'iceTransportPolicy': 'all',
-    'iceCandidatePoolSize': 0,
+    'iceCandidatePoolSize': 10, // Increase pool size for better connectivity
+    'bundlePolicy': 'max-bundle',
+    'rtcpMuxPolicy': 'require',
   };
 }

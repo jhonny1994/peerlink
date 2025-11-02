@@ -69,7 +69,6 @@ class MainApp extends ConsumerWidget {
         // Sender routes
         AppRoutes.senderFilePicker: (context) => const SenderFilePickerScreen(),
         AppRoutes.senderCode: (context) => const SenderCodeScreen(),
-        AppRoutes.senderProgress: (context) => const SenderProgressScreen(),
         AppRoutes.senderComplete: (context) => const SenderCompleteScreen(),
         // Receiver routes
         AppRoutes.receiverCodeEntry: (context) =>

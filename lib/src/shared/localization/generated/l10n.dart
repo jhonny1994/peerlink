@@ -344,6 +344,31 @@ class S {
     );
   }
 
+  /// `Scan QR`
+  String get switchToQrScan {
+    return Intl.message('Scan QR', name: 'switchToQrScan', desc: '', args: []);
+  }
+
+  /// `Enter Code`
+  String get switchToManualEntry {
+    return Intl.message(
+      'Enter Code',
+      name: 'switchToManualEntry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Code Manually`
+  String get enterCodeManually {
+    return Intl.message(
+      'Enter Code Manually',
+      name: 'enterCodeManually',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `OR`
   String get or {
     return Intl.message('OR', name: 'or', desc: '', args: []);

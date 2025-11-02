@@ -8,6 +8,7 @@ class CodeGenerator {
 
   /// Generate a 6-digit numeric code
   /// Returns a string like "123456"
+  /// Uniqueness is verified against Firestore in ConnectionRepository
   static String generate() {
     final code = _random.nextInt(900000) + 100000; // 100000 to 999999
     return code.toString();

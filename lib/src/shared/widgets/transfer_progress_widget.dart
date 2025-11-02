@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:peerlink/src/core/constants/ui_constants.dart';
-import 'package:peerlink/src/shared/localization/generated/l10n.dart';
+import 'package:peerlink/src/src.dart';
 
 /// Reusable transfer progress widget for sender and receiver flows.
 ///

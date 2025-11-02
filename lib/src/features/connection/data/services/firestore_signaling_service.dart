@@ -50,8 +50,16 @@ class FirestoreSignalingService implements SignalingRepository {
   }
 
   @override
+  Future<void> setReceiverReady(String sessionId) async {
+    await _sessions.doc(sessionId).update({'receiverReady': true});
+  }
+
+  @override
   Stream<SignalingSession?> watchSession(String sessionId) {
-    return _sessions.doc(sessionId).snapshots().map((doc) {
+    return _sessions.doc(sessionId).snapshots().asyncMap((doc) async {
+      // Process on platform thread by yielding back to the event loop
+      await Future<void>.delayed(Duration.zero);
+
       if (!doc.exists) return null;
 
       final data = doc.data();

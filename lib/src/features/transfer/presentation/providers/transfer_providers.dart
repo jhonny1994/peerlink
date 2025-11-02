@@ -4,19 +4,19 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'transfer_providers.g.dart';
 
 /// Provider for ChunkingService
-@riverpod
+@Riverpod(keepAlive: true)
 ChunkingService chunkingService(Ref ref) {
   return ChunkingService();
 }
 
 /// Provider for HashService
-@riverpod
+@Riverpod(keepAlive: true)
 HashService hashService(Ref ref) {
   return HashService();
 }
 
 /// Provider for TransferRepository
-@riverpod
+@Riverpod(keepAlive: true)
 TransferRepository transferRepository(Ref ref) {
   final chunkingService = ref.watch(chunkingServiceProvider);
   final hashService = ref.watch(hashServiceProvider);
@@ -31,16 +31,35 @@ TransferRepository transferRepository(Ref ref) {
 }
 
 /// Provider for sending files
-@riverpod
+/// keepAlive: true to persist across navigation
+@Riverpod(keepAlive: true)
 class FileSender extends _$FileSender {
+  bool _isTransferring = false;
+
   @override
   Stream<FileTransfer?> build() async* {
     yield null;
   }
 
+  /// Reset the sender state (clears old transfer data)
+  void reset() {
+    _isTransferring = false;
+    state = const AsyncValue.data(null);
+  }
+
   /// Start sending a file
   Future<void> sendFile(String sessionId, String filePath) async {
+    // Guard against multiple calls
+    if (_isTransferring) {
+      return;
+    }
+
+    _isTransferring = true;
     final repository = ref.read(transferRepositoryProvider);
+    final wakelockService = ref.read(wakelockServiceProvider);
+
+    // Enable wakelock to keep device awake during transfer
+    await wakelockService.enable();
 
     state = const AsyncValue.data(null);
     state = const AsyncValue.loading();
@@ -51,6 +70,10 @@ class FileSender extends _$FileSender {
       }
     } on Exception catch (e, st) {
       state = AsyncValue.error(e, st);
+    } finally {
+      // Always disable wakelock when transfer completes or fails
+      await wakelockService.disable();
+      _isTransferring = false;
     }
   }
 
@@ -65,16 +88,35 @@ class FileSender extends _$FileSender {
 }
 
 /// Provider for receiving files
-@riverpod
+/// keepAlive: true to persist across navigation
+@Riverpod(keepAlive: true)
 class FileReceiver extends _$FileReceiver {
+  bool _isTransferring = false;
+
   @override
   Stream<FileTransfer?> build() async* {
     yield null;
   }
 
+  /// Reset the receiver state (clears old transfer data)
+  void reset() {
+    _isTransferring = false;
+    state = const AsyncValue.data(null);
+  }
+
   /// Start receiving a file
   Future<void> receiveFile(String sessionId, String savePath) async {
+    // Guard against multiple calls
+    if (_isTransferring) {
+      return;
+    }
+
+    _isTransferring = true;
     final repository = ref.read(transferRepositoryProvider);
+    final wakelockService = ref.read(wakelockServiceProvider);
+
+    // Enable wakelock to keep device awake during transfer
+    await wakelockService.enable();
 
     state = const AsyncValue.data(null);
     state = const AsyncValue.loading();
@@ -88,6 +130,10 @@ class FileReceiver extends _$FileReceiver {
       }
     } on Exception catch (e, st) {
       state = AsyncValue.error(e, st);
+    } finally {
+      // Always disable wakelock when transfer completes or fails
+      await wakelockService.disable();
+      _isTransferring = false;
     }
   }
 

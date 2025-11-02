@@ -56,12 +56,15 @@ class SuccessScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: AppSpacing.xxxl),
-                FilledButton.icon(
-                  onPressed: onButtonPressed,
-                  icon: const Icon(Icons.home_rounded),
-                  label: Text(buttonLabel),
-                  style: FilledButton.styleFrom(
-                    padding: AppSpacing.buttonPaddingVertical,
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    onPressed: onButtonPressed,
+                    icon: const Icon(Icons.home_rounded),
+                    label: Text(buttonLabel),
+                    style: FilledButton.styleFrom(
+                      padding: AppSpacing.buttonPaddingVertical,
+                    ),
                   ),
                 ),
               ],

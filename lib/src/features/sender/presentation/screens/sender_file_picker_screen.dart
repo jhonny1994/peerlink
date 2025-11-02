@@ -82,12 +82,37 @@ class _SenderFilePickerScreenState
   Future<void> _proceedToCodeScreen() async {
     if (_selectedFile == null) return;
 
-    // Navigate to code screen with selected file
-    await AppNavigator.pushNamed<void>(
-      context,
-      AppRoutes.senderCode,
-      arguments: {'file': _selectedFile},
-    );
+    try {
+      // Check internet connection
+      final networkService = ref.read(networkServiceProvider);
+      final hasConnection = await networkService.hasConnection();
+
+      if (!hasConnection) {
+        if (!mounted) return;
+        UiHelpers.showErrorSnackbar(
+          context,
+          S.of(context).errorNetwork,
+        );
+        return;
+      }
+
+      // CRITICAL: Reset any previous transfer state to clear old metadata
+      ref.read(fileSenderProvider.notifier).reset();
+
+      // Navigate to code screen with selected file
+      if (mounted) {
+        await Navigator.of(context).pushNamed(
+          AppRoutes.senderCode,
+          arguments: {'file': _selectedFile},
+        );
+      }
+    } on Exception catch (e) {
+      if (!mounted) return;
+      UiHelpers.showErrorSnackbar(
+        context,
+        ErrorMapper.mapError(e, context),
+      );
+    }
   }
 
   Future<void> _handleDroppedFile(File file) async {

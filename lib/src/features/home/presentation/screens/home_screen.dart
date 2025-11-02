@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerlink/src/src.dart';
@@ -6,6 +8,7 @@ import 'package:peerlink/src/src.dart';
 ///
 /// The main entry point for PeerLink's user interface.
 /// Uses Material You design with generous spacing and touch targets.
+/// Responsive layout: vertical on mobile, horizontal on desktop.
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
@@ -14,6 +17,8 @@ class HomeScreen extends ConsumerWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final l10n = S.of(context);
+    final isDesktop =
+        Platform.isWindows || Platform.isMacOS || Platform.isLinux;
 
     return Scaffold(
       appBar: AppBar(
@@ -66,52 +71,37 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: AppSpacing.huge),
 
-                  // Send button
-                  FilledButton.icon(
-                    onPressed: () async {
-                      await Navigator.of(
-                        context,
-                      ).pushNamed(AppRoutes.senderFilePicker);
-                    },
-                    icon: const Icon(
-                      Icons.send_rounded,
-                      size: AppIconSize.lg,
+                  // Buttons - responsive layout
+                  if (isDesktop)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildSendButton(
+                            context,
+                            l10n,
+                            isDesktop: true,
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.lg),
+                        Expanded(
+                          child: _buildReceiveButton(
+                            context,
+                            l10n,
+                            isDesktop: true,
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildSendButton(context, l10n),
+                        const SizedBox(height: AppSpacing.lg),
+                        _buildReceiveButton(context, l10n),
+                      ],
                     ),
-                    label: Text(
-                      l10n.sendFile,
-                      style: const TextStyle(fontSize: AppFontSize.lg),
-                    ),
-                    style: FilledButton.styleFrom(
-                      padding: AppSpacing.buttonPaddingLarge,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: AppRadius.borderRadiusLg,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
 
-                  // Receive button
-                  FilledButton.tonalIcon(
-                    onPressed: () async {
-                      await Navigator.of(
-                        context,
-                      ).pushNamed(AppRoutes.receiverCodeEntry);
-                    },
-                    icon: const Icon(
-                      Icons.download_rounded,
-                      size: AppIconSize.lg,
-                    ),
-                    label: Text(
-                      l10n.receiveFile,
-                      style: const TextStyle(fontSize: AppFontSize.lg),
-                    ),
-                    style: FilledButton.styleFrom(
-                      padding: AppSpacing.buttonPaddingLarge,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: AppRadius.borderRadiusLg,
-                      ),
-                    ),
-                  ),
                   const SizedBox(height: AppSpacing.xxxl),
 
                   // Info text
@@ -126,6 +116,66 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSendButton(
+    BuildContext context,
+    S l10n, {
+    bool isDesktop = false,
+  }) {
+    return FilledButton.icon(
+      onPressed: () async {
+        await Navigator.of(context).pushNamed(AppRoutes.senderFilePicker);
+      },
+      icon: Icon(
+        Icons.send_rounded,
+        size: isDesktop ? AppIconSize.lg : AppIconSize.md,
+      ),
+      label: Text(
+        l10n.sendFile,
+        style: TextStyle(
+          fontSize: isDesktop ? AppFontSize.lg : AppFontSize.md,
+        ),
+      ),
+      style: FilledButton.styleFrom(
+        padding: isDesktop
+            ? AppSpacing.buttonPaddingLarge
+            : AppSpacing.buttonPaddingVertical,
+        shape: RoundedRectangleBorder(
+          borderRadius: AppRadius.borderRadiusLg,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildReceiveButton(
+    BuildContext context,
+    S l10n, {
+    bool isDesktop = false,
+  }) {
+    return FilledButton.tonalIcon(
+      onPressed: () async {
+        await Navigator.of(context).pushNamed(AppRoutes.receiverCodeEntry);
+      },
+      icon: Icon(
+        Icons.download_rounded,
+        size: isDesktop ? AppIconSize.lg : AppIconSize.md,
+      ),
+      label: Text(
+        l10n.receiveFile,
+        style: TextStyle(
+          fontSize: isDesktop ? AppFontSize.lg : AppFontSize.md,
+        ),
+      ),
+      style: FilledButton.styleFrom(
+        padding: isDesktop
+            ? AppSpacing.buttonPaddingLarge
+            : AppSpacing.buttonPaddingVertical,
+        shape: RoundedRectangleBorder(
+          borderRadius: AppRadius.borderRadiusLg,
         ),
       ),
     );

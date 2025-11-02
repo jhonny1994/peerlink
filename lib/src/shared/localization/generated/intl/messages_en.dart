@@ -80,6 +80,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "dropFileHere": MessageLookupByLibrary.simpleMessage("Drop file to select"),
     "enterCode": MessageLookupByLibrary.simpleMessage("Enter Code"),
+    "enterCodeManually": MessageLookupByLibrary.simpleMessage(
+      "Enter Code Manually",
+    ),
     "enterCodePrompt": MessageLookupByLibrary.simpleMessage(
       "Enter the 6-digit code from sender",
     ),
@@ -195,6 +198,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "shareThisCode": MessageLookupByLibrary.simpleMessage(
       "Share this code with the receiver",
     ),
+    "switchToManualEntry": MessageLookupByLibrary.simpleMessage("Enter Code"),
+    "switchToQrScan": MessageLookupByLibrary.simpleMessage("Scan QR"),
     "theme": MessageLookupByLibrary.simpleMessage("Theme"),
     "themeDark": MessageLookupByLibrary.simpleMessage("Dark Theme"),
     "themeDarkDesc": MessageLookupByLibrary.simpleMessage("Use dark theme"),

@@ -21,7 +21,7 @@ class _ReceiverProgressScreenState
   bool _hasStartedTransfer = false;
 
   @override
-  Future<void> didChangeDependencies() async {
+  void didChangeDependencies() {
     super.didChangeDependencies();
 
     // Get arguments from navigation
@@ -34,10 +34,11 @@ class _ReceiverProgressScreenState
       // In production, this would use path_provider or file picker
       _savePath = 'Downloads/received_file';
 
-      // Start transfer
+      // Start transfer - delay until after build phase
       if (_sessionId != null && _savePath != null && !_hasStartedTransfer) {
         _hasStartedTransfer = true;
-        await _startTransfer();
+        // ignore: discarded_futures
+        Future.microtask(_startTransfer);
       }
     }
   }

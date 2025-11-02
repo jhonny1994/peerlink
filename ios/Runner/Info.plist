@@ -45,5 +45,20 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera access is required to scan QR codes for receiving files</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microphone access is required for peer-to-peer connection establishment</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo library access is needed to select and save files</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Photo library access is needed to save received files</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Local network access is required for peer-to-peer file transfer</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_webrtc._udp</string>
+		<string>_webrtc._tcp</string>
+	</array>
 </dict>
 </plist>

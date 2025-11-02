@@ -27,6 +27,9 @@ abstract class SignalingSession with _$SignalingSession {
 
     /// ICE candidates from receiver
     @Default([]) List<Map<String, dynamic>> answerCandidates,
+
+    /// Whether receiver has clicked Accept and is ready to receive
+    @Default(false) bool receiverReady,
   }) = _SignalingSession;
 
   /// Create from JSON
@@ -54,6 +57,7 @@ abstract class SignalingSession with _$SignalingSession {
           const [],
       createdAt: DateTime.parse(data['createdAt'] as String),
       expiresAt: DateTime.parse(data['expiresAt'] as String),
+      receiverReady: data['receiverReady'] as bool? ?? false,
     );
   }
   const SignalingSession._();

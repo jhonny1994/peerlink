@@ -5,13 +5,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'connection_providers.g.dart';
 
 /// Provider for Firestore instance
-@riverpod
+@Riverpod(keepAlive: true)
 FirebaseFirestore firestore(Ref ref) {
   return FirebaseFirestore.instance;
 }
 
 /// Provider for FirestoreSignalingService
-@riverpod
+@Riverpod(keepAlive: true)
 FirestoreSignalingService firestoreSignalingService(
   Ref ref,
 ) {
@@ -20,19 +20,19 @@ FirestoreSignalingService firestoreSignalingService(
 }
 
 /// Provider for WebRtcService
-@riverpod
+@Riverpod(keepAlive: true)
 WebRtcService webRtcService(Ref ref) {
   return WebRtcService();
 }
 
 /// Provider for DataChannelService
-@riverpod
+@Riverpod(keepAlive: true)
 DataChannelService dataChannelService(Ref ref) {
   return DataChannelService();
 }
 
 /// Provider for ConnectionRepository
-@riverpod
+@Riverpod(keepAlive: true)
 ConnectionRepository connectionRepository(Ref ref) {
   final signalingService = ref.watch(firestoreSignalingServiceProvider);
   final webRtcService = ref.watch(webRtcServiceProvider);
@@ -46,7 +46,8 @@ ConnectionRepository connectionRepository(Ref ref) {
 }
 
 /// Provider for creating a connection (sender)
-@riverpod
+/// keepAlive: true prevents auto-dispose during navigation
+@Riverpod(keepAlive: true)
 class ConnectionCreator extends _$ConnectionCreator {
   @override
   FutureOr<PeerConnection?> build() {
@@ -74,7 +75,8 @@ class ConnectionCreator extends _$ConnectionCreator {
 }
 
 /// Provider for joining a connection (receiver)
-@riverpod
+/// keepAlive: true prevents auto-dispose during navigation
+@Riverpod(keepAlive: true)
 class ConnectionJoiner extends _$ConnectionJoiner {
   @override
   FutureOr<PeerConnection?> build() {

@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:path/path.dart' as path;
 import 'package:peerlink/src/src.dart';
@@ -27,11 +29,13 @@ class TransferRepositoryImpl implements TransferRepository {
 
     try {
       // Validate file
+
       if (!await chunkingService.validateFile(filePath)) {
         throw Exception('File not found or not readable: $filePath');
       }
 
       final fileSize = await chunkingService.getFileSize(filePath);
+
       if (!validateFileSize(fileSize)) {
         throw Exception(
           'File size exceeds maximum limit of ${TransferConstants.maxFileSizeMb}MB',
@@ -86,6 +90,7 @@ class TransferRepositoryImpl implements TransferRepository {
       );
 
       // Send file chunks
+
       final startTime = DateTime.now();
       var bytesTransferred = 0;
 
@@ -123,6 +128,32 @@ class TransferRepositoryImpl implements TransferRepository {
           ),
         );
       }
+
+      // CRITICAL FIX: Wait for all data to be delivered before completing
+      // The WebRTC buffer must drain completely to ensure all chunks reached the receiver
+
+      var bufferedAmount = await dataChannelService.getBufferedAmount(
+        sessionId,
+      );
+      var waitCount = 0;
+      const maxWaitTime = 600; // 30 seconds (600 * 50ms)
+      while (bufferedAmount > 0 && waitCount < maxWaitTime) {
+        // Wait up to 30 seconds for buffer to drain
+
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+        bufferedAmount = await dataChannelService.getBufferedAmount(sessionId);
+        waitCount++;
+      }
+
+      if (bufferedAmount > 0) {
+        throw Exception(
+          'Transfer timeout: WebRTC buffer did not drain after 30 seconds. '
+          'File may not have been fully received.',
+        );
+      }
+
+      // Add extra delay to ensure receiver processes everything
+      await Future<void>.delayed(const Duration(milliseconds: 200));
 
       // Transfer complete
       yield* _yieldState(
@@ -165,7 +196,8 @@ class TransferRepositoryImpl implements TransferRepository {
     _transferControllers[transferId] = controller;
 
     try {
-      // Wait for metadata
+      // Wait for data channel to be ready
+
       yield* _yieldState(
         controller,
         transferId,
@@ -176,37 +208,108 @@ class TransferRepositoryImpl implements TransferRepository {
         null,
       );
 
-      final metadata = await _receiveMetadata(sessionId);
-      final outputPath = path.join(savePath, metadata.name);
-
-      // Prepare to receive
-      yield* _yieldState(
-        controller,
-        transferId,
+      await dataChannelService.waitForDataChannel(
         sessionId,
-        metadata,
-        TransferState.transferring,
-        false,
-        TransferProgress(
-          bytesTransferred: 0,
-          totalBytes: metadata.size,
-          speedBytesPerSecond: 0,
-          startTime: DateTime.now(),
-        ),
       );
 
-      final startTime = DateTime.now();
+      FileMetadata? metadata;
+      String? outputPath;
       var bytesReceived = 0;
+      var chunkCount = 0;
+      DateTime? startTime;
+      var metadataReceived = false;
 
-      // Receive chunks
-      await for (final chunk in dataChannelService.onDataReceived(sessionId)) {
+      final dataStream = await dataChannelService.onDataReceived(sessionId);
+      await for (final data in dataStream) {
         // Check if transfer was cancelled
         if (_cancelledTransfers[transferId] ?? false) {
           throw Exception('Transfer cancelled by user');
         }
 
-        await chunkingService.writeChunk(outputPath, chunk);
-        bytesReceived += chunk.length;
+        // First, try to parse as metadata
+        if (!metadataReceived) {
+          try {
+            final metadataString = utf8.decode(data);
+            final metadataJson =
+                json.decode(metadataString) as Map<String, dynamic>;
+
+            // Check if it's a metadata message
+            if (metadataJson['type'] == 'metadata') {
+              metadata = FileMetadata(
+                name: metadataJson['name'] as String,
+                size: metadataJson['size'] as int,
+                mimeType: metadataJson['mimeType'] as String,
+                hash: metadataJson['hash'] as String,
+              );
+
+              outputPath = path.join(savePath, metadata.name);
+
+              // Handle file name conflicts - append (1), (2), etc. if file exists
+              var conflictCounter = 1;
+              var finalPath = outputPath;
+              while (File(finalPath).existsSync()) {
+                final extension = path.extension(metadata.name);
+                final nameWithoutExt = metadata.name.replaceFirst(
+                  RegExp(r'\.[\w]+$'),
+                  '',
+                );
+                finalPath = path.join(
+                  savePath,
+                  '$nameWithoutExt ($conflictCounter)$extension',
+                );
+                conflictCounter++;
+
+                // Safety limit to prevent infinite loop
+                if (conflictCounter > 1000) {
+                  throw Exception(
+                    'Too many file conflicts. Cannot find available file name.',
+                  );
+                }
+              }
+              outputPath = finalPath;
+
+              // Create the save directory if it doesn't exist
+              final outputFile = File(outputPath);
+              await outputFile.parent.create(recursive: true);
+
+              metadataReceived = true;
+              startTime = DateTime.now();
+
+              // Yield transferring state
+              yield* _yieldState(
+                controller,
+                transferId,
+                sessionId,
+                metadata,
+                TransferState.transferring,
+                false,
+                TransferProgress(
+                  bytesTransferred: 0,
+                  totalBytes: metadata.size,
+                  speedBytesPerSecond: 0,
+                  startTime: startTime,
+                ),
+              );
+
+              continue; // Skip to next message (file chunks)
+            }
+          } on Exception {
+            // If parsing fails and we haven't received metadata yet, this is wrong
+            if (!metadataReceived) {
+              throw Exception('Expected metadata but received invalid data');
+            }
+          }
+        }
+
+        // If we reach here, it's a file chunk
+        if (metadata == null || outputPath == null || startTime == null) {
+          throw Exception('Received chunk before metadata');
+        }
+
+        chunkCount++;
+
+        await chunkingService.writeChunk(outputPath, data);
+        bytesReceived += data.length;
 
         // Calculate speed
         final elapsed = DateTime.now().difference(startTime).inSeconds;
@@ -233,7 +336,19 @@ class TransferRepositoryImpl implements TransferRepository {
         }
       }
 
+      if (metadata == null || outputPath == null) {
+        throw Exception('Transfer completed without receiving metadata');
+      }
+
+      // Check if we received all bytes
+      if (bytesReceived < metadata.size) {
+        throw Exception(
+          'Incomplete transfer: received $bytesReceived bytes but expected ${metadata.size} bytes ($chunkCount chunks)',
+        );
+      }
+
       // Verify hash
+
       yield* _yieldState(
         controller,
         transferId,
@@ -245,11 +360,12 @@ class TransferRepositoryImpl implements TransferRepository {
           bytesTransferred: bytesReceived,
           totalBytes: metadata.size,
           speedBytesPerSecond: 0,
-          startTime: startTime,
+          startTime: startTime!,
         ),
       );
 
       final calculatedHash = await hashService.calculateFileHash(outputPath);
+
       if (!hashService.verifyHash(calculatedHash, metadata.hash)) {
         // Delete corrupted file
         await File(outputPath).delete();
@@ -336,14 +452,22 @@ class TransferRepositoryImpl implements TransferRepository {
   }
 
   Future<void> _sendMetadata(String sessionId, FileMetadata metadata) async {
-    // Note: Metadata exchange through data channel will be implemented in future version.
-    // Current implementation passes metadata through Firestore during connection setup.
-  }
+    // Send metadata as JSON through data channel
 
-  Future<FileMetadata> _receiveMetadata(String sessionId) async {
-    // Note: Metadata exchange through data channel will be implemented in future version.
-    // Current implementation receives metadata through Firestore during connection setup.
-    throw UnimplementedError('Direct metadata exchange not yet implemented');
+    final metadataJson = {
+      'type': 'metadata',
+      'name': metadata.name,
+      'size': metadata.size,
+      'mimeType': metadata.mimeType,
+      'hash': metadata.hash,
+    };
+
+    final metadataBytes = utf8.encode(json.encode(metadataJson));
+
+    await dataChannelService.sendData(
+      sessionId,
+      Uint8List.fromList(metadataBytes),
+    );
   }
 
   String _getMimeType(String fileName) {

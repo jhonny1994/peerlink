@@ -78,6 +78,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "dropFileHere": MessageLookupByLibrary.simpleMessage("أفلت الملف للتحديد"),
     "enterCode": MessageLookupByLibrary.simpleMessage("أدخل الرمز"),
+    "enterCodeManually": MessageLookupByLibrary.simpleMessage(
+      "إدخال الرمز يدويًا",
+    ),
     "enterCodePrompt": MessageLookupByLibrary.simpleMessage(
       "أدخل الرمز المكون من 6 أرقام من المرسل",
     ),
@@ -195,6 +198,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "shareCode": MessageLookupByLibrary.simpleMessage("مشاركة الرمز"),
     "shareThisCode": MessageLookupByLibrary.simpleMessage(
       "شارك هذا الرمز مع المستقبل",
+    ),
+    "switchToManualEntry": MessageLookupByLibrary.simpleMessage("إدخال الرمز"),
+    "switchToQrScan": MessageLookupByLibrary.simpleMessage(
+      "مسح رمز الاستجابة السريعة",
     ),
     "theme": MessageLookupByLibrary.simpleMessage("المظهر"),
     "themeDark": MessageLookupByLibrary.simpleMessage("المظهر الداكن"),

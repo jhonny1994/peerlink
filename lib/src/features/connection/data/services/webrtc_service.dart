@@ -25,17 +25,28 @@ class WebRtcService {
 
   /// Create a new peer connection
   Future<RTCPeerConnection> initializePeerConnection() async {
+    // Clean up any existing connection first to prevent leaks
+    if (_peerConnection != null) {
+      await _peerConnection!.close();
+      _peerConnection = null;
+    }
+
     final configuration = ConnectionConstants.rtcConfiguration;
+
+    // Debug: Print ICE server configuration
+
     _peerConnection = await createPeerConnection(configuration);
 
     // Listen to connection state changes
     _peerConnection!.onConnectionState = (state) {
+
       _stateController.add(_mapRtcState(state));
     };
 
     // Listen to ICE candidates
     _peerConnection!.onIceCandidate = (candidate) {
       if (candidate.candidate != null) {
+
         _iceCandidatesController.add(candidate);
       }
     };
@@ -87,12 +98,11 @@ class WebRtcService {
   }
 
   /// Close peer connection
+  /// Note: Broadcast stream controllers are NOT closed here to allow connection reuse
   Future<void> close() async {
     await _peerConnection?.close();
     _peerConnection = null;
-    await _stateController.close();
-    await _iceCandidatesController.close();
-    await _dataChannelController.close();
+    // Don't close broadcast controllers - they're reused across multiple connections
   }
 
   /// Map RTCPeerConnectionState to domain ConnectionState

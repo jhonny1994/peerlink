@@ -1,5 +1,4 @@
-import 'package:peerlink/src/shared/services/file_picker_service.dart';
-import 'package:peerlink/src/shared/services/permission_service.dart';
+import 'package:peerlink/src/src.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'service_providers.g.dart';
@@ -18,4 +17,20 @@ FilePickerService filePickerService(Ref ref) {
 @riverpod
 PermissionService permissionService(Ref ref) {
   return PermissionService();
+}
+
+/// Provider for [NetworkService].
+///
+/// Singleton instance for network connectivity checking.
+@Riverpod(keepAlive: true)
+NetworkService networkService(Ref ref) {
+  return NetworkService();
+}
+
+/// Provider for [WakelockService].
+///
+/// Singleton instance for managing device wakelock during transfers.
+@riverpod
+WakelockService wakelockService(Ref ref) {
+  return WakelockService();
 }
