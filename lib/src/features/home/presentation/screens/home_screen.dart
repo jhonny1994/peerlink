@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerlink/src/src.dart';
 
@@ -125,6 +126,9 @@ class HomeScreen extends ConsumerWidget {
   }) {
     return FilledButton.icon(
       onPressed: () async {
+        if (!isDesktop) {
+          await HapticFeedback.mediumImpact();
+        }
         await Navigator.of(context).pushNamed(AppRoutes.senderFilePicker);
       },
       icon: Icon(
@@ -155,6 +159,9 @@ class HomeScreen extends ConsumerWidget {
   }) {
     return FilledButton.tonalIcon(
       onPressed: () async {
+        if (!isDesktop) {
+          await HapticFeedback.mediumImpact();
+        }
         await Navigator.of(context).pushNamed(AppRoutes.receiverCodeEntry);
       },
       icon: Icon(

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerlink/src/src.dart';
 
@@ -108,6 +109,12 @@ class _ReceiverAcceptScreenState extends ConsumerState<ReceiverAcceptScreen> {
   Future<void> _handleAccept() async {
     if (_sessionId == null) return;
 
+    // Haptic feedback for mobile
+    final isDesktop = PlatformHelper.isDesktop;
+    if (!isDesktop) {
+      await HapticFeedback.mediumImpact();
+    }
+
     try {
       // CRITICAL: Mark receiver as ready in Firestore BEFORE navigating
       // This signals the sender that the receiver has accepted and is ready to receive
@@ -132,6 +139,12 @@ class _ReceiverAcceptScreenState extends ConsumerState<ReceiverAcceptScreen> {
 
   Future<void> _handleDecline() async {
     final l10n = S.of(context);
+
+    // Haptic feedback for mobile
+    final isDesktop = PlatformHelper.isDesktop;
+    if (!isDesktop) {
+      await HapticFeedback.lightImpact();
+    }
 
     // Show confirmation dialog
     final confirmed = await UiHelpers.showConfirmDialog(

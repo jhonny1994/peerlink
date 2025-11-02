@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerlink/src/src.dart';
 
@@ -31,6 +32,9 @@ class _SenderFilePickerScreenState
   bool get _isDesktop => PlatformHelper.isDesktop;
 
   Future<void> _pickFile() async {
+    if (!_isDesktop) {
+      await HapticFeedback.selectionClick();
+    }
     setState(() => _isLoading = true);
 
     try {
@@ -56,6 +60,9 @@ class _SenderFilePickerScreenState
       if (!mounted) return;
 
       if (file != null) {
+        if (!_isDesktop) {
+          await HapticFeedback.lightImpact();
+        }
         setState(() => _selectedFile = file);
       }
     } on FilePickerException catch (e) {

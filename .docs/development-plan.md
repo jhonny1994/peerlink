@@ -146,18 +146,20 @@
 
 **Commit and tag as `v0.8.5-stabilization`**
 
-## Phase 8: Platform Polish
+## Phase 8: Platform Polish ✅
 
 - [x] Desktop drag-and-drop support (Windows, macOS, Ubuntu)
 - [x] Android/iOS permissions verified (Camera, Storage, Network, Notifications)
 - [x] Keyboard shortcuts for desktop (Ctrl/Cmd+O, Ctrl/Cmd+C, ESC)
-- [ ] Haptic feedback for mobile interactions
-- [ ] Android-specific: Transfer notifications, adaptive icon
-- [ ] iOS-specific: Transfer notifications, app icon
-- [ ] Platform-specific file save dialogs (integrated in Phase 7.5)
-- [ ] Better error message mapping through ErrorMapper
-- [ ] Loading states and empty states polish
-- [ ] Commit and tag as `v0.9.0-polish`
+- [x] Haptic feedback for mobile interactions
+- [ ] Android-specific: Transfer notifications (Phase 9 - Firebase Integration)
+- [ ] iOS-specific: Transfer notifications (Phase 9 - Firebase Integration)
+- [x] Android adaptive icon (already configured in mipmap directories)
+- [x] iOS app icon (already configured in Assets.xcassets)
+- [x] Platform-specific file save dialogs (integrated in Phase 7.5)
+- [x] Better error message mapping through ErrorMapper
+- [x] Loading states and empty states polish (LoadingIndicator + EmptyState widgets)
+- [x] Commit and tag as `v0.9.0-polish`
 
 ## Phase 9: Firebase Integration
 

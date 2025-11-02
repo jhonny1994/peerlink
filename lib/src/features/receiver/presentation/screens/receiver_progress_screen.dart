@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerlink/src/src.dart';
 
@@ -81,6 +82,11 @@ class _ReceiverProgressScreenState
 
   Future<void> _handleCancel() async {
     final l10n = S.of(context);
+
+    // Haptic feedback for mobile
+    if (!PlatformHelper.isDesktop) {
+      await HapticFeedback.heavyImpact();
+    }
 
     final confirmed = await UiHelpers.showConfirmDialog(
       context,
