@@ -30,7 +30,15 @@ NetworkService networkService(Ref ref) {
 /// Provider for [WakelockService].
 ///
 /// Singleton instance for managing device wakelock during transfers.
-@riverpod
+@Riverpod(keepAlive: true)
 WakelockService wakelockService(Ref ref) {
   return WakelockService();
+}
+
+/// Provider for [FilePathService].
+///
+/// Singleton instance for platform-specific file path resolution.
+@Riverpod(keepAlive: true)
+FilePathService filePathService(Ref ref) {
+  return FilePathService();
 }

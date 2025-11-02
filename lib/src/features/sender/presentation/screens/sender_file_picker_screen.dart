@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:desktop_drop/desktop_drop.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerlink/src/src.dart';
@@ -29,8 +28,7 @@ class _SenderFilePickerScreenState
   final _permissionService = PermissionService();
 
   // Check if running on desktop platform
-  bool get _isDesktop =>
-      !kIsWeb && (Platform.isWindows || Platform.isMacOS || Platform.isLinux);
+  bool get _isDesktop => PlatformHelper.isDesktop;
 
   Future<void> _pickFile() async {
     setState(() => _isLoading = true);

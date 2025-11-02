@@ -108,13 +108,15 @@ class DataChannelService {
       buffer.clear();
 
       // Schedule emission in next microtask (runs before event loop continues)
-      await Future.microtask(() {
-        for (final data in bufferedData) {
-          if (controller.hasListener) {
-            controller.add(data);
+      unawaited(
+        Future.microtask(() {
+          for (final data in bufferedData) {
+            if (controller.hasListener) {
+              controller.add(data);
+            }
           }
-        }
-      });
+        }),
+      );
     }
 
     return controller.stream;

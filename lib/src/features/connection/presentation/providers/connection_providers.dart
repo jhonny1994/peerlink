@@ -31,6 +31,12 @@ DataChannelService dataChannelService(Ref ref) {
   return DataChannelService();
 }
 
+/// Provider for ConnectionTimeoutService
+@Riverpod(keepAlive: true)
+ConnectionTimeoutService connectionTimeoutService(Ref ref) {
+  return ConnectionTimeoutService();
+}
+
 /// Provider for ConnectionRepository
 @Riverpod(keepAlive: true)
 ConnectionRepository connectionRepository(Ref ref) {

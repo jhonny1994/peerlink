@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:peerlink/src/src.dart';
 
 /// Keyboard shortcut intents for the app.
 class SelectFileIntent extends Intent {
@@ -18,11 +19,7 @@ class CancelIntent extends Intent {
 /// Keyboard shortcut mappings for desktop platforms.
 class AppKeyboardShortcuts {
   /// Check if current platform supports keyboard shortcuts.
-  static bool get isDesktop =>
-      !kIsWeb &&
-      (defaultTargetPlatform == TargetPlatform.windows ||
-          defaultTargetPlatform == TargetPlatform.macOS ||
-          defaultTargetPlatform == TargetPlatform.linux);
+  static bool get isDesktop => PlatformHelper.isDesktopPlatform;
 
   /// Get keyboard shortcuts map.
   static Map<ShortcutActivator, Intent> get shortcuts => {

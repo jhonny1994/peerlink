@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -37,9 +38,7 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
       _file = args?['file'] as File?;
 
       if (_file != null && _sessionId == null) {
-        // Delay provider modification until after build phase
-        // ignore: discarded_futures
-        Future.microtask(_initializeConnection);
+        unawaited(Future.microtask(_initializeConnection));
       }
     }
   }
@@ -147,13 +146,14 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
 
       if (!mounted) return;
 
-      // Start transfer
-      await ref
-          .read(fileSenderProvider.notifier)
-          .sendFile(
-            _sessionId!,
-            _file!.path,
-          );
+      // Navigate to progress screen to start transfer
+      await Navigator.of(context).pushReplacementNamed(
+        AppRoutes.senderProgress,
+        arguments: {
+          'sessionId': _sessionId,
+          'filePath': _file!.path,
+        },
+      );
     } on Exception catch (e) {
       if (!mounted) return;
 
@@ -161,7 +161,6 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
         context,
         ErrorMapper.mapError(e, context),
       );
-    } finally {
       setState(() => _isTransferring = false);
     }
   }
@@ -204,9 +203,11 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
         ? ref.watch(connectionStreamProvider(_sessionId!))
         : null;
 
-    // When receiver connects, start the transfer directly on this screen
+    // When receiver connects, start the transfer process (which navigates to progress screen)
     connectionState?.whenData((connection) {
-      if (connection.state == peer.ConnectionState.connected && mounted) {
+      if (connection.state == peer.ConnectionState.connected &&
+          mounted &&
+          !_isTransferring) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           if (mounted) {
             await _startTransferAfterConnection();
@@ -214,11 +215,6 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
         });
       }
     });
-
-    // Watch transfer progress from provider
-    final transferState = _isTransferring
-        ? ref.watch(fileSenderProvider)
-        : const AsyncValue.data(null);
 
     return Shortcuts(
       shortcuts: AppKeyboardShortcuts.shortcuts,
@@ -248,85 +244,11 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
               : SafeArea(
                   child: SingleChildScrollView(
                     padding: AppSpacing.screenPadding,
-                    child: _isTransferring
-                        ? _buildTransferContent(
-                            context,
-                            l10n,
-                            theme,
-                            colorScheme,
-                            transferState,
-                          )
-                        : _buildContent(context, l10n, theme, colorScheme),
+                    child: _buildContent(context, l10n, theme, colorScheme),
                   ),
                 ),
         ),
       ),
-    );
-  }
-
-  Widget _buildTransferContent(
-    BuildContext context,
-    S l10n,
-    ThemeData theme,
-    ColorScheme colorScheme,
-    AsyncValue<FileTransfer?> transferState,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        InstructionText(l10n.sendingFileTitle),
-        const SizedBox(height: AppSpacing.xxl),
-        transferState.when(
-          data: (transfer) {
-            if (transfer != null && transfer.progress != null) {
-              return TransferProgressWidget(
-                fileName: transfer.metadata.name,
-                progressPercentage: transfer.progress!.percentage / 100,
-                transferSpeedMbps: transfer.progress!.speedMBps,
-                onCancel: () =>
-                    ref.read(fileSenderProvider.notifier).cancelTransfer(),
-              );
-            }
-            return const Center(
-              child: Padding(
-                padding: EdgeInsets.all(AppSpacing.xl),
-                child: CircularProgressIndicator(),
-              ),
-            );
-          },
-          loading: () => const Center(
-            child: Padding(
-              padding: EdgeInsets.all(AppSpacing.xl),
-              child: CircularProgressIndicator(),
-            ),
-          ),
-          error: (error, _) => Card(
-            color: colorScheme.errorContainer,
-            child: Padding(
-              padding: AppSpacing.cardPadding,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.error_rounded,
-                    color: colorScheme.onErrorContainer,
-                  ),
-                  const SizedBox(width: AppSpacing.lg),
-                  Expanded(
-                    child: Text(
-                      error.toString(),
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: colorScheme.onErrorContainer,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: AppSpacing.xxl),
-        if (_file != null) _buildFileInfoCard(),
-      ],
     );
   }
 
@@ -336,8 +258,7 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
     ThemeData theme,
     ColorScheme colorScheme,
   ) {
-    final isDesktop =
-        Platform.isWindows || Platform.isMacOS || Platform.isLinux;
+    final isDesktop = PlatformHelper.isDesktop;
 
     if (isDesktop && _sessionId != null) {
       return Row(

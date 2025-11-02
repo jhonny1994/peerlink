@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -157,8 +156,7 @@ class _ReceiverAcceptScreenState extends ConsumerState<ReceiverAcceptScreen> {
     final l10n = S.of(context);
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDesktop =
-        Platform.isWindows || Platform.isMacOS || Platform.isLinux;
+    final isDesktop = PlatformHelper.isDesktop;
 
     // Use provided metadata or show placeholder
     final metadata = _fileMetadata;
@@ -210,12 +208,13 @@ class _ReceiverAcceptScreenState extends ConsumerState<ReceiverAcceptScreen> {
       children: [
         Expanded(
           flex: 2,
-          child: _buildFileInfoCard(
-            l10n,
-            theme,
-            colorScheme,
-            fileName,
-            fileSize,
+          child: DetailedFileInfoCard(
+            fileName: fileName,
+            fileSize: fileSize,
+            warningText: fileSize > 80 * 1024 * 1024
+                ? l10n.errorFileTooLarge
+                : null,
+            connectionInfo: l10n.homeInfoText,
           ),
         ),
         const SizedBox(width: AppSpacing.xxl),
@@ -271,12 +270,13 @@ class _ReceiverAcceptScreenState extends ConsumerState<ReceiverAcceptScreen> {
         const SizedBox(height: AppSpacing.xxl),
 
         // File info card
-        _buildFileInfoCard(
-          l10n,
-          theme,
-          colorScheme,
-          fileName,
-          fileSize,
+        DetailedFileInfoCard(
+          fileName: fileName,
+          fileSize: fileSize,
+          warningText: fileSize > 80 * 1024 * 1024
+              ? l10n.errorFileTooLarge
+              : null,
+          connectionInfo: l10n.homeInfoText,
         ),
         const SizedBox(height: AppSpacing.xxl),
 
@@ -303,115 +303,6 @@ class _ReceiverAcceptScreenState extends ConsumerState<ReceiverAcceptScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildFileInfoCard(
-    S l10n,
-    ThemeData theme,
-    ColorScheme colorScheme,
-    String fileName,
-    int fileSize,
-  ) {
-    return Card(
-      child: Padding(
-        padding: AppSpacing.cardPaddingLarge,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // File icon and name
-            Row(
-              children: [
-                Icon(
-                  Icons.insert_drive_file_rounded,
-                  size: AppIconSize.xxl,
-                  color: colorScheme.primary,
-                ),
-                const SizedBox(width: AppSpacing.lg),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        fileName,
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: AppSpacing.xs),
-                      Text(
-                        UiHelpers.formatFileSize(
-                          context,
-                          fileSize,
-                        ),
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.xl),
-
-            // File size warning if near limit
-            if (fileSize > 80 * 1024 * 1024) ...[
-              // 80 MB
-              Container(
-                padding: const EdgeInsets.all(AppSpacing.md),
-                decoration: BoxDecoration(
-                  color: colorScheme.errorContainer,
-                  borderRadius: AppRadius.borderRadiusSm,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.warning_rounded,
-                      size: AppIconSize.sm,
-                      color: colorScheme.onErrorContainer,
-                    ),
-                    const SizedBox(width: AppSpacing.sm),
-                    Expanded(
-                      child: Text(
-                        l10n.errorFileTooLarge,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: colorScheme.onErrorContainer,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-            ],
-
-            // Connection info
-            Divider(color: colorScheme.outlineVariant),
-            const SizedBox(height: AppSpacing.lg),
-            Row(
-              children: [
-                Icon(
-                  Icons.info_outline_rounded,
-                  size: AppIconSize.sm,
-                  color: colorScheme.onSurfaceVariant,
-                ),
-                const SizedBox(width: AppSpacing.sm),
-                Expanded(
-                  child: Text(
-                    l10n.homeInfoText,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

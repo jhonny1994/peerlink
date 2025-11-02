@@ -1,3 +1,4 @@
+export 'file_path_service.dart';
 export 'file_picker_service.dart';
 export 'network_service.dart';
 export 'permission_service.dart';

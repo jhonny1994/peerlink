@@ -30,7 +30,7 @@ class SettingsScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   // Theme Mode Selector
-                  _ThemeTile(
+                  _SelectionTile(
                     title: l10n.themeLight,
                     subtitle: l10n.themeLightDesc,
                     icon: Icons.light_mode_rounded,
@@ -44,7 +44,7 @@ class SettingsScreen extends ConsumerWidget {
                     indent: AppSpacing.md,
                     endIndent: AppSpacing.md,
                   ),
-                  _ThemeTile(
+                  _SelectionTile(
                     title: l10n.themeDark,
                     subtitle: l10n.themeDarkDesc,
                     icon: Icons.dark_mode_rounded,
@@ -58,7 +58,7 @@ class SettingsScreen extends ConsumerWidget {
                     indent: AppSpacing.md,
                     endIndent: AppSpacing.md,
                   ),
-                  _ThemeTile(
+                  _SelectionTile(
                     title: l10n.themeSystem,
                     subtitle: l10n.themeSystemDesc,
                     icon: Icons.brightness_auto_rounded,
@@ -78,7 +78,7 @@ class SettingsScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   // System Default
-                  _LanguageTile(
+                  _SelectionTile(
                     title: l10n.languageSystem,
                     subtitle: l10n.languageSystemDesc,
                     icon: Icons.language_rounded,
@@ -102,7 +102,7 @@ class SettingsScreen extends ConsumerWidget {
                         indent: AppSpacing.md,
                         endIndent: AppSpacing.md,
                       ),
-                      _LanguageTile(
+                      _SelectionTile(
                         title: nativeName,
                         subtitle: languageCode.toUpperCase(),
                         icon: Icons.language_rounded,
@@ -186,53 +186,11 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
-/// Theme selection tile widget.
-class _ThemeTile extends StatelessWidget {
-  const _ThemeTile({
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final String title;
-  final String subtitle;
-  final IconData icon;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return ListTile(
-      leading: Icon(
-        icon,
-        color: isSelected ? colorScheme.primary : null,
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-          color: isSelected ? colorScheme.primary : null,
-        ),
-      ),
-      subtitle: Text(subtitle),
-      trailing: isSelected
-          ? Icon(
-              Icons.check_circle_rounded,
-              color: colorScheme.primary,
-            )
-          : null,
-      onTap: onTap,
-    );
-  }
-}
-
-/// Language selection tile widget.
-class _LanguageTile extends StatelessWidget {
-  const _LanguageTile({
+/// Selection tile widget for settings options.
+///
+/// Used for both theme and language selection with consistent styling.
+class _SelectionTile extends StatelessWidget {
+  const _SelectionTile({
     required this.title,
     required this.subtitle,
     required this.icon,

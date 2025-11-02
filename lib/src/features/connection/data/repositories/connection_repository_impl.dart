@@ -14,7 +14,8 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   final WebRtcService webRtcService;
   final DataChannelService dataChannelService;
 
-  final _connectionController = StreamController<PeerConnection>.broadcast();
+  late StreamController<PeerConnection> _connectionController =
+      StreamController<PeerConnection>.broadcast();
   PeerConnection? _currentConnection;
   StreamSubscription<ConnectionState>? _stateSubscription;
   StreamSubscription<RTCIceCandidate>? _iceCandidateSubscription;
@@ -27,6 +28,12 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   Future<PeerConnection> createConnection() async {
     // Clean up any previous connection state
     await _cleanupSubscriptions();
+
+    // Close and recreate the broadcast controller to prevent memory leaks
+    if (!_connectionController.isClosed) {
+      await _connectionController.close();
+    }
+    _connectionController = StreamController<PeerConnection>.broadcast();
 
     // Generate unique session ID and verify it doesn't exist in Firestore
     var sessionId = '';
@@ -120,6 +127,12 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
   Future<PeerConnection> joinConnection(String sessionId) async {
     // Clean up any previous connection state
     await _cleanupSubscriptions();
+
+    // Close and recreate the broadcast controller to prevent memory leaks
+    if (!_connectionController.isClosed) {
+      await _connectionController.close();
+    }
+    _connectionController = StreamController<PeerConnection>.broadcast();
 
     // Get session from Firestore
     final session = await signalingService.getSession(sessionId);

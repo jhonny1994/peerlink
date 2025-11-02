@@ -4,22 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerlink/src/src.dart';
 
-/// Receiver progress screen.
+/// Sender progress screen.
 ///
 /// Shows real-time file transfer progress with percentage and speed.
-/// Uses TransferProgressWidget for consistent UI with sender.
-class ReceiverProgressScreen extends ConsumerStatefulWidget {
-  const ReceiverProgressScreen({super.key});
+/// Uses TransferProgressWidget for consistent UI with receiver.
+class SenderProgressScreen extends ConsumerStatefulWidget {
+  const SenderProgressScreen({super.key});
 
   @override
-  ConsumerState<ReceiverProgressScreen> createState() =>
-      _ReceiverProgressScreenState();
+  ConsumerState<SenderProgressScreen> createState() =>
+      _SenderProgressScreenState();
 }
 
-class _ReceiverProgressScreenState
-    extends ConsumerState<ReceiverProgressScreen> {
+class _SenderProgressScreenState extends ConsumerState<SenderProgressScreen> {
   String? _sessionId;
-  String? _savePath;
+  String? _filePath;
   bool _hasStartedTransfer = false;
 
   @override
@@ -31,43 +30,28 @@ class _ReceiverProgressScreenState
       final args =
           ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
       _sessionId = args?['sessionId'] as String?;
+      _filePath = args?['filePath'] as String?;
 
-      // Get platform-specific save directory
-      if (_sessionId != null && _savePath == null && !_hasStartedTransfer) {
+      // Start transfer
+      if (_sessionId != null &&
+          _filePath != null &&
+          !_hasStartedTransfer &&
+          mounted) {
         _hasStartedTransfer = true;
-        unawaited(Future.microtask(_initializeSavePathAndTransfer));
+        unawaited(Future.microtask(_startTransfer));
       }
     }
   }
 
-  /// Initialize save path based on platform and start transfer
-  Future<void> _initializeSavePathAndTransfer() async {
-    try {
-      final filePathService = ref.read(filePathServiceProvider);
-      final directory = await filePathService.getDownloadDirectory();
-      _savePath = directory.path;
-
-      // Start transfer
-      unawaited(Future.microtask(_startTransfer));
-    } on Exception catch (e) {
-      if (!mounted) return;
-
-      UiHelpers.showErrorSnackbar(
-        context,
-        ErrorMapper.mapError(e, context),
-      );
-    }
-  }
-
   Future<void> _startTransfer() async {
-    if (_sessionId == null || _savePath == null) return;
+    if (_sessionId == null || _filePath == null) return;
 
     try {
       await ref
-          .read(fileReceiverProvider.notifier)
-          .receiveFile(
+          .read(fileSenderProvider.notifier)
+          .sendFile(
             _sessionId!,
-            _savePath!,
+            _filePath!,
           );
     } on Exception catch (e) {
       if (!mounted) return;
@@ -90,7 +74,7 @@ class _ReceiverProgressScreenState
     );
 
     if (confirmed && mounted) {
-      await ref.read(fileReceiverProvider.notifier).cancelTransfer();
+      await ref.read(fileSenderProvider.notifier).cancelTransfer();
 
       if (mounted) {
         AppNavigator.popUntilHome(context);
@@ -101,7 +85,7 @@ class _ReceiverProgressScreenState
   @override
   Widget build(BuildContext context) {
     final l10n = S.of(context);
-    final transferState = ref.watch(fileReceiverProvider)
+    final transferState = ref.watch(fileSenderProvider)
       // Handle transfer completion
       ..whenData((transfer) {
         if (transfer != null &&
@@ -110,7 +94,7 @@ class _ReceiverProgressScreenState
           WidgetsBinding.instance.addPostFrameCallback((_) async {
             await AppNavigator.pushReplacementNamed<void, void>(
               context,
-              AppRoutes.receiverComplete,
+              AppRoutes.senderComplete,
             );
           });
         }
@@ -138,7 +122,7 @@ class _ReceiverProgressScreenState
       canPop: false,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(l10n.receivingFileTitle),
+          title: Text(l10n.sendingFileTitle),
           automaticallyImplyLeading: false,
         ),
         body: SafeArea(
@@ -147,7 +131,7 @@ class _ReceiverProgressScreenState
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (_sessionId != null && _savePath != null)
+                if (_sessionId != null && _filePath != null)
                   transferState.when(
                     data: (transfer) {
                       if (transfer == null || transfer.progress == null) {
@@ -159,7 +143,6 @@ class _ReceiverProgressScreenState
                         progressPercentage: transfer.progress!.percentage / 100,
                         transferSpeedMbps: transfer.progress!.speedMBps,
                         onCancel: _handleCancel,
-                        isSending: false,
                       );
                     },
                     loading: () =>
