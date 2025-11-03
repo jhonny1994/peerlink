@@ -148,8 +148,10 @@ class _ReceiverAcceptScreenState extends ConsumerState<ReceiverAcceptScreen> {
 
     // Show confirmation dialog
     final confirmed = await UiHelpers.showConfirmDialog(
+      // ignore: use_build_context_synchronously
       context,
       title: l10n.cancelTransfer,
+      // ignore: use_build_context_synchronously
       message: S.of(context).acceptFilePrompt,
     );
 

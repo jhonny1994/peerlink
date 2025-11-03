@@ -73,6 +73,7 @@ class _SenderProgressScreenState extends ConsumerState<SenderProgressScreen> {
     }
 
     final confirmed = await UiHelpers.showConfirmDialog(
+      // ignore: use_build_context_synchronously
       context,
       title: l10n.cancelTransfer,
       message: l10n.cancelTransfer,

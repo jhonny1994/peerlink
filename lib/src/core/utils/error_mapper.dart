@@ -13,6 +13,11 @@ class ErrorMapper {
   static String mapError(Object error, BuildContext context) {
     final l10n = S.of(context);
 
+    // Connection exceptions
+    if (error is SessionExpiredException) {
+      return l10n.errorSessionExpired;
+    }
+
     // File picker exceptions
     if (error is FilePickerException) {
       switch (error.code) {

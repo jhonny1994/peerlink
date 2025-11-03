@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
@@ -41,16 +44,23 @@ class _MainAppState extends ConsumerState<MainApp> {
   @override
   void initState() {
     super.initState();
-    // Initialize FCM in background
-    _initializeFcm();
+    // Initialize FCM in background - non-blocking
+    unawaited(_initializeFcm());
   }
 
+  /// Initialize Firebase Cloud Messaging.
+  ///
+  /// Runs asynchronously on app start to obtain FCM token.
+  /// Fails silently if FCM is unavailable or permission denied.
   Future<void> _initializeFcm() async {
     try {
       final fcmService = ref.read(fcmServiceProvider);
       await fcmService.initialize();
-    } catch (e) {
-      // Silently fail - FCM is optional
+    } on Exception catch (e) {
+      // Silently fail - FCM is optional for core functionality
+      if (kDebugMode) {
+        debugPrint('FCM initialization failed in main: $e');
+      }
     }
   }
 

@@ -67,7 +67,15 @@ class ConnectionCreator extends _$ConnectionCreator {
     return null;
   }
 
-  /// Create a new connection and return session ID
+  /// Create a new connection and return session ID.
+  ///
+  /// Initializes WebRTC connection and creates Firestore session document.
+  /// The session contains:
+  /// - 6-digit code for receiver to join
+  /// - SDP offer for WebRTC negotiation
+  /// - Timestamps for expiration tracking
+  ///
+  /// Throws exceptions on failure (handled by AsyncValue).
   Future<void> createConnection() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -76,14 +84,21 @@ class ConnectionCreator extends _$ConnectionCreator {
     });
   }
 
-  /// Close the connection
+  /// Close the connection and cleanup session.
+  ///
+  /// Performs:
+  /// 1. Closes WebRTC peer connection
+  /// 2. Closes data channels
+  /// 3. Deletes Firestore session document (best-effort)
+  ///
+  /// Cleanup failure doesn't affect connection closure.
   Future<void> closeConnection() async {
     final connection = state.value;
     if (connection != null) {
       final repository = ref.read(connectionRepositoryProvider);
       await repository.closeConnection(connection.sessionId);
 
-      // Cleanup session from Firestore (sender)
+      // Cleanup session from Firestore (sender-side)
       final cleanupService = ref.read(sessionCleanupServiceProvider);
       await cleanupService.deleteSession(connection.sessionId);
 
@@ -101,7 +116,19 @@ class ConnectionJoiner extends _$ConnectionJoiner {
     return null;
   }
 
-  /// Join an existing connection with session ID
+  /// Join an existing connection with session ID.
+  ///
+  /// Validates session before attempting connection:
+  /// - Checks session exists in Firestore
+  /// - Verifies session not expired (< 15 minutes old)
+  /// - Throws [SessionExpiredException] if validation fails
+  ///
+  /// If valid:
+  /// - Retrieves SDP offer from session
+  /// - Creates WebRTC answer
+  /// - Establishes peer connection
+  ///
+  /// All errors are wrapped in AsyncValue for UI consumption.
   Future<void> joinConnection(String sessionId) async {
     // Validate session before joining
     final cleanupService = ref.read(sessionCleanupServiceProvider);
@@ -109,7 +136,7 @@ class ConnectionJoiner extends _$ConnectionJoiner {
 
     if (!isValid) {
       state = AsyncValue.error(
-        Exception('Session expired or not found'),
+        const SessionExpiredException(),
         StackTrace.current,
       );
       return;
@@ -122,14 +149,21 @@ class ConnectionJoiner extends _$ConnectionJoiner {
     });
   }
 
-  /// Close the connection
+  /// Close the connection and cleanup session.
+  ///
+  /// Performs:
+  /// 1. Closes WebRTC peer connection
+  /// 2. Closes data channels
+  /// 3. Deletes Firestore session document (best-effort)
+  ///
+  /// Cleanup failure doesn't affect connection closure.
   Future<void> closeConnection() async {
     final connection = state.value;
     if (connection != null) {
       final repository = ref.read(connectionRepositoryProvider);
       await repository.closeConnection(connection.sessionId);
 
-      // Cleanup session from Firestore (receiver)
+      // Cleanup session from Firestore (receiver-side)
       final cleanupService = ref.read(sessionCleanupServiceProvider);
       await cleanupService.deleteSession(connection.sessionId);
 

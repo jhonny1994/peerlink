@@ -1,12 +1,16 @@
 rules_version = '2';
+
+// PeerLink Firestore Security Rules
+// Optimized for Firebase free tier with client-side session management
 service cloud.firestore {
   match /databases/{database}/documents {
+    
     // Helper function to check if session is expired (15 minutes)
     function isSessionExpired() {
       return request.time > resource.data.createdAt + duration.value(15, 'm');
     }
     
-    // Helper function to validate session data
+    // Helper function to validate session data structure
     function isValidSession() {
       return request.resource.data.keys().hasAll(['sessionId', 'code', 'createdAt', 'expiresAt'])
         && request.resource.data.sessionId is string
@@ -19,11 +23,11 @@ service cloud.firestore {
     // Sessions collection for WebRTC signaling
     match /sessions/{sessionId} {
       // Allow anyone to read sessions (needed for receiver to get session by code)
-      // But only if not expired
+      // Security: Session codes are 6 digits (1M combinations), 15-min expiry
       allow read: if true;
       
       // Allow anyone to create a new session with valid data
-      // Rate limit: Max 10 sessions per hour per IP (enforced client-side)
+      // Validates: structure, expiry time within bounds (< 20 minutes)
       allow create: if isValidSession()
         && request.resource.data.expiresAt > request.time
         && request.resource.data.expiresAt < request.time + duration.value(20, 'm');
@@ -33,7 +37,8 @@ service cloud.firestore {
       allow update: if request.time < resource.data.expiresAt
         && !isSessionExpired();
       
-      // Allow deletion of sessions (for cleanup)
+      // Allow deletion of sessions (for client-side cleanup)
+      // Free tier alternative to server-side TTL
       allow delete: if true;
     }
     
