@@ -37,6 +37,13 @@ ConnectionTimeoutService connectionTimeoutService(Ref ref) {
   return ConnectionTimeoutService();
 }
 
+/// Provider for SessionCleanupService
+@Riverpod(keepAlive: true)
+SessionCleanupService sessionCleanupService(Ref ref) {
+  final firestore = ref.watch(firestoreProvider);
+  return SessionCleanupService(firestore: firestore);
+}
+
 /// Provider for ConnectionRepository
 @Riverpod(keepAlive: true)
 ConnectionRepository connectionRepository(Ref ref) {
@@ -75,6 +82,11 @@ class ConnectionCreator extends _$ConnectionCreator {
     if (connection != null) {
       final repository = ref.read(connectionRepositoryProvider);
       await repository.closeConnection(connection.sessionId);
+
+      // Cleanup session from Firestore (sender)
+      final cleanupService = ref.read(sessionCleanupServiceProvider);
+      await cleanupService.deleteSession(connection.sessionId);
+
       state = const AsyncValue.data(null);
     }
   }
@@ -91,6 +103,18 @@ class ConnectionJoiner extends _$ConnectionJoiner {
 
   /// Join an existing connection with session ID
   Future<void> joinConnection(String sessionId) async {
+    // Validate session before joining
+    final cleanupService = ref.read(sessionCleanupServiceProvider);
+    final isValid = await cleanupService.isSessionValid(sessionId);
+
+    if (!isValid) {
+      state = AsyncValue.error(
+        Exception('Session expired or not found'),
+        StackTrace.current,
+      );
+      return;
+    }
+
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(connectionRepositoryProvider);
@@ -104,6 +128,11 @@ class ConnectionJoiner extends _$ConnectionJoiner {
     if (connection != null) {
       final repository = ref.read(connectionRepositoryProvider);
       await repository.closeConnection(connection.sessionId);
+
+      // Cleanup session from Firestore (receiver)
+      final cleanupService = ref.read(sessionCleanupServiceProvider);
+      await cleanupService.deleteSession(connection.sessionId);
+
       state = const AsyncValue.data(null);
     }
   }

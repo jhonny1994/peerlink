@@ -42,3 +42,11 @@ WakelockService wakelockService(Ref ref) {
 FilePathService filePathService(Ref ref) {
   return FilePathService();
 }
+
+/// Provider for [FcmService].
+///
+/// Singleton instance for Firebase Cloud Messaging management.
+@Riverpod(keepAlive: true)
+FcmService fcmService(Ref ref) {
+  return FcmService();
+}

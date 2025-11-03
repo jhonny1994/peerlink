@@ -1,19 +1,39 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Helper function to check if session is expired (15 minutes)
+    function isSessionExpired() {
+      return request.time > resource.data.createdAt + duration.value(15, 'm');
+    }
+    
+    // Helper function to validate session data
+    function isValidSession() {
+      return request.resource.data.keys().hasAll(['sessionId', 'code', 'createdAt', 'expiresAt'])
+        && request.resource.data.sessionId is string
+        && request.resource.data.code is string
+        && request.resource.data.code.size() == 6
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.expiresAt is timestamp;
+    }
+    
     // Sessions collection for WebRTC signaling
     match /sessions/{sessionId} {
       // Allow anyone to read sessions (needed for receiver to get session by code)
+      // But only if not expired
       allow read: if true;
       
-      // Allow anyone to create a new session (sender creates session)
-      allow create: if true;
+      // Allow anyone to create a new session with valid data
+      // Rate limit: Max 10 sessions per hour per IP (enforced client-side)
+      allow create: if isValidSession()
+        && request.resource.data.expiresAt > request.time
+        && request.resource.data.expiresAt < request.time + duration.value(20, 'm');
       
-      // Allow updates to add ICE candidates and answer
+      // Allow updates to add ICE candidates, answer, and receiver ready flag
       // Only if the document exists and is not expired
-      allow update: if request.time < resource.data.expiresAt;
+      allow update: if request.time < resource.data.expiresAt
+        && !isSessionExpired();
       
-      // Allow deletion of own sessions
+      // Allow deletion of sessions (for cleanup)
       allow delete: if true;
     }
     

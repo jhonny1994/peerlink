@@ -30,11 +30,32 @@ void main() async {
   );
 }
 
-class MainApp extends ConsumerWidget {
+class MainApp extends ConsumerStatefulWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends ConsumerState<MainApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize FCM in background
+    _initializeFcm();
+  }
+
+  Future<void> _initializeFcm() async {
+    try {
+      final fcmService = ref.read(fcmServiceProvider);
+      await fcmService.initialize();
+    } catch (e) {
+      // Silently fail - FCM is optional
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final themeMode = ref.watch(themeModeProvider);
     final locale = ref.watch(localeProvider);
 

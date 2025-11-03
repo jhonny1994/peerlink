@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:peerlink/src/core/core.dart';
+import 'package:peerlink/src/src.dart';
 
 /// Service for handling connection timeouts
 class ConnectionTimeoutService {

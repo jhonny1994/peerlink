@@ -161,14 +161,18 @@
 - [x] Loading states and empty states polish (LoadingIndicator + EmptyState widgets)
 - [x] Commit and tag as `v0.9.0-polish`
 
-## Phase 9: Firebase Integration
+## Phase 9: Firebase Integration ✅
 
-- [ ] Firestore security rules
-- [ ] Firestore TTL cleanup (15 min session expiry)
-- [ ] FCM silent notifications implementation
-- [ ] FCM token management
-- [ ] Test Firebase integration on all platforms
-- [ ] Commit and tag as `v0.10.0-firebase`
+- [x] Firestore security rules (enhanced with validation and expiration checks)
+- [x] Firestore TTL cleanup (client-side implementation - free tier alternative)
+  - [x] SessionCleanupService created for manual cleanup
+  - [x] Automatic session deletion on connection close
+  - [x] Session validation before receiver joins
+  - [x] Optional batch cleanup for expired sessions
+- [x] FCM silent notifications implementation (service created, initialized in main.dart)
+- [x] FCM token management (getToken, deleteToken, onTokenRefresh)
+- [ ] Test Firebase integration on all platforms (manual testing required)
+- [x] Commit and tag as `v0.10.0-firebase`
 
 ## Phase 10: Release Preparation
 

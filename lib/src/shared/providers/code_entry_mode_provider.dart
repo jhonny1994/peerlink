@@ -1,4 +1,4 @@
-import 'package:peerlink/src/shared/providers/shared_preferences_provider.dart';
+import 'package:peerlink/src/src.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'code_entry_mode_provider.g.dart';

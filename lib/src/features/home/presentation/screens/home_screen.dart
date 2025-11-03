@@ -129,7 +129,9 @@ class HomeScreen extends ConsumerWidget {
         if (!isDesktop) {
           await HapticFeedback.mediumImpact();
         }
-        await Navigator.of(context).pushNamed(AppRoutes.senderFilePicker);
+        if (mounted) {
+  await Navigator.of(context).pushNamed(AppRoutes.senderFilePicker);
+}
       },
       icon: Icon(
         Icons.send_rounded,
