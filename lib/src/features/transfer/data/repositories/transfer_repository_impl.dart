@@ -31,14 +31,15 @@ class TransferRepositoryImpl implements TransferRepository {
       // Validate file
 
       if (!await chunkingService.validateFile(filePath)) {
-        throw Exception('File not found or not readable: $filePath');
+        throw TransferException.fileNotReadable(filePath);
       }
 
       final fileSize = await chunkingService.getFileSize(filePath);
 
       if (!validateFileSize(fileSize)) {
-        throw Exception(
-          'File size exceeds maximum limit of ${TransferConstants.maxFileSizeMb}MB',
+        throw FilePickerException(
+          FilePickerErrorCode.fileTooLarge,
+          '${(fileSize / (1024 * 1024)).toStringAsFixed(1)} MB',
         );
       }
 
@@ -97,7 +98,7 @@ class TransferRepositoryImpl implements TransferRepository {
       await for (final chunk in chunkingService.readFileInChunks(filePath)) {
         // Check if transfer was cancelled
         if (_cancelledTransfers[transferId] ?? false) {
-          throw Exception('Transfer cancelled by user');
+          throw const TransferException.cancelled();
         }
 
         // Wait if buffer is full
@@ -146,9 +147,8 @@ class TransferRepositoryImpl implements TransferRepository {
       }
 
       if (bufferedAmount > 0) {
-        throw Exception(
-          'Transfer timeout: WebRTC buffer did not drain after 30 seconds. '
-          'File may not have been fully received.',
+        throw TransferException.stalled(
+          'WebRTC buffer did not drain after 30 seconds',
         );
       }
 
@@ -215,7 +215,6 @@ class TransferRepositoryImpl implements TransferRepository {
       FileMetadata? metadata;
       String? outputPath;
       var bytesReceived = 0;
-      var chunkCount = 0;
       DateTime? startTime;
       var metadataReceived = false;
 
@@ -223,7 +222,7 @@ class TransferRepositoryImpl implements TransferRepository {
       await for (final data in dataStream) {
         // Check if transfer was cancelled
         if (_cancelledTransfers[transferId] ?? false) {
-          throw Exception('Transfer cancelled by user');
+          throw const TransferException.cancelled();
         }
 
         // First, try to parse as metadata
@@ -261,8 +260,9 @@ class TransferRepositoryImpl implements TransferRepository {
 
                 // Safety limit to prevent infinite loop
                 if (conflictCounter > 1000) {
-                  throw Exception(
-                    'Too many file conflicts. Cannot find available file name.',
+                  throw const TransferException(
+                    'file_conflict_limit',
+                    'Too many file conflicts',
                   );
                 }
               }
@@ -296,17 +296,19 @@ class TransferRepositoryImpl implements TransferRepository {
           } on Exception {
             // If parsing fails and we haven't received metadata yet, this is wrong
             if (!metadataReceived) {
-              throw Exception('Expected metadata but received invalid data');
+              throw const TransferException.metadataMissing(
+                'Invalid metadata format',
+              );
             }
           }
         }
 
         // If we reach here, it's a file chunk
         if (metadata == null || outputPath == null || startTime == null) {
-          throw Exception('Received chunk before metadata');
+          throw const TransferException.metadataMissing(
+            'Chunk received before metadata',
+          );
         }
-
-        chunkCount++;
 
         await chunkingService.writeChunk(outputPath, data);
         bytesReceived += data.length;
@@ -337,13 +339,13 @@ class TransferRepositoryImpl implements TransferRepository {
       }
 
       if (metadata == null || outputPath == null) {
-        throw Exception('Transfer completed without receiving metadata');
+        throw const TransferException.metadataMissing();
       }
 
       // Check if we received all bytes
       if (bytesReceived < metadata.size) {
-        throw Exception(
-          'Incomplete transfer: received $bytesReceived bytes but expected ${metadata.size} bytes ($chunkCount chunks)',
+        throw TransferException.stalled(
+          'Incomplete transfer: received $bytesReceived/${metadata.size} bytes',
         );
       }
 
@@ -369,8 +371,7 @@ class TransferRepositoryImpl implements TransferRepository {
       if (!hashService.verifyHash(calculatedHash, metadata.hash)) {
         // Delete corrupted file
         await File(outputPath).delete();
-        // ErrorMapper will map this to errorFileVerificationFailed
-        throw Exception('SHA256 hash mismatch - file verification failed');
+        throw const TransferException.hashMismatch();
       }
 
       // Transfer complete

@@ -46,7 +46,7 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
     }
 
     if (sessionId.isEmpty) {
-      throw Exception(
+      throw const ConnectionException.connectionFailed(
         'Failed to generate unique session ID after 6 attempts',
       );
     }
@@ -137,7 +137,7 @@ class ConnectionRepositoryImpl implements ConnectionRepository {
     // Get session from Firestore
     final session = await signalingService.getSession(sessionId);
     if (session == null) {
-      throw Exception('Session not found: $sessionId');
+      throw ConnectionException.sessionNotFound(sessionId);
     }
 
     // Create peer connection

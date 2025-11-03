@@ -48,7 +48,10 @@ class _ReceiverCodeEntryScreenState
       final hasConnection = await networkService.hasConnection();
 
       if (!hasConnection) {
-        throw Exception('No internet connection');
+        throw const ConnectionException(
+          'network_error',
+          'No internet connection',
+        );
       }
 
       // CRITICAL: Reset any previous transfer state to clear old metadata
@@ -73,7 +76,7 @@ class _ReceiverCodeEntryScreenState
             const Duration(seconds: 30),
             onTimeout: (sink) {
               sink.addError(
-                Exception('Connection timeout - please try again'),
+                const ConnectionException.connectionTimeout(),
               );
             },
           )
@@ -81,15 +84,16 @@ class _ReceiverCodeEntryScreenState
             (connection) {
               if (connection.state ==
                   connection_entities.ConnectionState.failed) {
-                throw Exception(
-                  'Connection failed - could not connect to sender',
-                );
+                throw const ConnectionException.connectionFailed();
               }
               return connection.state ==
                   connection_entities.ConnectionState.connected;
             },
             orElse: () {
-              throw Exception('Connection state unknown');
+              throw const ConnectionException(
+                'connection_unknown',
+                'Connection state unknown',
+              );
             },
           );
 

@@ -129,7 +129,7 @@ class _SenderFilePickerScreenState
       const maxFileSizeBytes = 100 * 1024 * 1024; // 100 MB
 
       if (fileSize > maxFileSizeBytes) {
-        throw const FilePickerException(FilePickerErrorCode.fileTooLarge);
+        throw FilePickerException(FilePickerErrorCode.fileTooLarge);
       }
 
       if (!mounted) return;

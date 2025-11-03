@@ -58,7 +58,7 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
           _isInitializing = false;
         });
       } else {
-        throw Exception('Failed to create connection');
+        throw const ConnectionException.connectionFailed();
       }
     } on Exception catch (e) {
       if (!mounted) return;
@@ -124,7 +124,7 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
         final session = await signalingService.getSession(_sessionId!);
 
         if (session == null) {
-          throw Exception('Session not found');
+          throw const ConnectionException.sessionNotFound();
         }
 
         if (session.receiverReady) {
@@ -138,7 +138,7 @@ class _SenderCodeScreenState extends ConsumerState<SenderCodeScreen> {
       if (!mounted) return;
 
       if (!receiverReady) {
-        throw Exception('Receiver did not accept within 30 seconds');
+        throw const ConnectionException.connectionTimeout();
       }
 
       // Give receiver a brief moment to prepare

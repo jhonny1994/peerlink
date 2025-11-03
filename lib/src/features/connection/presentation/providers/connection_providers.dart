@@ -121,7 +121,7 @@ class ConnectionJoiner extends _$ConnectionJoiner {
   /// Validates session before attempting connection:
   /// - Checks session exists in Firestore
   /// - Verifies session not expired (< 15 minutes old)
-  /// - Throws [SessionExpiredException] if validation fails
+  /// - Throws [ConnectionException.sessionExpired] if validation fails
   ///
   /// If valid:
   /// - Retrieves SDP offer from session
@@ -136,7 +136,7 @@ class ConnectionJoiner extends _$ConnectionJoiner {
 
     if (!isValid) {
       state = AsyncValue.error(
-        const SessionExpiredException(),
+        const ConnectionException.sessionExpired(),
         StackTrace.current,
       );
       return;

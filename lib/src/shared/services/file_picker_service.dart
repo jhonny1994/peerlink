@@ -42,7 +42,7 @@ class FilePickerService {
 
       // Platform doesn't support file paths (shouldn't happen with modern file_picker)
       if (path == null) {
-        throw const FilePickerException(FilePickerErrorCode.pathUnavailable);
+        throw FilePickerException(FilePickerErrorCode.pathUnavailable);
       }
 
       final file = File(path);

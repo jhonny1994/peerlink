@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:peerlink/src/src.dart';
 
-/// Maps technical errors to user-friendly messages.
+/// Maps technical errors to user-friendly localized messages.
 ///
-/// Follows the error mapping guidelines from copilot-instructions.md.
+/// Follows a two-tier approach:
+/// 1. Typed exceptions (AppException subclasses) - Preferred, type-safe
+/// 2. String-based error matching - Fallback for legacy/external errors
+///
+/// All user-facing error messages use l10n for proper internationalization.
 class ErrorMapper {
   ErrorMapper._();
 
@@ -13,25 +17,71 @@ class ErrorMapper {
   static String mapError(Object error, BuildContext context) {
     final l10n = S.of(context);
 
-    // Connection exceptions
-    if (error is SessionExpiredException) {
-      return l10n.errorSessionExpired;
+    // Type-safe exception handling (preferred)
+    if (error is AppException) {
+      return _mapAppException(error, l10n);
     }
 
-    // File picker exceptions
-    if (error is FilePickerException) {
-      switch (error.code) {
-        case FilePickerErrorCode.pathUnavailable:
-          return l10n.errorFilePathUnavailable;
-        case FilePickerErrorCode.fileNotFound:
-          return l10n.errorFileNotFound;
-        case FilePickerErrorCode.fileTooLarge:
-          return l10n.errorFileTooLarge;
-        case FilePickerErrorCode.pickFailed:
-          return l10n.errorFilePickerFailed;
-      }
-    }
+    // Legacy string-based error matching (fallback)
+    return _mapLegacyError(error, l10n);
+  }
 
+  /// Maps typed AppException subclasses to localized messages.
+  static String _mapAppException(AppException exception, S l10n) {
+    switch (exception.code) {
+      // File picker errors
+      case 'file_path_unavailable':
+        return l10n.errorFilePathUnavailable;
+      case 'file_not_found':
+        return l10n.errorFileNotFound;
+      case 'file_too_large':
+        return l10n.errorFileTooLarge;
+      case 'file_pick_failed':
+        return l10n.errorFilePickerFailed;
+
+      // Connection errors
+      case 'session_expired':
+        return l10n.errorSessionExpired;
+      case 'session_not_found':
+        return l10n.errorInvalidCode;
+      case 'connection_failed':
+        return l10n.errorCouldNotConnect;
+      case 'connection_timeout':
+        return l10n.errorConnectionTimeout;
+      case 'network_error':
+        return l10n.errorNetwork;
+      case 'connection_unknown':
+        return l10n.errorCouldNotConnect;
+
+      // Transfer errors
+      case 'transfer_cancelled':
+        return l10n.errorUnexpected; // Or add specific l10n.transferCancelled
+      case 'transfer_stalled':
+        return l10n.errorTransferStalled;
+      case 'hash_mismatch':
+        return l10n.errorFileVerificationFailed;
+      case 'channel_closed':
+        return l10n.errorCouldNotConnect;
+      case 'metadata_missing':
+        return l10n.errorUnexpected;
+      case 'file_not_readable':
+        return l10n.errorFileNotFound;
+      case 'file_conflict_limit':
+        return l10n.errorUnexpected;
+
+      // Fallback for unknown codes
+      default:
+        return l10n.errorUnexpected;
+    }
+  }
+
+  /// Maps legacy string-based errors to localized messages.
+  ///
+  /// Used for:
+  /// - StateError, TimeoutException, generic Exception
+  /// - External library errors
+  /// - Errors that haven't been migrated to typed exceptions yet
+  static String _mapLegacyError(Object error, S l10n) {
     final errorString = error.toString().toLowerCase();
 
     // StateError and connection errors
