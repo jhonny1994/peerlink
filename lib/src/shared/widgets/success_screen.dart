@@ -56,6 +56,37 @@ class SuccessScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: AppSpacing.xxxl),
+
+                // Efficiency Badge
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: colorScheme.tertiaryContainer,
+                    borderRadius: AppRadius.borderRadiusLg,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.bolt_rounded,
+                        size: AppIconSize.sm,
+                        color: colorScheme.onTertiaryContainer,
+                      ),
+                      const SizedBox(width: AppSpacing.xs),
+                      Text(
+                        'Data Saved (P2P)',
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: colorScheme.onTertiaryContainer,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xxxl),
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton.icon(

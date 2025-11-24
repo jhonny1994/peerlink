@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:peerlink/src/src.dart';
 
@@ -76,20 +77,23 @@ class UiHelpers {
 
     return showDialog<void>(
       context: context,
-      builder: (context) => AlertDialog(
-        icon: Icon(
-          Icons.error_outline_rounded,
-          color: Theme.of(context).colorScheme.error,
-          size: AppIconSize.xxl,
-        ),
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(buttonText ?? l10n.ok),
+      builder: (context) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: AlertDialog(
+          icon: Icon(
+            Icons.error_outline_rounded,
+            color: Theme.of(context).colorScheme.error,
+            size: AppIconSize.xxl,
           ),
-        ],
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(buttonText ?? l10n.ok),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -114,25 +118,28 @@ class UiHelpers {
       builder: (context) {
         final colorScheme = Theme.of(context).colorScheme;
 
-        return AlertDialog(
-          title: Text(title),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(cancelText ?? l10n.cancel),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              style: isDangerousAction
-                  ? FilledButton.styleFrom(
-                      backgroundColor: colorScheme.error,
-                      foregroundColor: colorScheme.onError,
-                    )
-                  : null,
-              child: Text(confirmText ?? l10n.confirm),
-            ),
-          ],
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: AlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(cancelText ?? l10n.cancel),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                style: isDangerousAction
+                    ? FilledButton.styleFrom(
+                        backgroundColor: colorScheme.error,
+                        foregroundColor: colorScheme.onError,
+                      )
+                    : null,
+                child: Text(confirmText ?? l10n.confirm),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -154,15 +161,18 @@ class UiHelpers {
     await showDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (context) => PopScope(
-        canPop: false,
-        child: AlertDialog(
-          content: Row(
-            children: [
-              const CircularProgressIndicator(),
-              const SizedBox(width: AppSpacing.xl),
-              Expanded(child: Text(message ?? l10n.pleaseWait)),
-            ],
+      builder: (context) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: PopScope(
+          canPop: false,
+          child: AlertDialog(
+            content: Row(
+              children: [
+                const CircularProgressIndicator(),
+                const SizedBox(width: AppSpacing.xl),
+                Expanded(child: Text(message ?? l10n.pleaseWait)),
+              ],
+            ),
           ),
         ),
       ),

@@ -147,7 +147,7 @@ class TransferRepositoryImpl implements TransferRepository {
       }
 
       if (bufferedAmount > 0) {
-        throw TransferException.stalled(
+        throw const TransferException.stalled(
           'WebRTC buffer did not drain after 30 seconds',
         );
       }

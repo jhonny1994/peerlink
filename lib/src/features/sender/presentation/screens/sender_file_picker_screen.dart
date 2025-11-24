@@ -171,51 +171,60 @@ class _SenderFilePickerScreenState
             // Desktop drag-and-drop zone
             if (_isDesktop) ...[
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
+                child: Semantics(
+                  label: l10n.dragDropFile,
+                  hint: l10n.dropFileHere,
+                  button: true,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: _isDragging
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.outline,
+                        width: _isDragging ? 2 : 1,
+                      ),
+                      borderRadius: AppRadius.borderRadiusLg,
                       color: _isDragging
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.outline,
-                      width: _isDragging ? 2 : 1,
+                          ? Theme.of(
+                              context,
+                            ).colorScheme.primaryContainer.withValues(
+                              alpha: 0.1,
+                            )
+                          : null,
                     ),
-                    borderRadius: AppRadius.borderRadiusLg,
-                    color: _isDragging
-                        ? Theme.of(
-                            context,
-                          ).colorScheme.primaryContainer.withValues(alpha: 0.1)
-                        : null,
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          _isDragging
-                              ? Icons.file_download_rounded
-                              : Icons.cloud_upload_outlined,
-                          size: AppIconSize.huge,
-                          color: _isDragging
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                        const SizedBox(height: AppSpacing.lg),
-                        Text(
-                          _isDragging ? l10n.dropFileHere : l10n.dragDropFile,
-                          style: Theme.of(context).textTheme.titleLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                        Text(
-                          l10n.orClickToSelect,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
-                              ),
-                        ),
-                      ],
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            _isDragging
+                                ? Icons.file_download_rounded
+                                : Icons.cloud_upload_outlined,
+                            size: AppIconSize.huge,
+                            color: _isDragging
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                          ),
+                          const SizedBox(height: AppSpacing.lg),
+                          Text(
+                            _isDragging ? l10n.dropFileHere : l10n.dragDropFile,
+                            style: Theme.of(context).textTheme.titleLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          Text(
+                            l10n.orClickToSelect,
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                                ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

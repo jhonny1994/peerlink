@@ -3,6 +3,7 @@ library;
 
 export 'detailed_file_info_card.dart';
 export 'file_info_card.dart';
+export 'glass_container.dart';
 export 'info_card.dart';
 export 'instruction_text.dart';
 export 'loading_button_icon.dart';

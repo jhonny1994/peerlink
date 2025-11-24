@@ -7,11 +7,11 @@ import 'package:peerlink/src/src.dart';
 /// - File name
 /// - Progress percentage
 /// - Transfer speed (MB/s)
-/// - Linear progress indicator
+/// - Animated flow progress indicator
 /// - Optional cancel button
 ///
 /// Follows Material You design with proper spacing and typography.
-class TransferProgressWidget extends StatelessWidget {
+class TransferProgressWidget extends StatefulWidget {
   const TransferProgressWidget({
     required this.fileName,
     required this.progressPercentage,
@@ -21,22 +21,34 @@ class TransferProgressWidget extends StatelessWidget {
     super.key,
   });
 
-  /// Name of the file being transferred.
   final String fileName;
-
-  /// Progress percentage (0.0 to 1.0).
   final double progressPercentage;
-
-  /// Transfer speed in MB/s.
   final double transferSpeedMbps;
-
-  /// Optional callback when user taps cancel button.
-  /// If null, cancel button is not shown.
   final VoidCallback? onCancel;
-
-  /// Whether this is a send operation (true) or receive operation (false).
-  /// Used for appropriate labeling.
   final bool isSending;
+
+  @override
+  State<TransferProgressWidget> createState() => _TransferProgressWidgetState();
+}
+
+class _TransferProgressWidgetState extends State<TransferProgressWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +56,9 @@ class TransferProgressWidget extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final l10n = S.of(context);
 
-    // Format percentage
-    final percentageText = '${(progressPercentage * 100).toStringAsFixed(0)}%';
-
-    // Format transfer speed
-    final speedText = '${transferSpeedMbps.toStringAsFixed(1)} MB/s';
+    final percentageText =
+        '${(widget.progressPercentage * 100).toStringAsFixed(0)}%';
+    final speedText = '${widget.transferSpeedMbps.toStringAsFixed(1)} MB/s';
 
     return Card(
       elevation: AppElevation.none,
@@ -59,17 +69,19 @@ class TransferProgressWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header: Icon + Operation text
+            // Header
             Row(
               children: [
                 Icon(
-                  isSending ? Icons.upload_rounded : Icons.download_rounded,
+                  widget.isSending
+                      ? Icons.upload_rounded
+                      : Icons.download_rounded,
                   size: AppIconSize.xl,
                   color: colorScheme.primary,
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Text(
-                  isSending ? l10n.sendingFile : l10n.receivingFile,
+                  widget.isSending ? l10n.sendingFile : l10n.receivingFile,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -80,7 +92,7 @@ class TransferProgressWidget extends StatelessWidget {
 
             // File name
             Text(
-              fileName,
+              widget.fileName,
               style: theme.textTheme.bodyLarge?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
@@ -89,25 +101,28 @@ class TransferProgressWidget extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.lg),
 
-            // Progress indicator
-            ClipRRect(
-              borderRadius: AppRadius.borderRadiusSm,
-              child: LinearProgressIndicator(
-                value: progressPercentage,
-                minHeight: AppDimensions.progressBarHeight,
-                backgroundColor: colorScheme.surfaceContainerHigh,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  colorScheme.primary,
+            // Animated Flow Progress
+            SizedBox(
+              height: AppDimensions.progressBarHeight * 2,
+              child: ClipRRect(
+                borderRadius: AppRadius.borderRadiusSm,
+                child: CustomPaint(
+                  painter: _FlowProgressPainter(
+                    progress: widget.progressPercentage,
+                    animationValue: _controller,
+                    color: colorScheme.primary,
+                    backgroundColor: colorScheme.surfaceContainerHigh,
+                  ),
+                  child: Container(),
                 ),
               ),
             ),
             const SizedBox(height: AppSpacing.md),
 
-            // Stats row: Percentage + Speed
+            // Stats
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Percentage
                 Text(
                   percentageText,
                   style: theme.textTheme.titleMedium?.copyWith(
@@ -115,7 +130,6 @@ class TransferProgressWidget extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                // Speed
                 Row(
                   children: [
                     Icon(
@@ -135,13 +149,12 @@ class TransferProgressWidget extends StatelessWidget {
               ],
             ),
 
-            // Cancel button (if callback provided)
-            if (onCancel != null) ...[
+            if (widget.onCancel != null) ...[
               const SizedBox(height: AppSpacing.xl),
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
-                  onPressed: onCancel,
+                  onPressed: widget.onCancel,
                   icon: const Icon(Icons.close_rounded),
                   label: Text(l10n.cancelTransfer),
                   style: OutlinedButton.styleFrom(
@@ -155,5 +168,74 @@ class TransferProgressWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _FlowProgressPainter extends CustomPainter {
+  _FlowProgressPainter({
+    required this.progress,
+    required this.animationValue,
+    required this.color,
+    required this.backgroundColor,
+  }) : super(repaint: animationValue);
+
+  final double progress;
+  final Animation<double> animationValue;
+  final Color color;
+  final Color backgroundColor;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = backgroundColor
+      ..style = PaintingStyle.fill;
+
+    // Draw background
+    canvas.drawRect(Offset.zero & size, paint);
+
+    // Draw progress bar
+    paint.color = color.withValues(alpha: 0.3);
+    final progressWidth = size.width * progress;
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, progressWidth, size.height),
+      paint,
+    );
+
+    // Draw particles
+    paint.color = color;
+    const particleCount = 10;
+    final spacing = size.width / particleCount;
+    final offset = animationValue.value * spacing;
+
+    for (var i = 0; i < particleCount + 2; i++) {
+      final x = (i * spacing) + offset - spacing;
+      if (x < progressWidth) {
+        // Only draw particles inside the progress area
+        final opacity = 1.0 - ((x - progressWidth).abs() / 20).clamp(0.0, 1.0);
+        if (opacity > 0) {
+          paint.color = color.withValues(alpha: opacity);
+          canvas.drawCircle(Offset(x, size.height / 2), size.height / 3, paint);
+        }
+      }
+    }
+
+    // Draw solid leading edge
+    paint.color = color;
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, progressWidth, size.height),
+      paint
+        ..shader = LinearGradient(
+          colors: [color.withValues(alpha: 0.5), color],
+          stops: const [0.0, 1.0],
+        ).createShader(Rect.fromLTWH(0, 0, progressWidth, size.height)),
+    );
+  }
+
+  @override
+  bool shouldRepaint(_FlowProgressPainter oldDelegate) {
+    return oldDelegate.progress != progress ||
+        oldDelegate.animationValue != animationValue ||
+        oldDelegate.color != color ||
+        oldDelegate.backgroundColor != backgroundColor;
   }
 }

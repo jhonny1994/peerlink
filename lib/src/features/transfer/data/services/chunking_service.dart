@@ -54,8 +54,9 @@ class ChunkingService {
 
   Future<void> _writeChunkInternal(String filePath, Uint8List chunk) async {
     final file = File(filePath);
-    // Use writeAsBytes with append mode and flush: true for immediate persistence
-    await file.writeAsBytes(chunk, mode: FileMode.append, flush: true);
+    // Use writeAsBytes with append mode.
+    // Removed flush: true for performance (let OS handle buffering).
+    await file.writeAsBytes(chunk, mode: FileMode.append);
   }
 
   /// Get file size

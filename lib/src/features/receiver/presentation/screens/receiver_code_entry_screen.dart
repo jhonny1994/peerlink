@@ -278,6 +278,11 @@ class _ReceiverCodeEntryScreenState
           InstructionText(l10n.enterCodePrompt),
           const SizedBox(height: AppSpacing.xxl),
 
+          if (_isJoining) ...[
+            const LinearProgressIndicator(),
+            const SizedBox(height: AppSpacing.lg),
+          ],
+
           // Code input field
           TextFormField(
             controller: _codeController,

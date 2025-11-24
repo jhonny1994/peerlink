@@ -39,7 +39,9 @@ service cloud.firestore {
       
       // Allow deletion of sessions (for client-side cleanup)
       // Free tier alternative to server-side TTL
-      allow delete: if true;
+      // SECURITY FIX: Disabled client-side delete to prevent DoS. 
+      // Rely on TTL or scheduled functions for cleanup.
+      allow delete: if false;
     }
     
     // Deny all other collections by default
